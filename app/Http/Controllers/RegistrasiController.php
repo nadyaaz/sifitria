@@ -8,5 +8,8 @@ use App\Http\Requests;
 
 class RegistrasiController extends Controller
 {
-    //
+    public function dashboard()
+    {
+    	# code...
+    }
 }

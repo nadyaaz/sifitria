@@ -8,5 +8,8 @@ use App\Http\Requests;
 
 class PeminjamanController extends Controller
 {
-    //
+    public function dashboard()
+    {
+    	
+    }
 }
