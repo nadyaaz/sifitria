@@ -16,5 +16,7 @@ Route::group(['middleware' => ['web']], function() {
 	    return view('welcome');
 	});
 
+	// Unit test page
+	Route::get('/unittest', 'UnitTestController@unit');
 	
 });

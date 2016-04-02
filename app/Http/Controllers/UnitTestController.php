@@ -8,5 +8,9 @@ use App\Http\Requests;
 
 class UnitTestController extends Controller
 {
-    //
+    public function unit()
+    {    	
+    	$data = [];
+    	return view('welcome', compact('data'));
+    }
 }
