@@ -1,0 +1,202 @@
+nav{
+
+		height: 150px;
+		background-color: #f5f5f5;
+
+	}
+
+	.nav-wrapper a{
+		color:black;
+		
+		padding-top:40px;
+		padding-bottom: 40px;
+
+
+	}
+
+	#tableRow{
+		margin-bottom: 0px;
+	}
+
+	.section{
+
+	}
+
+	.subsection{
+		margin-left: 20px;
+		margin-top:20px; 
+	}
+
+	#title{
+
+		color:black;
+		padding-left: 350px;
+		padding-top:45px;
+		padding-bottom: 45px;
+	}
+	
+	#sidebar{
+
+		border-right-style: groove;
+		border-color: #e0e0e0;
+		margin-top: 10px;
+		min-height: 1000px;
+		height: 100%;
+		white-space: nowrap;
+		overflow: auto;
+		
+	}
+
+	#content{
+
+		
+		/*margin-top: 5px;*/
+		/*padding-top:5px;*/
+		padding-left:20px;
+		border-left-style: groove;
+		border-color:#e0e0e0;
+		min-height: 1000px;
+		height:100%;
+		white-space:nowrap;
+
+	}
+
+	#loginas{
+	
+		padding-right:5px;
+		padding-top:5px;
+		padding-bottom: 5px;
+		margin-top:5px;
+		background-color: #f5f5f5;
+		display: block;
+ 		border-bottom: 1px solid #ddd;
+	}
+
+	#tableHead{
+		margin-top: 20px;
+		
+		font-weight: bold;
+	}
+
+	#tableData{
+		text-indent: 2px;
+	}
+
+	#button{
+		/*width: 10rem;*/
+		
+		/*font-size: 1rem;*/
+		/*line-height: 3rem;*/
+		display: inline;
+		float: left;
+		/*text-align:left;*/
+	 	margin-right: 1rem;
+		/*padding-bottom:3rem;*/
+		margin:auto;
+	}
+
+	#coba{
+		margin-top:10px;
+
+	}
+
+	.row .col.l2 {
+
+	}
+
+	.collection-header{
+		text-align: center;
+	}
+
+	#header{
+		padding:0px;
+	}
+
+
+	.collapsible-body{
+		padding-left: 11.25px;
+		padding-right:11.25px;
+		padding-top:5px;
+		padding-bottom: 5px;
+		
+	}
+
+	.collapsible-header{
+		background-color: #eeeeee ;
+		display: block;
+  		cursor: pointer;
+	}
+
+	.collection-item:hover{
+		background-color: #eee;
+	}
+
+	#ruanganSelected{
+		
+		background-color: #b0bec5;
+	
+	}
+
+	#bgnyabc{
+		background-color: #424242;
+	}
+
+	#submitPermohonan{
+		width:100%;
+	}
+
+	#edit-button{
+		margin-right: 0px;
+		color: #424242;
+		font-size: 2rem;
+	}
+
+	#cancel-button{
+		margin-right: 0px;
+		color: #424242;
+
+	}
+
+	.collapsible-header{
+		min-height: 4rem;
+		border-bottom: 0px;
+	}
+
+	#jadwal-table{
+		margin-right: auto;
+		margin-left: auto
+	}
+
+	.row .col.s2nanggung {
+ 		width: 14%;
+  		margin-left: auto;
+  		margin-right: 2px;
+  		left: auto;
+  		right: auto;
+  
+	}
+
+	.col.jadwal{
+		width: 100%;
+		border-style:solid;  
+		border-width: 1px;
+		padding: 2px 10px 2px 10px;
+		margin-right: 0px;
+		margin-bottom: 2px;
+		background-color: #f5f5f5
+
+
+	}
+
+	.hari{
+		width: 14%;
+		float: left;
+		margin-left: auto;
+  		margin-right: 2px;
+  		padding-right: 0px;
+
+	}
+
+	#next-week{
+		padding-left: 9%;
+	}

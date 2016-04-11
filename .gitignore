@@ -1,6 +1,8 @@
 /vendor
+/nadine-2016-04-09
+/Peminjaman_Ruangan-2016-04-10
+/kemajuan barang
 /node_modules
 /public/storage
 Homestead.yaml
 Homestead.json
-.env

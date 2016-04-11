@@ -12,13 +12,30 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+        Schema::create('USERS', function (Blueprint $table) {
+
+            // Setting attributes
+            $table->char('NomorInduk', 10);
+            $table->string('Nama', 100);
+            $table->string('Username', 100)->unique();
+            $table->string('Role', 100);
+            $table->string('Email', 100);
+            $table->string('NoHp', 20);
+            $table->char('NomorIndukPengelola', 10)->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            // Setting primary key
+            $table->primary('NomorInduk');
+            
+            // Setting foreign key
+            $table  
+            ->foreign('NomorIndukPengelola')
+            ->references('NomorInduk')
+            ->on('USERS')
+            ->onUpdate('cascade')
+            ->onDelete('restrict');
+
         });
     }
 
