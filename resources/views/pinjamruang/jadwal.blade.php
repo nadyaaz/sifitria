@@ -1,24 +1,4 @@
-@extends('master')
-
-@section('user-role')
-	Jundi Ahmad Alwan (Manajer Peminjaman)
-@stop
-
-@section('modul')
-	Peminjaman Ruangan
-@stop
-
-@section('title')
-	Jadwal
-@stop
-
-@section('sidebar1')
-	Dashboard
-@stop
-
-@section('sidebar2')
-	Ruangan
-@stop
+@extends('sidebar')
 
 @section('tanggal-Senin')
 	25-03-2016
@@ -44,47 +24,41 @@
 	31-03-2016
 @stop
 
-
-
-
-
-
-
-@section('sidebar3_active')
-	active
-@stop
-@section('addSidebar')
-	<a href="" class="collection-item">Buat Ruangan</a>
-	<a href="" class="collection-item @yield('sidebar3_active')">Daftar Jadwal</a>
-	<a href="" class="collection-item">Buat Jadwal</a>
-	<a href="" class="collection-item">Buat Permohonan Peminjaman Ruangan</a>
-@stop
+@section('sidebar_jadwal', 'active')
 
 @section('konten')
 	<div class="subsection">
 		<div class="row">
-			
-			<div class="col s6">
+			<div class="col s12">			
+				Pilih Jenis Ruangan :	 		
+			</div><br>
+			<div class="col s9">		 					
+				<div class="col s3">
+					<input name="group1" type="radio" id="test3"  />
+				    <label for="test3">Ruang Rapat Besar</label>				    
+				</div>
 
-			
-				Pilih Jenis Ruangan :<br>
-					<input name="group1" type="radio" id="test1" />
-				    <label for="test1">Ruang Kelas</label>
-				 	<br>
-				
+				<div class="col s3">
+					<input name="group1" type="radio" id="test3"  />
+				    <label for="test3">Ruang Rapat Kecil</label>				    
+				</div>
+
+				<div class="col s3">
 				    <input name="group1" type="radio" id="test2" />
-				    <label for="test2">Ruang Auditorium</label>
-					<br>
-				    <input name="group1" type="radio" id="test3"  />
-				    <label for="test3">Ruang Rapat</label>
-				
+				    <label for="test2">Ruang Auditorium</label>							
+				</div>	
+
+				<div class="col s3">
+					<input name="group1" type="radio" id="test1" />
+				    <label for="test1">Ruang Kelas</label>			 					
+				</div>	
 			</div>
 		</div>
 	
 		<div class="row">
 			<div class="input-field col s6">
 				Pilih Ruangan
-			    <select >
+			    <select disabled>
 			      	<optgroup label="Gedung M">
 			        	<option value="M1102">M1102</option>
 			        	<option value="M1103">M1103</option>
@@ -96,6 +70,7 @@
 			    </select>
 			  </div>
 		</div>
+
 		<div id="jadwal-table" class="row">
 		    <div id="previous-week"class="col s12 m4 l2">
 		    	<a class="tooltipped btn-floating btn-large waves-effect waves-light red" data-position="bottom" data-delay="10" data-tooltip="Minggu Sebelumnya"><i class="material-icons" >skip_previous</i></a>
@@ -106,39 +81,33 @@
     		<div id="next-week"class="col s12 m4 l2">
 
     			<a id="next-jadwal"class=" tooltipped btn-floating btn-large waves-effect waves-light red" data-position="bottom" data-delay="10" data-tooltip="Minggu Selanjutnya"><i class="material-icons">skip_next</i></a>
-    		</div>
-		
+    		</div>		
 		</div>
 		
-			<div class="row" >
-			
-				<div class="col s12"><p></p></div>
-				<div class="col s12 m4 l2"><p></p></div>
-				<div class="col s12 m4 l8"><hr></hr></div>
-				<div class="col s12 m4 l2"><p></p></div>
-			</div>
+		<div class="row" >		
+			<div class="col s12"><p></p></div>
+			<div class="col s12 m4 l2"><p></p></div>
+			<div class="col s12 m4 l8"><hr></hr></div>
+			<div class="col s12 m4 l2"><p></p></div>
+		</div>
 
-			<div class="row" style="margin-left: 25%;">
-				<div class="col s2">
-					<h6 class="center-align">Minggu-1</h6>
-				</div>
-				<div id="ruanganSelected"class="col s2">
-					<h6 class="center-align">Minggu-2</h6>
-				</div>
-				<div class="col s2">
-					<h6 class="center-align">Minggu-3</h6>
-				</div>
-				<div class="col s2">
-					<h6 class="center-align">Minggu-4</h6>
-				</div>
+		<div class="row" style="margin-left: 25%;">
+			<div class="col s2">
+				<h6 class="center-align">Minggu-1</h6>
 			</div>
-			<hr>
-	<!-- 		<div class="col s12 m6 l3"><p></p></div>
-			<div class="col s12 m6 l3"><p ><h6 class="center-align">Langkah 1</h6></p></div>
-			<div   id="ruanganSelected"class="col s12 m6 l3"><p ><h6 class="center-align">Langkah 2</h6></p></div>
-			<div class="col s12 m6 l3"><p></p></div>
-				 -->
-			</div>	
+			<div id="ruanganSelected"class="col s2">
+				<h6 class="center-align">Minggu-2</h6>
+			</div>
+			<div class="col s2">
+				<h6 class="center-align">Minggu-3</h6>
+			</div>
+			<div class="col s2">
+				<h6 class="center-align">Minggu-4</h6>
+			</div>
+		</div>
+
+		<hr>	 	
+			
 		<!-- nampilin query jadwal -->
 		<div class="jadwal">
 			<div class="row">
@@ -173,81 +142,86 @@
 				</div>
 			</div>
 
-
-			<!-- Jadwal Hari Senin -->
 			<div class="row">
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
+				<!-- Jadwal Hari Senin -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>
 				</div>
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
+
+				<!-- Jadwal Hari Selasa -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>				
 				</div>
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
+
+				<!-- Jadwal Hari Rabu -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>				
 				</div>
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
+
+				<!-- Jadwal Hari Kamis -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>				
 				</div>
-			</div>
-			<!-- Jadwal Hari Selasa -->
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
-				</div>				
-			</div>
-			<!-- Jadwal Hari Rabu -->
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
-				</div>				
-			</div>
-			<!-- Jadwal Hari Kamis -->
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
-				</div>				
-			</div>
-			<!-- Jadwal Hari Jumat -->
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
-				</div>				
-			</div>
-			<!-- Jadwal Hari Sabtu -->
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
-				</div>				
-			</div>
-			<!-- Jadwal Hari Minggu -->
-			<div class="hari">
-				<div class="col jadwal" style="">
-					<h6 class="left-align">08:00</h6><br>
-					<h6 class="center-align">Kelas</h6><br>
-					<h6 class="left-align">09:00</h6>
-				</div>				
+
+				<!-- Jadwal Hari Jumat -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>				
+				</div>
+
+				<!-- Jadwal Hari Sabtu -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>				
+				</div>
+
+				<!-- Jadwal Hari Minggu -->
+				<div class="hari">
+					<div class="col jadwal" style="">
+						<h6 class="left-align">08:00</h6><br>
+						<h6 class="center-align">Kelas</h6><br>
+						<h6 class="left-align">09:00</h6>
+					</div>				
+				</div>
 			</div>
 		</div>
 	</div>
-
-	</div>
+</div>
 @stop

@@ -48,11 +48,11 @@
             <div class="collapsible-body">
                 
                 <div class = "row">
-                    <div class="col s4">
+                    <div class="col s6">
                         <b>Nomor Surat:</b><br>
                         {{ $peminjaman->NomorSurat }}
                     </div>
-                    <div class="col s4">
+                    <div class="col s6">
                         <b>Waktu Permohonan:</b><br>
                         {{ date('j F Y, H:i', strtotime($peminjaman->WaktuPermohonan)) }}
                     </div>                    

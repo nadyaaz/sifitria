@@ -22,6 +22,7 @@ Route::group(['middleware' => 'web'], function() {
 	Route::get('registrasibarang', 'RegistrasiController@dashboard');
 	Route::get('pinjamruang/ruangan', 'RuanganController@getRuangan');
 	Route::get('registrasibarang/barang', 'BarangController@getBarang');
+	Route::get('pinjamruang/jadwal', 'JadwalController@getJadwal');
 
 	Route::get('pinjamruang/buat', 'PeminjamanController@getCreatePeminjaman');
 	Route::post('pinjamruang/buat', 'PeminjamanController@createPeminjaman');
@@ -29,9 +30,11 @@ Route::group(['middleware' => 'web'], function() {
 	Route::get('registrasibarang/buat', 'RegistrasiController@getCreateRegistrasi');
 	Route::post('registrasibarang/buat', 'RegistrasiController@createRegistrasi');
 
-	Route::get('pinjamruang/ruangan/buat', 'RuanganController@getCreateRuangan');
-	Route::get('pinjamruang/ruangan/jadwal', );
+	Route::get('pinjamruang/ruangan/buat', 'RuanganController@getCreateRuangan');	
 	Route::post('pinjamruang/ruangan/buat', 'RuanganController@createRuangan');
+
+	Route::get('pinjamruang/jadwal/buat', 'JadwalController@getCreateJadwal');
+	Route::post('pinjamruang/jadwal/buat', 'JadwalController@createJadwal');
 	
 	Route::get('registrasibarang/barang/buat', 'BarangController@getCreateBarang');
 	Route::post('registrasibarang/barang/buat', 'BarangController@createBarang');

@@ -17,15 +17,19 @@
 @endsection
 
 @section('pinjamruang/ruangan')
-	<a href="{{ url('pinjamruang/ruangan') }}" class="collection-item @yield('sidebar_ruangan')">Ruangan &amp; Jadwal</a>
+	<a href="{{ url('pinjamruang/ruangan') }}" class="collection-item @yield('sidebar_ruangan')">Ruangan</a>
 @endsection
 
 @section('pinjamruang/ruangan/buat')
 	<a href="{{ url('pinjamruang/ruangan/buat') }}" class="collection-item @yield('sidebar_buatruang')">Buat Ruangan</a>
 @endsection
 
-@section('pinjamruang/ruangan/buatjadwal')
-	<a href="{{ url('/') }}" class="collection-item @yield('sidebar_jadwal')">Buat Jadwal</a>
+@section('pinjamruang/jadwal')
+	<a href="{{ url('/pinjamruang/jadwal') }}" class="collection-item @yield('sidebar_jadwal')">Jadwal</a>
+@endsection
+
+@section('pinjamruang/jadwal/buat')
+	<a href="{{ url('/') }}" class="collection-item @yield('sidebar_buatjadwal')">Buat Jadwal</a>
 @endsection
 
 @section('registrasibarang')
@@ -56,8 +60,8 @@
 	@yield('pinjamruang/buat')
 	@yield('pinjamruang/ruangan')
 	@yield('pinjamruang/ruangan/buat')
-	@yield('pinjamruang/ruangan/jadwal')
-	@yield('pinjamruang/ruangan/buatjadwal')
+	@yield('pinjamruang/jadwal')
+	@yield('pinjamruang/jadwal/buat')
 	<br>
 	@yield('registrasibarang_header')
 	@yield('registrasibarang')
