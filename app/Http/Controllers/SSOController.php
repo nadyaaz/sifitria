@@ -17,7 +17,7 @@ class SSOController extends Controller
         // if is not, authenticate
     	if (!SSO::check()) SSO::authenticate();
 
-        // get SSO user data
+        // get SSO user data and store user data if it's not exist
     	$user_sess = SSO::getUser();        
 
         // redirect to home portal

@@ -18,8 +18,7 @@
 	    <script type="text/javascript" src="{{ url('js/id.js') }}"></script>
 	</head>
 
-	<body>
-		
+	<body>		
 		<!-- Header goes here -->
 		<div id="header" class = 'collapsible-header'>
 	  		<nav>	  			
@@ -47,6 +46,7 @@
 	    		</div>
 	  		</nav>
 		</div>
+
 	    <!-- Page Layout here -->
 	    <div class="row">	    
 	      	<div id="sidebar"class="col s3"> 

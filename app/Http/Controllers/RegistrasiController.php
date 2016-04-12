@@ -10,8 +10,10 @@ class RegistrasiController extends MasterController
 {
     public function dashboard()
     {  
+		// get permohonan registrasi barang data
 		$registrasi = Permohonan::getRegistrasi();
 
+		// render registrasi barang dashboard
 		return $this->render('registbarang.dashboard',
 			[
 				'title' => 'Dashboard Registrasi Barang',

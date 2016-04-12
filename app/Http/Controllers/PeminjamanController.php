@@ -9,9 +9,11 @@ use App\Permohonan;
 class PeminjamanController extends MasterController
 {
     public function dashboard()
-    {    	
+    {
+		// get permohonan peminjaman ruangan data
         $peminjaman = Permohonan::getPeminjaman();
 
+		// render peminjaman ruangan dashboard
     	return $this->render('pinjamruang.dashboard',
     		[
     			'title' => 'Dashboard Peminjaman Ruangan',
@@ -21,6 +23,15 @@ class PeminjamanController extends MasterController
     	);	
     }
 
+    public function getCreatePeminjaman()
+    {
+        return $this->render('pinjamruang.buat1',
+            [
+                'title' => 'Buat Permohonan Peminjaman Ruangan',
+            ]
+        );
+    }
+
     public function removePeminjaman(Request $request)
     {
     	// get session peminjaman yang mau dibatalkan
@@ -28,14 +39,9 @@ class PeminjamanController extends MasterController
         $inputs = $input['Id'];
 
     	// ganti status peminjaman pada database
-        DB::update(
-        	DB::raw(
-        		"UPDATE PERMOHONAN 
-        		SET deleted = 1 
-        		WHERE IdPermohonan = $inputs"
-        	)
-        );
+        Permohonan::removePeminjaman($inputs);
     	
+		// redirect back to peminjaman dashboard
         return back();
     }
 }

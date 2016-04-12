@@ -1,32 +1,12 @@
-@extends('master')
+@extends('sidebar')
 
-
-@section('user-role')
-    Jundi Ahmad Alwan (mahasiswa)
-@stop
-@section('modul')
-    Peminjaman Ruangan
-@stop
-
-@section('title')
-    Buat Permohonan Peminjaman Ruangan
-@stop
-
-@section('sidebar1')
-  Dashboard
-@stop
-
-@section('sidebar2')
-   Buat Permohonan Peminjaman Ruangan
-@stop
-
-@section('sidebar2_active')
-	active
-@stop
+@section('sidebar_buatpinjam', 'active')
 
 @section('konten')
-
 	<div class="subsection">
+		<h5>Buat Permohonan Peminjaman Ruangan</h5>
+		<div class="divider"></div><br>
+
 		<div class="row">
 	    	<div class="input-field col s6">
 	    		Ruangan :<br>
@@ -70,13 +50,11 @@
 			</div>
 		</div>
 		<div class="row">
-		    <div class="col s6 offset-s3">
-		    	
-
+		    <div class="col s6 offset-s3">		    
 			    <button id="submitPermohonan" class="btn waves-effect waves-light" style="width: 100%" type="submit" name="Next Page">
-			    	Submit & Simpan Permohonan
-  				</button>
-  					
+			    	Submit &amp; Simpan Permohonan
+			    	<i class="material-icons right">send</i>
+  				</button>  					
 		    </div>
 		</div>
 		<div class="row">

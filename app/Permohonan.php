@@ -72,4 +72,15 @@ class Permohonan extends Model
 			'regiscatatan' => $regiscatatan
 		);
     }
+
+	public static function removePeminjaman($hash) {
+		// ganti status peminjaman pada database
+        DB::update(
+        	DB::raw(
+        		"UPDATE PERMOHONAN
+        		SET deleted = 1
+        		WHERE IdPermohonan = $hash"
+        	)
+        );
+	}
 }

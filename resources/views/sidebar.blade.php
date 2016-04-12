@@ -63,7 +63,7 @@
 	@yield('pinjamruang/ruangan/jadwal')
 	@yield('pinjamruang/ruangan/buatjadwal')
 	<br>
-	
+	@yield('registrasibarang_header')
 	@yield('registrasibarang')
 	@yield('registrasibarang/buat')
 	@yield('registrasibarang/barang')

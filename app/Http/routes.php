@@ -12,16 +12,6 @@
 */
 
 Route::group(['middleware' => ['web']], function() {
-	Route::get('/welcome', function () {
-	    return view('master');
-	});
-
-	Route::get('list', 'BarangController@DaftarBarang');
-
-	Route::get('daftarbarang', 'BarangController@DaftarBarang');
-
-	// Unit test page
-	//Route::get('/unittest', 'UnitTestController@unit');
 
 	Route::get('/', 'HomeController@index');
 	Route::get('SSO', 'SSOController@index');

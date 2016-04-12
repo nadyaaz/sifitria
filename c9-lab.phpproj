@@ -247,7 +247,6 @@
     <Compile Include="composer.json" />
     <Compile Include="composer.lock" />
     <Compile Include="gulpfile.js" />
-    <Compile Include="nadine-2016-04-09.zip" />
     <Compile Include="package.json" />
     <Compile Include="phpunit.xml" />
     <Compile Include="readme.md" />
