@@ -17,15 +17,11 @@
 @endsection
 
 @section('pinjamruang/ruangan')
-	<a href="{{ url('pinjamruang/ruangan') }}" class="collection-item @yield('sidebar_ruangan')">Ruangan</a>
+	<a href="{{ url('pinjamruang/ruangan') }}" class="collection-item @yield('sidebar_ruangan')">Ruangan &amp; Jadwal</a>
 @endsection
 
 @section('pinjamruang/ruangan/buat')
 	<a href="{{ url('pinjamruang/ruangan/buat') }}" class="collection-item @yield('sidebar_buatruang')">Buat Ruangan</a>
-@endsection
-
-@section('pinjamruang/ruangan/jadwal')
-	<a href="{{ url('/') }}" class="collection-item @yield('sidebar_jadwal')">Jadwal</a>
 @endsection
 
 @section('pinjamruang/ruangan/buatjadwal')

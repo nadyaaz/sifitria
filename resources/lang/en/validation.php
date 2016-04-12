@@ -92,8 +92,40 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'namabarang.*' => [
+            'required' => 'Nama barang harus diisi',
+        ],
+
+        'tanggalbeli.*' => [
+            'required' => 'Tanggal beli harus diisi',
+        ],
+
+        'penanggungjawab.*' => [
+            'required' => 'Nama penanggung jawab harus diisi',
+        ],
+
+        'kategoribarang.*' => [
+            'required' => 'Kategori barang harus diisi',
+        ],
+
+        'jenisbarang.*' => [
+            'required' => 'Jenis barang harus diisi',
+        ],
+
+        'kondisibarang.*' => [
+            'required' => 'Kondisi barang harus diisi',
+        ],
+
+        'spesifikasibarang.*' => [
+            'required' => 'Spesifikasi barang harus diisi',
+        ],
+
+        'keteranganbarang.*' => [
+            'required' => 'Keterangan barang harus diisi',
+        ],
+
+        'kerusakanbarang.*' => [
+            'required' => 'Kerusakan barang harus diisi',
         ],
     ],
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Barang;
 use DB;
+use Validator;
 
 class BarangController extends MasterController
 {
@@ -32,21 +33,22 @@ class BarangController extends MasterController
     
     public function createBarang(Request $request)
     {
-        $input = $request->all();
 
         $this->validate($request, 
             [
-                'namabarang1' => 'required|max:100',                
-                'tanggalbeli1' => 'required',
-                'penanggungjawab1' => 'required|max:100',
-                'kategoribarang1' => 'required|max:100',
-                'jenisbarang1' => 'required|max:100',
-                'kondisibarang1' => 'required|max:100',
-                'spesifikasibarang1' => 'required',
-                'keteranganbarang1' => 'required',                                
-                'kerusakanbarang1' => 'required',
+                'namabarang.*' => 'required|max:100',                
+                'tanggalbeli.*' => 'required',
+                'penanggungjawab.*' => 'required|max:100',
+                'kategoribarang.*' => 'required|max:100',
+                'jenisbarang.*' => 'required|max:100',
+                'kondisibarang.*' => 'required|max:100',
+                'spesifikasibarang.*' => 'required',
+                'keteranganbarang.*' => 'required',                                
+                'kerusakanbarang.*' => 'required',
             ]
         );
+
+        $input = $request->all();
 
         DB::table('barang')->insert(
             [

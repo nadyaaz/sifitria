@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function() {
+Route::group(['middleware' => 'web'], function() {
 
 	Route::get('/', 'HomeController@index');
 	Route::get('SSO', 'SSOController@index');
@@ -30,6 +30,7 @@ Route::group(['middleware' => ['web']], function() {
 	Route::post('registrasibarang/buat', 'RegistrasiController@createRegistrasi');
 
 	Route::get('pinjamruang/ruangan/buat', 'RuanganController@getCreateRuangan');
+	Route::get('pinjamruang/ruangan/jadwal', );
 	Route::post('pinjamruang/ruangan/buat', 'RuanganController@createRuangan');
 	
 	Route::get('registrasibarang/barang/buat', 'BarangController@getCreateBarang');

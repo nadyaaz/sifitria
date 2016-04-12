@@ -36,39 +36,39 @@ $(document).ready(
 
 			newForm.find('#namabarang1')
 				.attr('id', 'namabarang'+formNumber)
-				.attr('name', 'namabarang'+formNumber);
+				.attr('name', 'namabarang['+formNumber+']');
 			
 			newForm.find('#tanggalbeli1')
 				.attr('id', 'tanggalbeli'+formNumber)
-				.attr('name', 'tanggalbeli'+formNumber);
+				.attr('name', 'tanggalbeli['+formNumber+']');
 
 			newForm.find('#penanggungjawab1')
 				.attr('id', 'penanggungjawab'+formNumber)
-				.attr('name', 'penanggungjawab'+formNumber);
+				.attr('name', 'penanggungjawab['+formNumber+']');
 
 			newForm.find('#kategoribarang1')
 				.attr('id', 'kategoribarang'+formNumber)
-				.attr('name', 'kategoribarang'+formNumber);
+				.attr('name', 'kategoribarang['+formNumber+']');
 
 			newForm.find('#jenisbarang1')
 				.attr('id', 'jenisbarang'+formNumber)
-				.attr('name', 'jenisbarang'+formNumber);
+				.attr('name', 'jenisbarang['+formNumber+']');
 
 			newForm.find('#kondisibarang1')
 				.attr('id', 'kondisibarang'+formNumber)
-				.attr('name', 'kondisibarang'+formNumber);
+				.attr('name', 'kondisibarang['+formNumber+']');
 
 			newForm.find('#kerusakanbarang1')
 				.attr('id', 'kerusakanbarang'+formNumber)
-				.attr('name', 'kerusakanbarang'+formNumber);
+				.attr('name', 'kerusakanbarang['+formNumber+']');
 
 			newForm.find('#spesifikasibarang1')
 				.attr('id', 'spesifikasibarang'+formNumber)
-				.attr('name', 'spesifikasibarang'+formNumber);
+				.attr('name', 'spesifikasibarang['+formNumber+']');
 
 			newForm.find('#keteranganbarang1')
 				.attr('id', 'keteranganbarang'+formNumber)
-				.attr('name', 'keteranganbarang'+formNumber);
+				.attr('name', 'keteranganbarang['+formNumber+']');
 
 			// append modified newForm
 			appendTarget.append(newForm);			
