@@ -16,11 +16,12 @@
         <div class="col s2">Status</div>        
     </div>
 
-    <ul class="collapsible" data-collapsible="accordion">        
+    <ul class="collapsible" data-collapsible="accordion">  
+
         @foreach($data['allpermohonan'] as $peminjaman)
 
         <li>            
-            <div class="collapsible-header active">                              
+            <div class="collapsible-header">                              
                 <div class="col s1"> {{ $peminjaman->IdPermohonan }} </div>
                 <div class="col s2"> {{ $peminjaman->JenisRuangan }} </div>
                 <div class="col s2"> {{ date('j F Y', strtotime($peminjaman->WaktuMulai)) }} </div>
@@ -48,13 +49,13 @@
             <div class="collapsible-body">
                 
                 <div class = "row">
-                    <div class="col s6">
+                    <div class="col s4">
                         <b>Nomor Surat:</b><br>
                         {{ $peminjaman->NomorSurat }}
                     </div>
-                    <div class="col s6">
+                    <div class="col s4">
                         <b>Waktu Permohonan:</b><br>
-                        {{ date('j F Y, H:i', strtotime($peminjaman->WaktuPermohonan)) }}
+                        {{ date('j F Y, H:i', strtotime($peminjaman->created_at)) }}
                     </div>                    
                 </div>
                 
@@ -84,43 +85,39 @@
 
                 @endforeach
 
+                @if($peminjaman->StatusPermohonan == 0)
                 <div class="row">                    
                     <div class="col s12">
-                        <form action="" method="POST">
+                        <form action="{{ url('pinjamruang/setuju') }}" method="POST">
                             {!! csrf_field() !!}
                             <input type="hidden" name="Id" value="{{ $peminjaman->IdPermohonan }}"/>
+                            <input type="hidden" name="UserId" value="{{ $data['user_sess']->npm }}"/>
                             Catatan: <br>
-                            <textarea class="materialize-textarea" name="catatan_txtarea" cols="30" rows="30"></textarea>
-                            <button class="btn waves-effect waves-light teal white-text right">
+                            <textarea name="catatan_txtarea" cols="30" rows="30"></textarea>
+                            <button name="persetujuan" value = "setuju" class="btn waves-effect waves-light teal white-text right">
                                 SETUJU
                                 <i class="material-icons white-text right">done</i>
                             </button>
-                        </form>
-                        <form action="{{ url('registbarang/batal') }}" method="POST" class="left">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $peminjaman->IdPermohonan }}">
-                            <button class="waves-effect waves-red btn red">                                    
+                            <button name="persetujuan" value = "tolak" class="btn waves-effect waves-light red white-text left">                       
                                 TOLAK
                                 <i class="material-icons white-text right">clear</i>
-                            </button>
-                        </form>                                                                                        
+                            </button>  
+                        </form>                                                              
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col s12 ">                            
-                        <form action="" class="right">
+                        <form action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
                             <input type="hidden" name="Id" value="{{ $peminjaman->IdPermohonan }}"/>
-                            <a class="btn waves-effect waves-light teal white-text left">
-                                UBAH                                
-                            </a>&nbsp;
-                            <button class="btn waves-effect waves-light teal white-text disabled">
-                                SIMPAN                                    
+                            <button class="btn waves-effect waves-light teal white-text left">
+                                BATAL                                
                             </button>
                         </form> 
                     </div>
                 </div>
+                @endif
 
             </div>         
         </li>

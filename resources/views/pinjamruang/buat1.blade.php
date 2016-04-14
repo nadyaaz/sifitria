@@ -40,7 +40,7 @@
 			Isi Waktu Peminjaman : <br>
 		</div><br>	
 		<div class="col s1">
-			<input type="number" min="00" max="23" step="1" value="07" class="validate">:
+			<input type="number" min="00" max="23" step="1" value="07" class="validate">
 		</div>
 		<div class="col s1">
 			<input type="number" min="00" max="23" step="30" value="00" class="validate">
@@ -49,7 +49,7 @@
 			 <h6 style="text-align: center">s.d.</h6>
 		</div>
 		<div class="col s1">
-			<input type="number" min="00" max="30" step="1" value="07" class="validate">:
+			<input type="number" min="00" max="30" step="1" value="07" class="validate">
 		</div>
 		<div class="col s1">
 			<input type="number" min="00" max="30" step="30" value="00" class="validate">

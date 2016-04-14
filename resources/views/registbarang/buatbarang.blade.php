@@ -44,6 +44,7 @@
 							<option value="Kategori A">Kategori A</option>
 							<option value="Kategori B">Kategori B</option>
 							<option value="Kategori C">Kategori C</option>
+							<option value="Lainnya">Lainnya</option>
 						</select>			
 			    	</div>
 
@@ -83,14 +84,12 @@
 
 		<div class="row">
 			<div class="col s4 offset-s4 valign-wrapper">
-				<div class="valign">	
-					<form action="{{ url('registrasibarang/barang/buat') }}" method="POST">	
-						{!! csrf_field() !!}					
-						<button class="btn waves-light waves-effect teal">
-							BUAT SEMUA BARANG
-							<i class="material-icons right">send</i>
-						</button>&nbsp;&nbsp;				
-					</form>				
+				<div class="valign">			
+					{!! csrf_field() !!}									
+					<button class="btn waves-light waves-effect teal">
+						BUAT SEMUA BARANG
+						<i class="material-icons right">send</i>
+					</button>&nbsp;&nbsp;									
 				</div>
 			</div>
 			<div class="col s4">				

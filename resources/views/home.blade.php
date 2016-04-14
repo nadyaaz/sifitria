@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col s3">
             <a href="{{ url('pinjamruang') }}">
-                <div class="card-panel white center">
+                <div class="card-panel white center hoverable">
                     <i class="medium material-icons teal-text">home</i><br>
                     <h6 class="center-align">Peminjaman Ruangan</h6>
                 </div>                    
@@ -19,7 +19,7 @@
         </div>
         <div class="col s3">
             <a href="{{ url('registrasibarang') }}">                    
-                <div class="card-panel white center">
+                <div class="card-panel white center hoverable">
                     <i class="medium material-icons teal-text">view_stream</i><br>
                     <h6 class="center-align">Registrasi Barang</h6>
                 </div>
@@ -27,7 +27,7 @@
         </div>
         <div class="col s3">
             <a href="">                    
-                <div class="card-panel white center">
+                <div class="card-panel white center hoverable">
                     <i class="medium material-icons teal-text">shopping_cart</i><br>
                     <h6 class="center-align">Pengadaan Barang</h6>
                 </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="col s3">
             <a href="">                    
-                <div class="card-panel white center">
+                <div class="card-panel white center hoverable">
                     <i class="medium material-icons teal-text">build</i><br>
                     <h6 class="center-align">Maintenance Barang</h6>
                 </div>

@@ -32,27 +32,37 @@
             <ul class="collapsible" data-collapsible="accordion">
                 @foreach ($data['allruangan'] as $ruangan)
                                 
-                @if ( ($ruangan->Gedung == 'A' && $i == 1) || ($ruangan->Gedung == 'B' && $i == 2) )                
+                @if ( ($ruangan->Gedung == 'G' && $i == 1) || ($ruangan->Gedung == 'M' && $i == 2) )                
                 <li>
                     <div class="collapsible-header active">                        
                         <div class="col s2"> {{ $ruangan->IdRuangan }} </div>
                         <div class="col s2"> {{ $ruangan->Gedung }} </div>
                         <div class="col s2"> {{ $ruangan-> NomorRuangan }} </div>
-                        <div class="col s2"> {{ $ruangan-> KapasitasRuangan }} </div>                    
+                        <div class="col s2"> {{ $ruangan-> NomorRuangan }} </div>                    
                     </div>
 
                     <div class="collapsible-body">
                         <div class = "row">
                             <div class="col s6">
-                                @foreach($data['alljadwal'] as $jadwal)
+                                <b>Gedung</b><br>
+                                {{ $ruangan->Gedung }}
+                            </div>
 
-                                @if($ruangan->IdRuangan == $jadwal->IdRuangan)
-                                    Jadwal :<br>
-                                    {{ $jadwal->WaktuMulai }} -
-                                    {{ $jadwal->WaktuSelesai}} </br>
-                                @endif
+                            <div class="col s6">
+                                <b>Nomor Ruangan</b><br>
+                                {{ $ruangan-> NomorRuangan }}
+                            </div>
+                        </div> 
 
-                                @endforeach
+                        <div class = "row">
+                            <div class="col s6">
+                                <b>Jenis Ruangan</b><br>
+                                {{ $ruangan-> JenisRuangan }}
+                            </div>
+
+                            <div class="col s6">
+                                <b>Kapasitas Ruangan</b><br>
+                                {{ $ruangan-> KapasitasRuangan.' orang' }}
                             </div>
                         </div> 
                     </div>                 

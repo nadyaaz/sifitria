@@ -1,5 +1,43 @@
 $(document).ready(
 	function() { 	
+		$.ajaxSetup({
+			headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+		});
+
+		$('#getjson').click(function(){
+			var name = 'jundi';
+			var major = 'IS';
+
+			$.ajax({
+				url: 'json/get',
+				data: { name: name, major: major},
+				success: function(result) {
+					$obj = $.parseJSON(result);
+					$('.json-data').html(result);
+				}
+			});
+		});
+
+		$('#jadwaljson').click(function(){
+				var jenisRuangan = $('input[type="radio"][name="jenisRuangan"]:checked').val();
+				var tanggal = $('.datepicker').val();
+				var waktumulai = $('#waktuMulai').val();
+				var waktuselesai = $('#waktuSelesai').val();
+				var data = { jenisRuangan: jenisRuangan, tanggal:tanggal, waktuMulai: waktuMulai, waktuSelesai: waktuSelesai};
+				alert(jenisRuangan);
+			$.ajax({
+				url: 'ruangan',
+				type: 'POST',	    					    					
+				data: data,
+				processData: false,
+				success: function(result){
+					alert(result);
+				},
+				error: function(xhr, status, error){
+					alert(status+' '+error);
+				}
+			});	
+		});
 
 	 	var formNumber = 1;
 	  	
@@ -16,7 +54,8 @@ $(document).ready(
 	 	// initialize material select
 	 	$('select').material_select();
 
-	 	$('#add-new-form').click(function() {
+	 	// append new form in barang
+	 	$('#add-new-form').click(function() {	 		
 			// clone the main form
 			var newForm = cloneSource.clone(true);
 
@@ -73,6 +112,17 @@ $(document).ready(
 			// append modified newForm
 			appendTarget.append(newForm);			
 	 	});
+
+		// enabled ruang kelas selection
+		$('input[name="jenisruang"]').change(function(){						
+			$value = $(this).val();			
+
+			if ($value == 'kelas') {
+				$('#ruangkelas-select').show();
+			} else {
+				$('#ruangkelas-select').hide();
+			}
+		});
 	}
 );
 

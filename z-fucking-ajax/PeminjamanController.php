@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Permohonan;
-use App\Catatan;
 use DB;
+use App\Permohonan;
+use App\Ruangan;
+use App\Jadwal;
+use Input;
 
 class PeminjamanController extends MasterController
 {
     public function dashboard()
-    {
-		// get permohonan peminjaman ruangan data
+    {    	
         $peminjaman = Permohonan::getPeminjaman();
 
-		// render peminjaman ruangan dashboard
     	return $this->render('pinjamruang.dashboard',
     		[
     			'title' => 'Dashboard Peminjaman Ruangan',
@@ -25,63 +25,40 @@ class PeminjamanController extends MasterController
     	);	
     }
 
-    public function getCreatePeminjaman()
-    {
-        return $this->render('pinjamruang.buat1',
-            [
-                'title' => 'Buat Permohonan Peminjaman Ruangan',
-            ]
-        );
-    }
-
     public function removePeminjaman(Request $request)
     {
     	// get session peminjaman yang mau dibatalkan
         $input = $request->all();
-        $hash = $input['Id'];
+        $inputs = $input['Id'];
 
     	// ganti status peminjaman pada database
-        Permohonan::deletePermohonan($hash);
+        DB::update(
+        	DB::raw(
+        		"UPDATE PERMOHONAN 
+        		SET deleted = 1 
+        		WHERE IdPermohonan = $inputs"
+        	)
+        );
     	
-		// redirect back to peminjaman dashboard
         return back();
     }
 
-    public function setuju(Request $request)
-    {       
-        // get session peminjaman yang mau dibatalkan
-        $input = $request->all();
-
-        // get all data
-        $id = $input['Id'];
-        $catatan = $input['catatan_txtarea'];
-        $user_id = $input['UserId'];
-        $persetujuan = $input['persetujuan'];
-
-        // incrementing Id
-        $tahap_catatan = Catatan::getIncrementedTahapCatatan();
-
-        // insert new record to database
-        Catatan::createCatatan($id, $tahap_catatan, $catatan, $user_id);
-
-        // update record's status
-        Permohonan::updateStatus($id, $persetujuan);
-        
-        return back();
+    public function getPeminjamanRuangan()
+    {
+        return $this->render('pinjamruang.buat_peminjaman_ruangan',
+            [
+                'title' => '',
+            ]
+        );
     }
 
-    ///////////////////////////////////
-
-    public function getBuat()
+    public function buatPeminjamanRuanganPost(Request $request)
     {
-        return $this->render('buat_peminjaman_ruangan',[
-            'title' => 'Buat',
-        ]); 
-    }
+               
 
-    public function getRuanganAvailable(Request $request)
-    {
         if($request->ajax()) {
+            $input = $request->all();
+
             
             $jenisRuangan = $request->input('jenisRuangan');
             $tanggal = $request->input('tanggal');
@@ -94,12 +71,12 @@ class PeminjamanController extends MasterController
             $waktuSelesainya = strtotime("$tanggal.$waktuSelesai");
             $timestampWaktuSelesai = date(' Y\-m\-d  H:i:s', $waktuSelesainya);
 
-            // $ruanganAvailable = DB::select(
-            //     DB::raw( "SELECT * 
-            //                                  FROM Ruangan a, Jadwal b 
-            //                                  WHERE a.JenisRuangan='$jenisRuangan' AND a.IdRuangan=b.IdRuangan                                         "
-            //                                  )
-            //                                 );
+            $ruanganAvailable = DB::select(
+                DB::raw( "SELECT * 
+                                             FROM Ruangan a, Jadwal b 
+                                             WHERE a.JenisRuangan='$jenisRuangan' AND a.IdRuangan=b.IdRuangan                                         "
+                                             )
+                                            );
 
             // foreach($ruanganAvailable['waktuMulai'] as $waktu ) {
             // //     foreach($allRuanganAvailable['waktuSelesai'] as $waktu2) {
@@ -120,13 +97,12 @@ class PeminjamanController extends MasterController
             // }
 
             // return json_encode($ruangantersedia);
-            return json_encode($jenisRuangan);
-
         }
 
        
 
-        
+        return json_encode($jenisRuangan);
+
 
 
         // $allRuanganAvailable = DB::select( "SELECT * 
@@ -160,5 +136,53 @@ class PeminjamanController extends MasterController
         //     ]
         //     );
            
+            
     }
+
+    public function getFormDetailPeminjamanRuangan()
+    {
+        return $this->render('pinjamruang.buat_peminjaman_ruangan_2',
+            [
+                'title' => '',
+                'allRuanganAvailable' => $allRuanganAvailable,
+            ]
+        );
+    }
+
+      public function buatPeminjamanRuangan2Post(Request $request)
+    {
+
+        $input = $request->all();
+
+
+        $subjek = $input['subjek'];
+        $keperluan = $input['keperluan'];
+        $catatan = $input['catatan'];
+
+       //  Permohonan::createPermohonan($subjek,$ruangan,$jadwal);
+       //  Jadwal::createJadwal($keperluan);
+       //  Catatan::createCatatan($catatan);
+
+    DB::insert(
+        DB::raw( "INSERT INTO barang (WaktuPermohonan, SubjekPermohonan, IdPemohon, IdRuangan, IdJadwal, TahapPermohonan, StatusPermohonan) VALUES (','$subjek', '$', '$', '$','0', '0')"
+            )
+        ); 
+
+
+
+       //  $data = [ 'name' => $subjek, 'email' => $keperluan, 'gender' => $catatan ];
+
+       // return View::make('buat_peminjaman_ruangan');
+
+
+        return back();
+    }
+
+
+
 }
+
+
+
+
+

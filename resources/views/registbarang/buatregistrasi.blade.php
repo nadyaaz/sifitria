@@ -1,183 +1,110 @@
 @extends('sidebar')
 
-
-@section('modul')
-    Registrasi Barang
-@stop
-
-@section('title')
-    Dashboard Registrasi Barnang
-@stop
-
-
-@section('tableTitle')
-    List Permohonan Registrasi Barang
-@stop
-
-@section('sidebar1')
-   Dashboard
-@stop
-
-@section('sidebar2')
-   Buat Permohonan Registrasi Barang
-@stop
-
-@section('sidebar1_active')
-    active
-@stop
-
-@section('thead1')
-	Id Permohonan
-@stop
-
-@section('thead2')
-	Subjek
-@stop
-
-@section('thead3')
-	Waktu Permohonan	
-@stop
-
-@section('thead4')
-	Status
-@stop
-
-@section('thead5')
-	<p></p>
-@stop
+@section('sidebar_buatregis', 'active')
 
 @section('konten')
-            <div class="subsection">
-                <h6>@yield('tableTitle')</h6>
-                <div class="divider"></div>
-                    <div id="tableHead" class="row">
-                        <div class="col s2">@yield('thead1')</div>
-                        <div class="col s2">@yield('thead2')</div>
-                        <div class="col s2">@yield('thead3')</div>
-                        <div class="col s2">@yield('thead4')</div>
-                        <div class="col s2">@yield('thead5')</div>
-                    </div>
+<div class="subsection">
+    <h5>Buat Permohonan Registrasi Barang</h5>
+    <div class="divider"></div><br>
 
-                    <ul class="collapsible" data-collapsible="accordion">
-                        @foreach($data['daftarregis'] as $barang)
-                        
-                        <li>
-                            <div class="collapsible-header">
-                          
-                                <div id="tableRow" class="row">
+    <div class="row">
+        <div class="col s6">
+            <b>Subjek</b><br>
+            <input  placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate">
+        </div><br>
 
-                                    <div class="col s2">{{ $barang->IdPermohonan}}</div>
-                                    <div class="col s2">{{ $barang->SubjekPermohonan}}</div>
-                                    <div class="col s2">{{ $barang->created_at }}</div>
-                              			
-                                    <div class="col s2">
-                                    	@if($barang->TahapPermohonan == 1)
-                                    		@if($barang->StatusPermohonan == 0 )
-                                    			{{'Ditinjau ke Lapangan'}}
-                                    		@elseif($barang->StatusPermohonan == 1 )
-                                    			{{'Ditolak pada proses verifikasi'}}
-                                    		@elseif($barang->StatusPermohonan == 2 )
-                                				{{'Sudah diverifikasi'}}
-                                			@endif
-                                		@else
-                                			@if($barang->StatusPermohonan == 1 )
-                                    			{{'Ditolak'}}
-                                    		@elseif($barang->StatusPermohonan == 2 )
-                                    			{{'Diterima'}}
-                                			@endif
-                                		@endif
+        <div class="col s12">
+            <b>Catatan Pemohon</b> <br>
+            <textarea class="materialize-textarea" length="240"></textarea>
+        </div>
+    </div><br>      
+    
+    <div class="barang-multiform">
+        <div class="barang-form1">
+            <hr><br><br>
 
-                                    </div>
-                                     @if($barang->TahapPermohonan == 1 && $barang->StatusPermohonan == 0 )
-                                    <div class="col s1">
-                                    	<a href=""  class="tooltipped white-text waves-effect waves-light btn-flat" data-position="bottom" data-delay="10" data-tooltip="Edit Permohonan" >
-                                    		<i id="edit-button"class="tiny material-icons">edit</i>
-                                    		<p>
-                                    		</p>
-                                    	</a>
-   
-                                    	
-                                    </div>
-                                    
-                                    <form action="{{ url('registbarang/batal') }}" method="POST">
-	                                    <div class="col s1">
-	                                    	{!! csrf_field() !!}
-	                                    	<input type="hidden" name="Id" value="{{ $barang->IdPermohonan }}"/>
-	                                    	<button id="cancel-button" class="tooltipped white-text waves-effect waves-light btn-flat" data-position="bottom" data-delay="10" data-tooltip="Batalkan Permohonan" >
-	                                    		<i id="edit-button" class="tiny material-icons">cancel</i>
-	                                    	</button>
+            <div class="row">
+                <div class="col s6">
+                    <b>Nama Barang</b><br>
+                    <input placeholder="contoh: Laptop Asus 23"  id="subject" type="text" class="validate">
+                </div>
+                <div class="col s6">
+                    <b>Spesifikasi</b><br>
+                    <input placeholder="contoh : RAM 4GB, 11 inch" id="spesifikasi" type="text" class="validate">           
+                </div>
+            </div>
 
-	                                    </div>
-                                    </form>
-                                     @endif
-                                </div>
-                    
-                            </div>
-                            <div class="collapsible-body">
-                                <div class = "row">
-                                    <div class="col s6">
-                                        Nomor Surat :<br>
-                                        {{ $barang->NomorSurat }}
-                                    </div>
-                                    <div class="col s6">
-                                        Tanggal Beli :<br>
-                                        {{ $barang->TanggalBeli }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col s6">
-                                       	Nama Barang :<br>
-                                       	{{ $barang->NamaBarang}}
-                                    </div>
-                                    <div class="col s6">
-                                    	Penanggung Jawab :<br>
-                                    	{{ $barang->Penanggungjawab}}
-                                    </div>
-                               </div>
-                               <div class="row">
-                               		<div class="col s6">
-                               			Kategori : <br>
-                               			{{ $barang->KategoriBarang}}
-                               		</div>
-                               		<div class="col s6">
-                               			Kondisi : <br>
-                               			{{ $barang->KondisiBarang}}
-                               		</div>
-                               </div>
-                               <div class="row">
-                               		<div class="col s6">
-                               			Jenis :<br>
-                               			{{ $barang->JenisBarang }}
-                               		</div>
-                               </div>
-                               <div class="row">
-                              		<div class="col s12">
-                              			Keterangan :<br>
-                              			{{ $barang->KeteranganBarang }}
-                              		</div>
-                               </div>
-                               <div class="row">
-                              		<div class="col s12">
-                              			Spesifikasi :<br>
-                              			{{ $barang->SpesifikasiBarang }}
-                              		</div>
-                               </div>
-                               @foreach($data['regiscatatan'] as $catatan)
-                                @if($catatan->IdPermohonan == $barang->IdPermohonan)
-                                    <div class="row">
-                                        <div class="col s12">
-                                            Catatan {{ $catatan->Role }}:<br>
-                                            {{ $catatan->DeskripsiCatatan }}
-                                        </div>
-                                    </div>     
-                                @endif
-                            @endforeach
+            <div class="row">
+                <div class="input-field col s6" style="margin-top: 0px;">
+                    <b>Kategori</b><br>
+                    <select>
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Furnitur">Furnitur</option>
+                        <option value="Kategori A">Kategori A</option>
+                        <option value="Kategori B">Kategori B</option>
+                        <option value="Kategori C">Kategori C</option>
+                        <option value="Kategori C">Lainnya</option>
+                    </select>
+                </div>
 
-                            </div>
-                         
-                        </li>      
-                    	@endforeach
-                    </ul>
-             </div>
+                <div class="col s6">
+                    <b>Tanggal Beli</b><br>
+                    <input type="date" id="tanggalbeli"class="datepicker">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s6" style="margin-top: 0px;">
+                    <b>Kondisi</b><br>
+                    <select>
+                        <option value="" disabled selected>Pilih Kondisi</option>
+                        <option value="Baru">Baru</option>
+                        <option value="Bekas">Bekas</option>
+                        <option value="Bekas">Rusak</option>
+                    </select>
+                </div>
+
+                <div class="col s6">
+                    <b>Jenis</b><br>
+                    <input placeholder="contoh : Laptop" id="jenis" type="text" class="validate">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <b>Keperluan</b><br>
+                    <input placeholder="contoh: untuk inventaris BEM" id="jenis" type="text" class="validate">
+                </div>
+            </div>
+
+            <div class="col s12">
+                <b>Kerusakan Barang</b><br>
+                <input placeholder="contoh: lecet sedikit, namun masih berfungsi dengan baik" id="jenis" type="text" class="validate">
+            </div><hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s4 offset-s4 valign-wrapper">
+            <div class="valign">    
+                <form action="{{ url('registrasibarang/buat') }}" method="POST"> 
+                    {!! csrf_field() !!}                    
+                    <button class="btn waves-light waves-effect teal">
+                        BUAT SEMUA BARANG
+                        <i class="material-icons right">send</i>
+                    </button>&nbsp;&nbsp;               
+                </form>             
+            </div>
+        </div>
+        <div class="col s4">                
+            <a id="add-new-form" class="btn-floating tooltipped waves-effect waves-light right red" 
+                data-position="left" 
+                data-delay="10" 
+                data-tooltip="TAMBAH BARANG">
+                <i class="material-icons">add</i>
+            </a>
+        </div>
+    </div>
+</div>
 @stop
-

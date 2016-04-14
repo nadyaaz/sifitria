@@ -6,9 +6,14 @@
 
 		<title>SIFITRIA - {{ $data['title'] }}</title>
 		<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-          <!--Import materialize.css-->
-	    <link rel="stylesheet" href="{{ url('css/materialize.min.css') }}"  media="screen,projection"/>
+         <!--Import materialize.css-->
+	    <link rel="stylesheet" href="{{ url('css/fullcalendar.min.css') }}" media="screen,projection"/>	    
+	    <link rel="stylesheet" href="{{ url('css/materialize.min.css') }}" />
 	    <link rel="stylesheet" href="{{ url('css/master-css.css') }}" media="screen,projection"/>	    
+	    <link rel="stylesheet" href="{{ url('css/materialdesign-fc.css') }}" media="screen,projection"/>	    
+	
+		<!-- implement csrf token for AJAX calling -->		
+		<meta name="_token" content="{!! csrf_token() !!}"/>
 
 	    <!--Let browser know website is optimized for mobile-->
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>	    
@@ -16,6 +21,8 @@
 	    <script type="text/javascript" src="{{ url('js/materialize.min.js') }}"></script>
 	    <script type="text/javascript" src="{{ url('js/javascript.js') }}"></script>
 	    <script type="text/javascript" src="{{ url('js/id.js') }}"></script>
+		
+		@yield('fullcalendar')		   
 	</head>
 
 	<body>		
@@ -23,26 +30,32 @@
 		<div id="header" class = 'collapsible-header'>
 	  		<nav>	  			
 	    		<div class="nav-wrapper">
-	     			<img class="brand-logo" src="{{ url('images/logo FIA.png') }}" alt="logo FIA"/>	   
-	     	
-	     			<a id="title" class="brand-logo" href="{{ url('/') }}">
-	     				<h5 class="center-align">
-	     					Portal Aplikasi Internal - Sistem Informasi Fasilitas & Infrastruktur FIA
-	     				</h5>
-	     			</a>
+	    			<div class="row form-row">
+			     		<a href="{{ url('/') }}">
+			    			<div class="col s12 valign-wrapper">	    				
+			     				<img class="left-align" width="241" height="96" src="{{ url('images/logo FIA.png') }}" alt="logo FIA"/>
+			     				<span class="title valign">
+			     					Portal Aplikasi Internal - Sistem Informasi Fasilitas & Infrastruktur FIA
+			     				</span>
+			    			</div>			    			
+			     		</a>
+	    			</div>
 
-	     			@if ($data['isLoggedIn'])	
+	    			<div class="row form-row">
+	    				<div class="col s4 offset-s8 right-align">
+	    					@if ($data['isLoggedIn'])	
 
-	     			<div class="right">
-						<form action="{{ url('logout') }}" method="POST">
-       			 			{!! csrf_field() !!}
+		     				<span class="black-text">{{ $data['user_sess']->name.' ('.$data['user_sess']->role.')' }}</span>&nbsp;&nbsp;&nbsp;
+			     			<form class="btn-out right" action="{{ url('logout') }}" method="POST">
+	       			 			{!! csrf_field() !!}
+	       			 			<button class="btn-out waves-effect waves-light btn red tooltipped" data-position="top" data-delay="10" data-tooltip="LOGOUT">
+	       			 				<i class="tiny material-icons white-text right">cancel</i>
+	       			 			</button>
+	       			 		</form>	
 
-       			 			<button class="btn btn-primary btn-small">LOGOUT</button>
-       			 		</form>
-					</div>
-
-	     			@endif
-
+		     				@endif	     				
+	    				</div>
+	    			</div>
 	    		</div>
 	  		</nav>
 		</div>
@@ -68,20 +81,13 @@
 		    </div>
 
 	      	<div id="content" class="col s9"> 	
-		      	<div class="row">
-			   		@if ($data['isLoggedIn'])	
-
-			      	<!-- <div id="loginas" class="col s6 offset-s6">	      		
-			      		<h6 class="right-align">Login sebagai {{ $data['user_sess']->name }}</h6>	      		
-			      	</div> -->
-
-			      	@endif	      		
-
+		      	<div class="row">			   		      	
 		          	<div class="section">		    					    				    		
 		    			@yield('konten')
 		  	   		</div>	        	      		
 		      	</div>
 	    	</div>		    
-	    </div>	   	
+	    </div>
+	    @yield('ajax_calling')
 	</body>
 </html>

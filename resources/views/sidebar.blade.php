@@ -25,11 +25,11 @@
 @endsection
 
 @section('pinjamruang/jadwal')
-	<a href="{{ url('/pinjamruang/jadwal') }}" class="collection-item @yield('sidebar_jadwal')">Jadwal</a>
+	<a href="{{ url('pinjamruang/jadwal') }}" class="collection-item @yield('sidebar_jadwal')">Jadwal</a>
 @endsection
 
 @section('pinjamruang/jadwal/buat')
-	<a href="{{ url('/') }}" class="collection-item @yield('sidebar_buatjadwal')">Buat Jadwal</a>
+	<a href="{{ url('pinjamruang/jadwal/buat') }}" class="collection-item @yield('sidebar_buatjadwal')">Buat Jadwal</a>
 @endsection
 
 @section('registrasibarang')
@@ -52,53 +52,56 @@
 	@if ($data['isLoggedIn'])
 	
 	@if ($data['title'] == 'Beranda')
-	<h5 align="center">Logged In</h5>	
+		<h5 align="center">Logged In</h5>	
 
 	@elseif ($data['user_sess']->username == 'jundi.ahmad')
-	@yield('pinjamruang_header')
-	@yield('pinjamruang')
-	@yield('pinjamruang/buat')
-	@yield('pinjamruang/ruangan')
-	@yield('pinjamruang/ruangan/buat')
-	@yield('pinjamruang/jadwal')
-	@yield('pinjamruang/jadwal/buat')
-	<br>
-	@yield('registrasibarang_header')
-	@yield('registrasibarang')
-	@yield('registrasibarang/buat')
-	@yield('registrasibarang/barang')
-	@yield('registrasibarang/barang/buat')
+		@yield('pinjamruang_header')
+		@yield('pinjamruang')
+		@yield('pinjamruang/buat')
+		@yield('pinjamruang/ruangan')
+		@yield('pinjamruang/ruangan/buat')
+		@yield('pinjamruang/jadwal')
+		@yield('pinjamruang/jadwal/buat')
+		<br>
+		@yield('registrasibarang_header')
+		@yield('registrasibarang')
+		@yield('registrasibarang/buat')
+		@yield('registrasibarang/barang')
+		@yield('registrasibarang/barang/buat')
 
-	@elseif ($data['user_sess']->role == 'managerpinjamsekre' || $data['user_sess']->role == 'managerpinjamppaa')	
-	<!-- Sidebar Peminjaman Ruangan, Manager Peminjaman -->
-	@yield('pinjamruang_header')
-	@yield('pinjamruang')
-	@yield('pinjamruang/buat')
-	@yield('pinjamruang/ruangan')
-	@yield('pinjamruang/ruangan/buat')
-	@yield('pinjamruang/ruangan/jadwal')
-	@yield('pinjamruang/ruangan/buatjadwal')
+	@elseif ($data['user_sess']->role == 'sekre' || $data['user_sess']->role == 'ppaa')	
+		<!-- Sidebar Peminjaman Ruangan, Manager Peminjaman -->
+		@yield('pinjamruang_header')
+		@yield('pinjamruang')
+		@yield('pinjamruang/buat')
+		@yield('pinjamruang/ruangan')
+		@yield('pinjamruang/ruangan/buat')
+		@yield('pinjamruang/jadwal')
+		@yield('pinjamruang/jadwal/buat')
 	
-	@elseif ($data['user_sess']->role = 'mahasiswa')
-	<!-- Sidebar Registrasi Barang -->
-	@yield('registrasibarang_header')
-	@yield('registrasibarang')
-	@yield('registrasibarang/buat')
+	@elseif (in_array($data['user_sess'], ['dosen', 'kadept', 'kaprog', 'staff', 'hm'], true))
+		<!-- Sidebar Peminjaman Ruangan-->
+		@yield('pinjamruang_header')
+		@yield('pinjamruang')
+		@yield('pinjamruang/buat')
+		<br>
+		<!-- Sidebar Registrasi Barang -->
+		@yield('registrasibarang_header')
+		@yield('registrasibarang')
+		@yield('registrasibarang/buat')
 	
-	@elseif ($data['user_sess']->role == 'managerfasilitas' || true)
-	<!-- Sidebar Registrasi Barang, Pihak Fasilitas dan Infrastruktur -->
-	@yield('registrasibarang_header')
-	@yield('registrasibarang')
-	@yield('registrasibarang/barang')
-	@yield('registrasibarang/barang/buat')
+	@elseif ($data['user_sess']->role == 'mfas' || $data['user_sess']->role == 'sfas')
+		<!-- Sidebar Registrasi Barang, Pihak Fasilitas dan Infrastruktur -->
+		@yield('registrasibarang_header')
+		@yield('registrasibarang')
+		@yield('registrasibarang/barang')
+		@yield('registrasibarang/barang/buat')
 	
-	@elseif ($data['user_sess']->role == 'mahasiswa')
-	<!-- Sidebar Peminjaman Ruangan, Peminjam -->	          		
-	@yield('registrasibarang_header')
-	@yield('registrasibarang')
-	@yield('registrasibarang/buat')
-
 	@else
+		<!-- Sidebar Peminjaman Ruangan, Peminjam -->	          		
+		@yield('registrasibarang_header')
+		@yield('registrasibarang')
+		@yield('registrasibarang/buat')	
 
 
 	@endif

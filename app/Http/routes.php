@@ -13,6 +13,13 @@
 
 Route::group(['middleware' => 'web'], function() {
 
+	Route::get('/json', function() {
+		return view('json');
+	});
+
+	Route::get('json/ruangan', 'PeminjamanController@getBuat');
+	Route::post('json/ruangan', 'PeminjamanController@getRuanganAvailable');
+	Route::get('/json/get', 'JadwalController@getJadwalAJAX');
 	Route::get('/', 'HomeController@index');
 	Route::get('SSO', 'SSOController@index');
 	Route::post('logout', 'SSOController@out');
@@ -34,6 +41,9 @@ Route::group(['middleware' => 'web'], function() {
 	Route::post('pinjamruang/ruangan/buat', 'RuanganController@createRuangan');
 
 	Route::get('pinjamruang/jadwal/buat', 'JadwalController@getCreateJadwal');
+	// ajax request
+	Route::get('pinjamruang/jadwal/get', 'JadwalController@getJadwalAJAX');
+
 	Route::post('pinjamruang/jadwal/buat', 'JadwalController@createJadwal');
 	
 	Route::get('registrasibarang/barang/buat', 'BarangController@getCreateBarang');

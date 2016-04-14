@@ -117,7 +117,7 @@
                             {!! csrf_field() !!}
                             <input type="hidden" name="Id" value="{{ $barang->IdPermohonan }}"/>
                             Catatan: <br>
-                            <textarea name="catatan_txtarea" cols="30" rows="30"></textarea>
+                            <textarea class="materialize-textarea" name="catatan_txtarea" cols="30" rows="30"></textarea>
                             <button class="btn waves-effect waves-light teal white-text right">
                                 SETUJU
                                 <i class="material-icons white-text right">done</i>

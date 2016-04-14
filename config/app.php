@@ -156,14 +156,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * Subfission service Provider
-         */
-
-        // Subfission\Cas\CasServiceProvider::class,
-        // Xavrsl\Cas\CasServiceProvider::class,
-        // SSO\SSO::class,
-
     ],
 
     /*
@@ -208,7 +200,8 @@ return [
         'Storage' => Illuminate\Support\Facades\Storage::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View' => Illuminate\Support\Facades\View::class,
+        'View' => Illuminate\Support\Facades\View::class,        
+
         // 'SSO' => SSO\SSO::class,
 
         // 'Cas' => subfission\Cas\Facades\Cas::class,

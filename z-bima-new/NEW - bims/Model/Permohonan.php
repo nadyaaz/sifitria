@@ -11,16 +11,18 @@ class Permohonan extends Model
 
     public static function getPeminjaman()
     {
-    	$allpermohonan = DB::select(
-    		DB::raw(
+    	$allpermohonan = \DB::select(
+    		\DB::raw(
     			"SELECT * 
     			FROM permohonan p, jadwal j, ruangan r, users u
     			WHERE  
-    				p.JenisPermohonan = 0 AND 
+    				p.JenisPermohonan = 1 AND 
+                    p.IdGedung = j.IdGedung AND
     				p.IdRuangan = j.IdRuangan AND 
     				p.IdJadwal = j.IdJadwal AND 
     				p.deleted = 0 AND 
     				j.IdRuangan = r.IdRuangan AND
+                    j.IdGedung = r.IdGedung AND
     				p.IdPemohon = u.NomorInduk"
     		)
     	);
@@ -73,13 +75,14 @@ class Permohonan extends Model
 		);
     }
 
-    public static function updateStatus($id, $persetujuan) {
- 
-        if($persetujuan == 'setuju')
-            $persetujuan = 2;        
-        else
+    public static function updateStatus(String $id, String $persetujuan){
+
+        if($persetujuan == 'setuju'){
+            $persetujuan = 2;
+        }
+        else{
             $persetujuan = 1;
-        
+        }
 
         DB::update(
             DB::raw(
@@ -88,16 +91,16 @@ class Permohonan extends Model
                 WHERE IdPermohonan = $id"
             )
         );
+
     }
 
-	public static function deletePermohonan($hash) {
-		// ganti status peminjaman pada database
+    public static function deletePermohonan ($id){
         DB::update(
-        	DB::raw(
-        		"UPDATE PERMOHONAN
-        		SET deleted = 1
-        		WHERE IdPermohonan = $hash"
-        	)
+            DB::raw(
+                "UPDATE PERMOHONAN 
+                SET deleted = 1 
+                WHERE IdPermohonan = $id"
+            )
         );
-	}
+    }
 }

@@ -9,20 +9,26 @@ class Catatan extends Model
 {
     protected $table = 'CATATAN';
 
-    public static function getCatatanTerakhir() {
+    public static function getCatatanTerakhir (){
+
     	return DB::table('catatan')	->where('IdPermohonan', 1)->orderBy('TahapCatatan', 'desc')->first();
     }
 
-    public static function getIncrementedTahapCatatan() {
+    public static function getIncrementedTahapCatatan () {
+
     	$catatan_terakhir = Catatan::getCatatanTerakhir();
         
-        if ($catatan_terakhir == null) 
-        	return 1;
-        else 
-        	return $catatan_terakhir->TahapCatatan + 1;        
+        if ($catatan_terakhir == null){
+            return 1;
+        }
+        else{
+            return $catatan_terakhir->TahapCatatan + 1;
+        }
+
     }
 
-    public static function createCatatan($id, $tahap_catatan, $catatan, $user_id) {
+    public static function createCatatan ($id, $tahap_catatan, $catatan, $user_id){
+
     	if($catatan != ''){
             DB::insert(
                 DB::raw(
@@ -32,4 +38,5 @@ class Catatan extends Model
             );
         }
     }
+
 }
