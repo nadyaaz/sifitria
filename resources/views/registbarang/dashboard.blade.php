@@ -53,7 +53,7 @@
                     </div>
                     <div class="col s4">
                         <b>Waktu Permohonan :</b><br>
-                        {{ $barang->WaktuPermohonan }}
+                        {{ $barang->created_at }}
                     </div>                        
                 </div>
                 <div class="row">

@@ -18,26 +18,26 @@ $(document).ready(
 			});
 		});
 
-		$('#jadwaljson').click(function(){
-				var jenisRuangan = $('input[type="radio"][name="jenisRuangan"]:checked').val();
-				var tanggal = $('.datepicker').val();
-				var waktumulai = $('#waktuMulai').val();
-				var waktuselesai = $('#waktuSelesai').val();
-				var data = { jenisRuangan: jenisRuangan, tanggal:tanggal, waktuMulai: waktuMulai, waktuSelesai: waktuSelesai};
-				alert(jenisRuangan);
-			$.ajax({
-				url: 'ruangan',
-				type: 'POST',	    					    					
-				data: data,
-				processData: false,
-				success: function(result){
-					alert(result);
-				},
-				error: function(xhr, status, error){
-					alert(status+' '+error);
-				}
-			});	
-		});
+		// $('#jadwaljson').click(function(){
+		// 		var jenisRuangan = $('input[type="radio"][name="jenisRuangan"]:checked').val();
+		// 		var tanggal = $('.datepicker').val();
+		// 		var waktumulai = $('#waktuMulai').val();
+		// 		var waktuselesai = $('#waktuSelesai').val();
+		// 		var data = { jenisRuangan: jenisRuangan, tanggal:tanggal, waktuMulai: waktuMulai, waktuSelesai: waktuSelesai};
+		// 		alert(jenisRuangan);
+		// 	$.ajax({
+		// 		url: 'ruangan',
+		// 		type: 'POST',	    					    					
+		// 		data: data,
+		// 		processData: false,
+		// 		success: function(result){
+		// 			alert(result);
+		// 		},
+		// 		error: function(xhr, status, error){
+		// 			alert(status+' '+error);
+		// 		}
+		// 	});	
+		// });
 
 	 	var formNumber = 1;
 	  	

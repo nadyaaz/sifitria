@@ -54,7 +54,7 @@
                     </div>
                     <div class="col s6">
                         <b>Waktu Permohonan:</b><br>
-                        {{ date('j F Y, H:i', strtotime($peminjaman->WaktuPermohonan)) }}
+                        {{ date('j F Y, H:i', strtotime($peminjaman->created_at)) }}
                     </div>                    
                 </div>
                 

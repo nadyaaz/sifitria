@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Ruangan;
-use App\Jadwal;
+use App\Gedung;
+use App\Master;
 use Validator;
 use DB;
 
@@ -14,8 +15,14 @@ class RuanganController extends MasterController
     public function getRuangan()
     {
         // get list ruangan dan jadwal pada database
-        $allgedung = DB::table('ruangan')->select('Gedung')->distinct()->get();
-    	$allruangan = Ruangan::all()->where('deleted',0);        
+        $allgedung = Gedung::all();
+    	$allruangan = DB::select(
+            DB::raw(
+                'SELECT *
+                FROM ruangan r, gedung g 
+                WHERE r.IdGed = g.IdGedung'
+            )
+        );        
 
 		// render ruangan view
     	return $this->render('pinjamruang.ruangan',
@@ -29,7 +36,10 @@ class RuanganController extends MasterController
 
     public function getCreateRuangan()
     {
-        $allgedung = DB::table('ruangan')->select('Gedung')->distinct()->get();
+        // get all gedung object
+        $allgedung = Gedung::getAll();
+
+        // render buat ruangan view
         return $this->render('pinjamruang.buatruangan',
             [
                 'title' => 'Buat Ruangan',
@@ -42,21 +52,27 @@ class RuanganController extends MasterController
     {
         $this->validate($request,
             [
-                'nomorruangan' => 'required|max:3',
-                'gedungruangan' => 'required|max:1',
+                'nomorruangan' => 'required|min:4|max:4',
+                'gedungruangan' => 'required',
                 'jenisruangan' => 'required',
                 'kapasitasruangan' => 'required|numeric'
             ]
         );
 
-        $input = $request->all();
+        $input = $request->all();        
+        $lastId = Master::getLast('ruangan', 'IdRuangan', ['IdGed' => $input['gedungruangan']])->IdRuangan;
+        $IdRuangan = $lastId + 1;
+        $NomorRuangan = $input['nomorruangan'];
+        $JenisRuangan = $input['jenisruangan'];
 
         DB::table('ruangan')->insert(
             [
-                'Gedung' => $input['gedungruangan'],
-                'NomorRuangan' => $input['nomorruangan'],
+                'IdGed' => $input['gedungruangan'],
+                'IdRuangan' => $IdRuangan,
+                'NomorRuangan' => $NomorRuangan,
                 'KapasitasRuangan' => $input['kapasitasruangan'],
-                'JenisRuangan' => $input['jenisruangan'],                
+                'JenisRuangan' => $JenisRuangan,
+                'hashRuang' => md5($IdRuangan.$NomorRuangan.$JenisRuangan),
             ]
         );
     }

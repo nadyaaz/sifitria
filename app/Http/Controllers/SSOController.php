@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use SSO\SSO;
-use Session;
 
 class SSOController extends Controller
 {
+    /**
+     * SSO Login
+     * @param  Request $request request parameter
+     * @return redirect('/')    redirect to home portal
+     */
     public function index(Request $request)
     {   
         // check if user is authenticated
@@ -24,10 +26,14 @@ class SSOController extends Controller
     	return redirect('/');
     }
 
+    /**
+     * Logout with SSO Logout method
+     * @param  Request $request request parameter
+     * @return void
+     */
     public function out(Request $request)    
-    {	
-        // SSO logout    	
-        // redirect to home portal
+    {	          	
+        // logout, then redirect to home portal
     	SSO::logout();    	    	
     }
 }

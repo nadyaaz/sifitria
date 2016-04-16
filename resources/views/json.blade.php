@@ -9,6 +9,12 @@
 	<body>
 		<button class="btn" id="getjson">GET JSON</button>
 		<div class="json-data"></div>
+
+		<select name="" id="">
+			<option value="1">A</option>
+			<option value="2">B</option>
+			<option value="3">C</option>
+		</select>
 	</body>
 </html>
 

@@ -5,15 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Jadwal;
+use App\Gedung;
 use DB;
-use FullCal;
+use Input;
 
 class JadwalController extends MasterController
 {       
     public function getJadwal()
     {
-    	$allgedung = DB::table('ruangan')->select('Gedung')->distinct()->get();
-    	$allruangan = DB::table('ruangan')->select('Gedung', 'NomorRuangan')->get();
+    	$allgedung = Gedung::all();
+    	$allruangan = DB::select(
+            DB::raw(
+                'SELECT *
+                FROM ruangan r, gedung g
+                WHERE r.IdGedung = g.IdGedung'
+            )
+        );
 
     	return $this->render('pinjamruang.jadwal',
     		[
@@ -37,32 +44,37 @@ class JadwalController extends MasterController
     {
     	// check if request is AJAX, if it's not ignore
     	if ($request->ajax()) {
-    		$queryrequest = $request->fullUrl();
+            $query = 
+                'SELECT * 
+                FROM jadwal j, ruangan r, gedung g 
+                WHERE 
+                    j.IdRuangan = r.IdRuangan AND
+                    j.IdGedung = r.IdGedung AND
+                    r.IdGedung = g.IdGedung';
+    		
+            $params;
+            $qstring = parse_str($_SERVER['QUERY_STRING'], $params);
 
-    		$jadwalarr = array();
+            $jadwalarr = array();
 
-    		// get jadwal data
-    		$alljadwal = DB::select(DB::raw(
-    			'SELECT *
-    			FROM jadwal j, ruangan r 
-    			WHERE
-    				j.IdRuangan = r.IdRuangan'
-    		));
+            if (isset($params['jenisruang'])) {
+                $query = $query.' AND r.JenisRuangan = "'.$params['jenisruang'].'"';
+            }
+        
+            // get jadwal data
+            $alljadwal = DB::select(DB::raw($query));
 
-    		foreach ($alljadwal as $jadwal) {
-    			$jsonarr = [
-    				'title' => $jadwal->KeperluanPeminjaman.' ('.$jadwal->Gedung.$jadwal->NomorRuangan.')',
-		            'start' => str_replace(' ', 'T', $jadwal->WaktuMulai),
-		            'end'	=> str_replace(' ', 'T', $jadwal->WaktuSelesai),
-		            'color'	=> '#673AB7',
-    			];
+            foreach ($alljadwal as $jadwal) {
+                $jsonarr = [
+                    'title' => $jadwal->KeperluanPeminjaman.' ('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')',
+                    'start' => str_replace(' ', 'T', $jadwal->WaktuMulai),
+                    'end'   => str_replace(' ', 'T', $jadwal->WaktuSelesai),
+                    'tooltip' => $jadwal->KeperluanPeminjaman.' ('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')'
+                ];
 
-    			array_push($jadwalarr, $jsonarr);
-    		}
-
-            array_push($jadwalarr, $request->input('name'));
-            array_push($jadwalarr, $request->input('major'));
-
+                array_push($jadwalarr, $jsonarr);                
+            }
+            
     		// return jadwal JSON object
     		return json_encode($jadwalarr);
     	}    	

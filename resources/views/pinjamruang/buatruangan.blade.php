@@ -12,7 +12,7 @@
 			<div class="input-field col s6">
 				<b>Nomor Ruangan </b><br>
 				<span class="error red-text">{{ $errors->first('nomorruangan') }}</span><br>
-				<input placeholder="3 karakter maksimal, contoh: 102" id="subject" name="nomorruangan" type="text" class="validate">
+				<input placeholder="Harus 4 karakter, contoh: 1102" length="4" id="subject" name="nomorruangan" type="text" class="validate">
 			</div>
 		</div>
 		<div class="row form-row">
@@ -22,7 +22,7 @@
 			    <select id="gedungruangan" name="gedungruangan">
 			    	<option disabled selected>Pilih Gedung Ruangan</option>
 					@foreach ($data['allgedung'] as $gedung)				   
-				   	<option value="{{ $gedung->Gedung}}">Gedung {{ $gedung->Gedung }}</option>   	
+				   	<option value="{{$gedung->hash}}">{{ $gedung->Nama }}</option>   	
 			    	@endforeach	
 			    </select>
 			</div>
@@ -32,9 +32,10 @@
 				<b>Jenis Ruangan</b><br>
 				<span class="error red-text">{{ $errors->first('jenisruangan') }}</span><br>
 				<select name="jenisruangan">
-					<option disabled>Pilih Jenis Ruangan</option>
-	                <option value="RuangKelas">Ruang Kelas</option>
-	                <option value="RuangRapat">Ruang Rapat</option>
+					<option disabled selected>Pilih Jenis Ruangan</option>
+	                <option value="Kelas">Ruang Kelas</option>
+	                <option value="RuangRapatBesar">Ruang Rapat Besar</option>
+	                <option value="RuangRapatKecil">Ruang Rapat Kecil</option>
 	                <option value="Auditorium">Auditorium</option>
 				</select>
 			</div>

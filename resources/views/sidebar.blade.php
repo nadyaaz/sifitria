@@ -32,6 +32,14 @@
 	<a href="{{ url('pinjamruang/jadwal/buat') }}" class="collection-item @yield('sidebar_buatjadwal')">Buat Jadwal</a>
 @endsection
 
+@section('pinjamruang/gedung')
+	<a href="{{ url('pinjamruang/gedung') }}" class="collection-item @yield('sidebar_gedung')">Gedung</a>
+@endsection
+
+@section('pinjamruang/gedung/buat')
+	<a href="{{ url('pinjamruang/gedung/buat') }}" class="collection-item @yield('sidebar_buatgedung')">Buat Gedung</a>
+@endsection
+
 @section('registrasibarang')
 	<a href="{{ url('registrasibarang') }}" class="collection-item @yield('sidebar_dashboard')">Dashboard</a>
 @endsection
@@ -62,6 +70,8 @@
 		@yield('pinjamruang/ruangan/buat')
 		@yield('pinjamruang/jadwal')
 		@yield('pinjamruang/jadwal/buat')
+		@yield('pinjamruang/gedung')
+		@yield('pinjamruang/gedung/buat')
 		<br>
 		@yield('registrasibarang_header')
 		@yield('registrasibarang')
@@ -78,6 +88,8 @@
 		@yield('pinjamruang/ruangan/buat')
 		@yield('pinjamruang/jadwal')
 		@yield('pinjamruang/jadwal/buat')
+		@yield('pinjamruang/gedung')
+		@yield('pinjamruang/gedung/buat')
 	
 	@elseif (in_array($data['user_sess'], ['dosen', 'kadept', 'kaprog', 'staff', 'hm'], true))
 		<!-- Sidebar Peminjaman Ruangan-->

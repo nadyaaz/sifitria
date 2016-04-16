@@ -16,11 +16,13 @@ class Permohonan extends Model
     			"SELECT * 
     			FROM permohonan p, jadwal j, ruangan r, users u
     			WHERE  
-    				p.JenisPermohonan = 0 AND 
+    				p.JenisPermohonan = 1 AND 
     				p.IdRuangan = j.IdRuangan AND 
-    				p.IdJadwal = j.IdJadwal AND 
-    				p.deleted = 0 AND 
     				j.IdRuangan = r.IdRuangan AND
+                    p.IdGedung = j.IdGedung AND
+                    j.IdGedung = r.IdGedung AND
+                    p.IdJadwal = j.IdJadwal AND 
+                    p.deleted = 0 AND 
     				p.IdPemohon = u.NomorInduk"
     		)
     	);
@@ -49,7 +51,7 @@ class Permohonan extends Model
 				"SELECT * 
 				from permohonan p, kandidat_barang kb, users u 
 				where 
-					p.JenisPermohonan = 1 AND 
+					p.JenisPermohonan = 2 AND 
 					p.IdPermohonan = kb.IdPermohonan AND 
 					p.IdPemohon = u.NomorInduk AND
 					p.deleted= 0 "
@@ -78,8 +80,7 @@ class Permohonan extends Model
         if($persetujuan == 'setuju')
             $persetujuan = 2;        
         else
-            $persetujuan = 1;
-        
+            $persetujuan = 1;        
 
         DB::update(
             DB::raw(

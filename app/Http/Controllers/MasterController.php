@@ -30,14 +30,12 @@ class MasterController extends Controller
 		// ambil input data dari controller yang memanggil method render
     	$data = $input_data;
 
-		// cek apakah view yang ingin di render adalah home 
-		// dan user belum terautentikasi
+		// cek apakah view yang ingin di render adalah home dan user belum terautentikasi
     	if ($view == 'home' && !(SSO::check())) {
 			// user belum terautentikasi, 			
     		$data['isLoggedIn'] = false;	// set passing data 'isLoggedIn' false			    		
     	} else {
-			// cek autentikasi user dengan SSO Check, 
-			// jika belum login, user akan dibawa ke page SSO login
+			// cek autentikasi user dengan SSO Check, 			
 	    	if (!SSO::check()) SSO::authenticate();
 	    	
 			// tambahkan passing data					

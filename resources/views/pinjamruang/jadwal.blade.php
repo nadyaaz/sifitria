@@ -15,23 +15,23 @@
 			</div><br>
 			<div class="col s12">		 					
 				<div class="col s3">
-					<input name="jenisruang" type="radio" id="rapatbesar" value="rapatbesar"/>
-				    <label for="rapatbesar">Ruang Rapat Besar</label>				    
+					<input name="jenisruang" type="radio" id="RuangRapatBesar" value="RuangRapatBesar"/>
+				    <label for="RuangRapatBesar">Ruang Rapat Besar</label>				    
 				</div>
 
 				<div class="col s3">
-					<input name="jenisruang" type="radio" id="rapatkecil" value="rapatkecil"/>
-				    <label for="rapatkecil">Ruang Rapat Kecil</label>				    
+					<input name="jenisruang" type="radio" id="RuangRapatKecil" value="RuangRapatKecil"/>
+				    <label for="RuangRapatKecil">Ruang Rapat Kecil</label>				    
 				</div>
 
 				<div class="col s3">
-				    <input name="jenisruang" type="radio" id="audit" value="audit"/>
-				    <label for="audit">Ruang Auditorium</label>							
+				    <input name="jenisruang" type="radio" id="Auditorium" value="Auditorium"/>
+				    <label for="Auditorium">Ruang Auditorium</label>							
 				</div>	
 
 				<div class="col s3">
-					<input name="jenisruang" type="radio" id="kelas" value="kelas"/>
-				    <label for="kelas">Ruang Kelas</label>			 					
+					<input name="jenisruang" type="radio" id="Kelas" value="Kelas"/>
+				    <label for="Kelas">Ruang Kelas</label>			 					
 				</div>	
 			</div>
 		</div>
@@ -39,14 +39,14 @@
 		<div class="row">			
 			<div id="ruangkelas-select" class="input-field col s12">
 				Pilih Ruangan
-			    <select id="ruangkelas" name="ruangkelas">
+			    <select id="jenisruang" name="jenisruang">
 			    	@foreach ($data['allgedung'] as $gedung)
-				    <optgroup label="Gedung {{ $gedung->Gedung.'' }}">
+				    <optgroup label="{{ $gedung->Nama }}">
 
 					@foreach ($data['allruangan'] as $ruangan)
 
-					@if($ruangan->Gedung == $gedung->Gedung)
-				        <option value="{{ $gedung->Gedung.''.$ruangan->NomorRuangan}}">{{ $gedung->Gedung.''.$ruangan->NomorRuangan }}</option>					
+					@if($ruangan->IdGedung == $gedung->IdGedung)
+				        <option value="{{ str_replace('Gedung ','',$gedung->Nama).$ruangan->NomorRuangan }}" selected>{{ str_replace('Gedung ','',$gedung->Nama).$ruangan->NomorRuangan }}</option>
 				    @endif
 
 					@endforeach
@@ -59,7 +59,7 @@
 		
 		<div class="row">
 			<div class="col s12">
-				<a class="btn">
+				<a class="btn" id="get-jadwal">
 					LIHAT JADWAL
 					<i class="material-icons right">send</i>
 				</a>									
@@ -75,10 +75,45 @@
 
 @section('ajax_calling')
 <script>
-	$(document).ready(function() {
+	$(document).ready(function() {	
+		$('.tooltipped').tooltip({delay: 50});
+		
+		var type = 'POST';
+
+		var sources = {
+			rapatbesar: {
+				url: 'jadwal/get?jenisruang=RuangRapatBesar',
+	            type: type,		            
+	            success: function(result) { alert(result); },
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
+	            color: '#F44336'
+			},
+			rapatkecil: {
+				url: 'jadwal/get?jenisruang=RuangRapatKecil',
+	            type: type,		            
+	            success: function(result) { alert(result); },
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
+	            color: '#3F51B5'
+			},
+			auditorium: {
+				url: 'jadwal/get?jenisruang=Auditorium',
+	            type: type,		            
+	            success: function(result) { alert(result); },
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
+	            color: '#4CAF50'
+			},
+			kelas: {
+				url: 'jadwal/get?jenisruang=Kelas',
+	            type: type,		            
+	            success: function(result) { alert(result); },
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
+	            color: '#FFC107'
+			}
+		};
+
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-		});	
+		});			
 
 		$('#calendar').fullCalendar({
 	        header: {
@@ -86,24 +121,31 @@
 				right: 'prev,next today',
 				center: 'title',			
 			},
-			defaultView: 'agendaWeek', // default view, only
+			defaultView: 'agendaWeek', 
 			columnFormat: {
-	    		week: 'ddd' // ONLY show day of the week names
+	    		week: 'ddd' 
 			},
-			minTime: '07:30:00', // Start time for the calendar
-	    	maxTime: '21:00:00', // End time for the calendar
-			displayEventTime: true, // Display event time
+			minTime: '08:00:00', 
+	    	maxTime: '20:00:00', 
+			displayEventTime: true, 
 			editable: false,
 			eventLimit: true,
 			views: {
-				agenda: {
-					eventLimit: 5,
+				agendaWeek: {
+					eventLimit: 2,
 				},
 			},
-			events: {
-				url: 'jadwal/get',				
-			},					
-	    })
+			eventSources: [		        
+		        sources.rapatbesar, sources.rapatkecil, sources.auditorium, sources.kelas		        
+		    ],
+		    eventRender: function(event, element) {
+		        element.attr('title', event.tooltip);
+		    }
+	    });
+
+	    $('#get-jadwal').click(function(){	    	
+	    	$('#calendar').fullCalendar('refetchEvents');
+	    });
 	});
 </script>
 @endsection
