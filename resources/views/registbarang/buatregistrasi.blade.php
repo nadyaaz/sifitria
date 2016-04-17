@@ -7,104 +7,141 @@
     <h5>Buat Permohonan Registrasi Barang</h5>
     <div class="divider"></div><br>
 
-    <div class="row">
-        <div class="col s6">
-            <b>Subjek</b><br>
-            <input  placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate">
-        </div><br>
-
-        <div class="col s12">
-            <b>Catatan Pemohon</b> <br>
-            <textarea class="materialize-textarea" length="240"></textarea>
-        </div>
-    </div><br>      
+    @if (!(session()->has('jmlform')))
     
-    <div class="barang-multiform">
-        <div class="barang-form1">
-            <hr><br><br>
-
-            <div class="row">
-                <div class="col s6">
-                    <b>Nama Barang</b><br>
-                    <input placeholder="contoh: Laptop Asus 23"  id="subject" type="text" class="validate">
+    Tentukan jumlah barang yang ingin di registrasi, contoh: 3 (minimal 1 barang, maksimal 5 barang)<br><br>
+    <div class="row valign-wrapper">
+        <div class="col s12">           
+            <form action="{{ url('registrasibarang/buat') }}" method="POST">         
+                <div class="col s3">
+                    <input type="number" name="jmlform" min="1" max="5" step="1" value="1">           
                 </div>
-                <div class="col s6">
-                    <b>Spesifikasi</b><br>
-                    <input placeholder="contoh : RAM 4GB, 11 inch" id="spesifikasi" type="text" class="validate">           
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="input-field col s6" style="margin-top: 0px;">
-                    <b>Kategori</b><br>
-                    <select>
-                        <option value="" disabled selected>Pilih Kategori</option>
-                        <option value="Elektronik">Elektronik</option>
-                        <option value="Furnitur">Furnitur</option>
-                        <option value="Kategori A">Kategori A</option>
-                        <option value="Kategori B">Kategori B</option>
-                        <option value="Kategori C">Kategori C</option>
-                        <option value="Kategori C">Lainnya</option>
-                    </select>
-                </div>
-
-                <div class="col s6">
-                    <b>Tanggal Beli</b><br>
-                    <input type="date" id="tanggalbeli"class="datepicker">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="input-field col s6" style="margin-top: 0px;">
-                    <b>Kondisi</b><br>
-                    <select>
-                        <option value="" disabled selected>Pilih Kondisi</option>
-                        <option value="Baru">Baru</option>
-                        <option value="Bekas">Bekas</option>
-                        <option value="Bekas">Rusak</option>
-                    </select>
-                </div>
-
-                <div class="col s6">
-                    <b>Jenis</b><br>
-                    <input placeholder="contoh : Laptop" id="jenis" type="text" class="validate">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col s12">
-                    <b>Keperluan</b><br>
-                    <input placeholder="contoh: untuk inventaris BEM" id="jenis" type="text" class="validate">
-                </div>
-            </div>
-
-            <div class="col s12">
-                <b>Kerusakan Barang</b><br>
-                <input placeholder="contoh: lecet sedikit, namun masih berfungsi dengan baik" id="jenis" type="text" class="validate">
-            </div><hr>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s4 offset-s4 valign-wrapper">
-            <div class="valign">    
-                <form action="{{ url('registrasibarang/buat') }}" method="POST"> 
-                    {!! csrf_field() !!}                    
-                    <button class="btn waves-light waves-effect teal">
-                        BUAT SEMUA BARANG
+                <div class="col s3">
+                    {!! csrf_field() !!}
+                    <button class="btn waves-light waves-effect valign buat-form">
+                        BUAT FORM
                         <i class="material-icons right">send</i>
-                    </button>&nbsp;&nbsp;               
-                </form>             
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div><hr>
+
+    @else
+
+    <div id="multiform" class="row">
+        <form action="{{ url('registrasibarang/insert') }}" method="POST">
+            <div class="row form-row">
+                <div class="col s6">
+                    <b>Subjek</b><br>
+                    <input name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate">
+                </div><br>
+
+                <div class="col s12">
+                    <b>Catatan Pemohon</b> <br>
+                    <textarea name="catatanpemohon" class="materialize-textarea" length="240">{{ old('catatanpemohon') }}</textarea>
+                </div>
+            </div><hr>
+
+            <div id="barang-multiform">             
+                @for ($i=1; $i <= session('jmlform'); $i++)            
+                <div id="barang-form[{{$i}}]">
+                    <div class="valign-wrapper">                    
+                        <span class="valign judul-add-barang">Barang</span>&nbsp;&nbsp;
+                    </div>
+                    <div class="row form-row">
+                        <div class="col s6 input-field">
+                            Nama Barang <br>
+                            <span class="error red-text">{{ $errors->first('namabarang.'.$i) }}</span><br>
+                            <input type="text" name="namabarang[{{$i}}]" length="100" value="{{ old('namabarang.'.$i) }}">                          
+                        </div>
+
+                        <div class="col s2 input-field">
+                            Tanggal Beli <br>
+                            <span class="error red-text">{{ $errors->first('tanggalbeli.'.$i) }}</span><br>                 
+                            <input type="date" name="tanggalbeli[{{$i}}]" value="{{ old('tanggalbeli.'.$i) }}" class="datepicker">          
+                        </div>
+
+                        <div class="col s4 input-field">
+                            Penanggung Jawab <br> 
+                            <span class="error red-text">{{ $errors->first('penanggungjawab.'.$i) }}</span><br>                 
+                            <input type="text" name="penanggungjawab[{{$i}}]" length="100" value="{{ old('penanggungjawab.'.$i) }}" class="">           
+                        </div>      
+                    </div>   
+
+                    <div class="row form-row">
+                        <div class="col s2 input-field">
+                            Kategori Barang <br>
+                            <span class="error red-text">{{ $errors->first('kategoribarang.'.$i) }}</span><br>                  
+                            <select name="kategoribarang[{{$i}}]">
+                                <option disabled selected>Kategori Barang</option>
+                                <option value="Elektronik">Elektronik</option>
+                                <option value="Furnitur">Furnitur</option>
+                                <option value="Kategori A">Kategori A</option>
+                                <option value="Kategori B">Kategori B</option>
+                                <option value="Kategori C">Kategori C</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>           
+                        </div>
+
+                        <div class="col s4 input-field">
+                            Jenis Barang <br>
+                            <span class="error red-text">{{ $errors->first('jenisbarang.'.$i) }}</span><br>                 
+                            <input id="jenisbarang1" type="text" name="jenisbarang[{{$i}}]" value="{{ old('jenisbarang.'.$i) }}" length="100" class="">         
+                        </div>          
+
+                        <div class="col s6 input-field">
+                            Kondisi Barang <br>
+                            <span class="error red-text">{{ $errors->first('kondisibarang.'.$i) }}</span><br>                   
+                            <select name="kondisibarang[{{$i}}]">
+                                <option disabled selected>Kondisi Barang</option>
+                                <option value="Baru">Baru</option>
+                                <option value="Bekas">Bekas</option>
+                                <option value="Rusak">Rusak</option>                                
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row form-row">   
+                        <div class="col s4 input-field">
+                            Kerusakan Barang <br>
+                            <span class="error red-text">{{ $errors->first('kerusakanbarang.'.$i) }}</span><br>                 
+                            <textarea name="kerusakanbarang[{{$i}}]" value="{{ old('kerusakanbarang.'.$i) }}" class="materialize-textarea" cols="30" rows="10"></textarea>
+                        </div>  
+
+                        <div class="col s4 input-field">
+                            Spesifikasi Barang <br>
+                            <span class="error red-text">{{ $errors->first('spesifikasibarang.'.$i) }}</span><br>                   
+                            <textarea name="spesifikasibarang[{{$i}}]" value="{{ old('spesifikasibarang.'.$i) }}" class="materialize-textarea" cols="30" rows="10"></textarea>
+                        </div>
+
+                        <div class="col s4 input-field">
+                            Keterangan Barang <br>
+                            <span class="error red-text">{{ $errors->first('keteranganbarang.'.$i) }}</span><br>                    
+                            <textarea name="keteranganbarang[{{$i}}]" value="{{ old('keteranganbarang.'.$i) }}" class="materialize-textarea" cols="30" rows="10"></textarea>
+                        </div>    
+                    </div><hr>
+                </div>      
+                @endfor
             </div>
-        </div>
-        <div class="col s4">                
-            <a id="add-new-form" class="btn-floating tooltipped waves-effect waves-light right red" 
-                data-position="left" 
-                data-delay="10" 
-                data-tooltip="TAMBAH BARANG">
-                <i class="material-icons">add</i>
-            </a>
-        </div>
+            
+            <div class="row">
+                <div class="col s4 offset-s4 valign-wrapper">
+                    <div class="valign">    
+                        <form action="{{ url('registrasibarang/buat') }}" method="POST"> 
+                            {!! csrf_field() !!}                    
+                            <button class="btn waves-light waves-effect teal">
+                                REGISTRASI SEMUA BARANG
+                                <i class="material-icons right">send</i>
+                            </button>&nbsp;&nbsp;               
+                        </form>             
+                    </div>
+                </div>        
+            </div>
+        </form>
     </div>
+
+    @endif
+   
 </div>
 @stop

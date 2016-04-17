@@ -56,7 +56,7 @@
                             <td>{{$ruangan->KapasitasRuangan}}</td>
                             <td></td>
                             <td>
-                                <form action="{{ url('pinjamruang/gedung') }}" method="POST">                                   
+                                <form action="{{ url('pinjamruang/ruangan') }}" method="POST">                                   
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="hash" value="{{$ruangan->hashRuang}}">
                                     <button class="btn teal waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="UBAH">
@@ -65,7 +65,7 @@
                                 </form>     
                             </td>
                             <td>
-                                <form action="{{ url('pinjamruang/gedung/hapus') }}" method="POST">                                 
+                                <form action="{{ url('pinjamruang/ruangan/hapus') }}" method="POST">                                 
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="hash" value="{{$ruangan->hashRuang}}">
                                     <button class="btn red waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="HAPUS">

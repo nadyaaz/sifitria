@@ -22,7 +22,7 @@ class GedungController extends MasterController
     	// check if request method is post or not
     	if(!$request->isMethod('POST')) {    		
     		// get gedung object from database
-			$allgedung = Gedung::getAll();
+			$allgedung = Gedung::getAllGedung();
 
 			// render gedung page
 			return $this->render('pinjamruang.gedung',
@@ -35,8 +35,11 @@ class GedungController extends MasterController
     		// get gedung selected
     		$gedung = Gedung::where('hash', $request->input('hash'))->get();
 
+    		// set gedung session
+    		session()->flash('gedung', $gedung);
+
     		// redirect with data
-    		return redirect('pinjamruang/gedung/ubah')->with('gedung', $gedung);
+    		return redirect('pinjamruang/gedung/ubah');
     	}
     }
 
@@ -60,6 +63,9 @@ class GedungController extends MasterController
      */
     public function getUpdateGedung()
     {
+    	// if session gedung not found redirect to gedung
+    	if (!session()->has('gedung')) return redirect('pinjamruang/gedung');
+
     	// get gedung selected
     	$gedung = session('gedung');
 
@@ -84,15 +90,19 @@ class GedungController extends MasterController
     		'namagedung' => 'required|max:25'
     	]);
 
-    	// get last IdGedung    	    
-    	$lastId = Master::getLast('gedung', 'IdGedung')->IdGedung;
+    	// get last object Gedung    	    
+    	$lastObj = Master::getLast('gedung', 'IdGedung');    	
+
+    	if($lastObj == null) $IdGedung = 1;
+        else $IdGedung = $lastObj->IdGedung + 1;
+
     	$namagedung = $request->input('namagedung');
 
     	// input data to database
-    	DB::table('gedung')->insert([
-    		'IdGedung' => $lastId + 1,
+    	Gedung::createGedung([
+    		'IdGedung' => $IdGedung,
     		'Nama' => $namagedung,
-    		'hash' => md5(($lastId+1).$namagedung) // create hash
+    		'hash' => md5($IdGedung.$namagedung) // create hash
     	]);
 
     	// redirect to daftar gedung
@@ -112,23 +122,23 @@ class GedungController extends MasterController
     	]);    	
 
     	// input data to database
-    	DB::table('gedung')->where('hash', $request->input('hash'))->update([    		
+    	Gedung::updateGedung($request->input('hash'), [    		
     		'Nama' => $request->input('namagedung')
-    	]);
+    	]);    	
 
     	// redirect to daftar gedung
     	return redirect('pinjamruang/gedung');
     }
 
     /**
-     * Remove, actually soft-delete, gedung object in database
+     * Remove, actually soft-remove, gedung object from database
      * @param  Request $request request object
      * @return redirect to gedung page
      */
     public function removeGedung(Request $request)
     {
     	// set gedung to deleted
-    	DB::table('gedung')->where('hash', $request->input('hash'))->update(['deleted' => 1]);
+    	Gedung::removeGedung($request->input('hash'));
 
     	// return to gedung list
     	return redirect('pinjamruang/gedung');

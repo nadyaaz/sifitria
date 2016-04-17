@@ -37,23 +37,23 @@
 			@yield('table_head')
 
 			<ul class="collapsible" data-collapsible="accordion">
-				@foreach($data['allbarang'] as $detbarang)					
+				@foreach($data['allbarang'] as $barang)					
 
 				@if(
-					($detbarang->KategoriBarang == 'Elektronik' && $i == 1) ||
-					($detbarang->KategoriBarang == 'Furnitur' && $i == 2) ||
-					($detbarang->KategoriBarang == 'kategori A' && $i == 3) ||
-					($detbarang->KategoriBarang == 'kategori B' && $i == 4) ||
-					($detbarang->KategoriBarang == 'kategori C' && $i == 5)
+					($barang->KategoriBarang == 'Elektronik' && $i == 1) ||
+					($barang->KategoriBarang == 'Furnitur' && $i == 2) ||
+					($barang->KategoriBarang == 'kategori A' && $i == 3) ||
+					($barang->KategoriBarang == 'kategori B' && $i == 4) ||
+					($barang->KategoriBarang == 'kategori C' && $i == 5)
 				)
 				<li>													
 					<div class="collapsible-header">
-						<div class="col s1">{{ $detbarang->IdBarang }}</div>
-						<div class="col s3">{{ $detbarang->NamaBarang }}</div>
-						<div class="col s2">{{ $detbarang->KategoriBarang }}</div>
-						<div class="col s2">{{ $detbarang->JenisBarang }}</div>
-						<div class="col s1">{{ $detbarang->KondisiBarang }}</div>
-						<div class="col s3">{{ $detbarang->Penanggungjawab }}</div>
+						<div class="col s1">{{ $barang->IdBarang }}</div>
+						<div class="col s3">{{ $barang->NamaBarang }}</div>
+						<div class="col s2">{{ $barang->KategoriBarang }}</div>
+						<div class="col s2">{{ $barang->JenisBarang }}</div>
+						<div class="col s1">{{ $barang->KondisiBarang }}</div>
+						<div class="col s3">{{ $barang->Penanggungjawab }}</div>
 					</div>					
 
 					<div class="collapsible-body">
@@ -61,35 +61,22 @@
 							<div class="col s4">
 								<div class="namaBarang-default">
 									<b>Nama Barang :</b><br>
-									{{ $detbarang->NamaBarang }}
+									{{ $barang->NamaBarang }}
 								</div>
-								
-								<!-- <div class="namaBarang-edit">
-									Nama Barang :<br>
-									<input value="{{ $detbarang->NamaBarang}}" type="text" class="validate">						
-								</div> -->
 							</div>
 
 							<div class="col s4">
 								<div class="tanggalBeli-default">
 									<b>Tanggal Beli :</b><br>
-									{{ $detbarang->TanggalBeli}}
-								</div>
-								<!-- <div class="tanggalBeli-edit">
-									Tanggal Beli :<br>
-									<input type="date" class="datepicker">
-								</div> -->								
+									{{ $barang->TanggalBeli}}
+								</div>							
 							</div>								
 
 							<div class="col s4">
 								<div class="tanggalBeli-default">
 									<b>Waktu Registrasi :</b><br>
-									{{ $detbarang->WaktuRegistrasi}}
-								</div>
-								<!-- <div class="tanggalBeli-edit">
-									Tanggal Beli :<br>
-									<input type="date" class="datepicker">
-								</div> -->								
+									{{ $barang->WaktuRegistrasi}}
+								</div>							
 							</div>								
 						</div>						
 					   	
@@ -97,25 +84,15 @@
 							<div class="col s6">
 								<div class="keterangan-default">	
 									<b>Keterangan :</b><br>
-									{{ $detbarang->KeteranganBarang}}
-								</div>
-
-								<!-- <div class="keterangan-edit">
-									Keterangan : <br>
-									<input value="{{ $detbarang->KeteranganBarang}}" type="text" class="validate">
-								</div> -->									
+									{{ $barang->KeteranganBarang}}
+								</div>							
 							</div>
 
 							<div class="col s6">
 								<div class="spesifikasi-default">
 									<b>Spesifikasi :</b><br>
-									{{ $detbarang->SpesifikasiBarang}}
-								</div>
-
-								<!-- <div class="spesifikasi-edit">
-									Spesifikasi :<br>
-									<input value="{{ $detbarang->SpesifikasiBarang}}" type="text" class="validate">
-								</div> -->																	
+									{{ $barang->SpesifikasiBarang}}
+								</div>																	
 							</div>
 					   	</div>
 
@@ -123,21 +100,20 @@
 							<div class="col s6">
 								<div class="spesifikasi-default">
 									<b>KerusakanBarang :</b><br>
-									{{ $detbarang->KerusakanBarang }}
-								</div>
-
-								<!-- <div class="spesifikasi-edit">
-									Spesifikasi :<br>
-									<input value="{{ $detbarang->SpesifikasiBarang}}" type="text" class="validate">
-								</div> -->																	
+									{{ $barang->KerusakanBarang }}
+								</div>																
 							</div>
 					   	</div>
 
 					   	<div class="row">
 							<div class="col s12">
-								<form action="" method="POST" class="right">
-									<a class="btn teal waves-effect waves-light">UBAH</a>
-									<button class="btn teal waves-effect waves-light disabled">SIMPAN</button>
+								<form action="{{ url('registrasibarang/barang') }}" method="POST" class="right">									
+									{!! csrf_field() !!}									
+									<input type="hidden" name="hash" value="{{ $barang->hashBarang }}">
+									<button class="btn teal waves-effect waves-light">
+										UBAH
+										<i class="material-icons right">edit</i>
+									</button>
 								</form>
 							</div>
 					   	</div>						   	

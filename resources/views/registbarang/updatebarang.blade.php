@@ -1,0 +1,106 @@
+@extends('sidebar')
+
+@section('sidebar_buatbarang', 'active')
+
+@section('konten')
+<div class="subsection">
+	<h5>Buat Barang</h5>
+    <div class="divider"></div><br>
+
+    <div class="row">
+    	<div class="col s12">
+    		<form action="{{ url('registrasibarang/barang/ubah') }}" method="POST">
+    			<div class="row form-row">
+    				<div class="col s12 input-field">
+			    		Nama Barang <br>
+			    		<span class="error red-text">{{ $errors->first('namabarang') }}</span><br>
+						<input type="text" name="namabarang" length="100" value="{{ (isset($data['barang'])) ? ($data['barang'][0]['NamaBarang']) : old('namabarang') }}">			
+			    	</div>
+    			</div>
+
+    			<div class="row form-row">
+    				<div class="col s12 input-field">
+			    		Tanggal Beli <br>
+			    		<span class="error red-text">{{ $errors->first('tanggalbeli') }}</span><br>    				
+						<input type="date" name="tanggalbeli" value="{{ (isset($data['barang'])) ? ($data['barang'][0]['TanggalBeli']) : old('tanggalbeli') }}" class="datepicker">			
+			    	</div>
+    			</div>
+
+    			<div class="row form-row">
+    				<div class="col s12 input-field">
+			    		Penanggung Jawab <br> 
+			    		<span class="error red-text">{{ $errors->first('penanggungjawab') }}</span><br>   				
+						<input type="text" name="penanggungjawab" length="100" value="{{ (isset($data['barang'])) ? ($data['barang'][0]['Penanggungjawab']) : old('penanggungjawab') }}" class="">			
+			    	</div> 
+    			</div>
+
+    			<div class="row form-row">
+    				<div class="col s2 input-field">
+			    		Kategori Barang <br>
+			    		<span class="error red-text">{{ $errors->first('kategoribarang') }}</span><br>    				
+						<select name="kategoribarang">
+							<option disabled selected>Kategori Barang</option>
+							<option value="Elektronik">Elektronik</option>
+							<option value="Furnitur">Furnitur</option>
+							<option value="Kategori A">Kategori A</option>
+							<option value="Kategori B">Kategori B</option>
+							<option value="Kategori C">Kategori C</option>
+							<option value="Lainnya">Lainnya</option>
+						</select>			
+			    	</div>
+
+			    	<div class="col s4 input-field">
+			    		Jenis Barang <br>
+			    		<span class="error red-text">{{ $errors->first('jenisbarang') }}</span><br>    				
+						<input id="jenisbarang1" type="text" name="jenisbarang" value="{{ (isset($data['barang'])) ? ($data['barang'][0]['JenisBarang']) : old('jenisbarang') }}" length="100" class="">			
+			    	</div>    		
+
+			    	<div class="col s6 input-field">
+			    		Kondisi Barang <br>
+			    		<span class="error red-text">{{ $errors->first('kondisibarang') }}</span><br>    				
+						<select name="kondisibarang">
+							<option disabled selected>Kondisi Barang</option>
+							<option value="Baru">Baru</option>
+							<option value="Bekas">Bekas</option>
+							<option value="Rusak">Rusak</option>								
+						</select>
+			    	</div>
+    			</div>
+
+    			<div class="row">
+    				<div class="col s6 input-field">
+			    		Kerusakan Barang <br>
+			    		<span class="error red-text">{{ $errors->first('kerusakanbarang') }}</span><br>    				
+						<textarea name="kerusakanbarang" class="materialize-textarea" cols="30" rows="10">{{ (isset($data['barang'])) ? ($data['barang'][0]['KerusakanBarang']) : old('kerusakanbarang') }}</textarea>
+			    	</div>  
+
+			    	<div class="col s6 input-field">
+			    		Spesifikasi Barang <br>
+			    		<span class="error red-text">{{ $errors->first('spesifikasibarang') }}</span><br>    				
+						<textarea name="spesifikasibarang" class="materialize-textarea" cols="30" rows="10">{{ (isset($data['barang'])) ? ($data['barang'][0]['SpesifikasiBarang']) : old('spesifikasibarang') }}</textarea>
+			    	</div>
+    			</div>
+
+    			<div class="row">
+    				<div class="col s12 input-field">
+			    		Keterangan Barang <br>
+			    		<span class="error red-text">{{ $errors->first('keteranganbarang') }}</span><br>    				
+						<textarea name="keteranganbarang" class="materialize-textarea" cols="30" rows="10">{{ (isset($data['barang'])) ? ($data['barang'][0]['KeteranganBarang']) : old('keteranganbarang') }}</textarea>
+			    	</div> 
+    			</div>
+
+    			<div class="row"></div>
+    			<div class="row"></div>
+    			<div class="row"></div>
+
+    			{!! csrf_field() !!}
+    			<input type="hidden" name="hash" value="{{ $data['barang'][0]['hashBarang'] }}">
+				<button class="btn waves-light waves-effect teal">
+					UPDATE BARANG
+					<i class="material-icons right">send</i>
+				</button>
+    		</form>
+    	</div>
+    </div>
+</div>
+@stop

@@ -27,13 +27,22 @@ class RegistrasiController extends MasterController
 		);
     }
 
-    public function getCreateRegistrasi()
+    /**
+     * Get buat registrasi page
+     * @param  Request $request Request object
+     * @return buatregistrasi.blade.php
+     */
+    public function getCreateRegistrasi(Request $request)
     {
+        if ($request->isMethod('POST')) 
+            session()->flash('jmlform', $request->input('jmlform'));
+
     	return $this->render('registbarang.buatregistrasi',
     		[
     			'title' => 'Buat Permohonan Registrasi Barang',
     		]
     	);
+        
     }
 
     //Membuat permohonan registrasi barang

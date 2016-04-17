@@ -13,7 +13,7 @@ class Permohonan extends Model
     {
     	$allpermohonan = DB::select(
     		DB::raw(
-    			"SELECT * 
+    			'SELECT * 
     			FROM permohonan p, jadwal j, ruangan r, users u
     			WHERE  
     				p.JenisPermohonan = 1 AND 
@@ -22,18 +22,18 @@ class Permohonan extends Model
                     p.IdGedung = j.IdGedung AND
                     j.IdGedung = r.IdGedung AND
                     p.IdJadwal = j.IdJadwal AND 
-                    p.deleted = 0 AND 
-    				p.IdPemohon = u.NomorInduk"
+                    p.IdPemohon = u.NomorInduk AND
+                    p.deleted = 0'
     		)
     	);
 
         $allcatatan = DB::select(
         	DB::raw(
-        		"SELECT * 
+        		'SELECT * 
         		FROM permohonan p, catatan c, users u 
         		WHERE  
         			p.IdPermohonan = c.IdPermohonan AND 
-        			c.NomorIndukPenulis = u.NomorInduk"
+        			c.NomorIndukPenulis = u.NomorInduk'
         	)
         );
 
@@ -48,24 +48,24 @@ class Permohonan extends Model
     	// get list registrasi barang
 		$daftarregis = DB ::select(
 			DB::raw(
-				"SELECT * 
+				'SELECT * 
 				from permohonan p, kandidat_barang kb, users u 
 				where 
 					p.JenisPermohonan = 2 AND 
 					p.IdPermohonan = kb.IdPermohonan AND 
 					p.IdPemohon = u.NomorInduk AND
-					p.deleted= 0 "
+					p.deleted= 0'
 			)
 		);
 
 		// get list catatan
 		$regiscatatan = DB ::select(
 			DB::raw(
-				"SELECT * 
-				from permohonan p, catatan c, users u 
-				where 
+				'SELECT * 
+				FROM permohonan p, catatan c, users u 
+				WHERE
 					p.IdPermohonan = c.IdPermohonan AND 
-					c.NomorIndukPenulis = u.NomorInduk"
+					c.NomorIndukPenulis = u.NomorInduk'
 			)
 		);
 
@@ -75,8 +75,8 @@ class Permohonan extends Model
 		);
     }
 
-    public static function updateStatus($id, $persetujuan) {
- 
+    public static function updateStatus($id, $persetujuan) 
+    {
         if($persetujuan == 'setuju')
             $persetujuan = 2;        
         else
@@ -91,13 +91,14 @@ class Permohonan extends Model
         );
     }
 
-	public static function deletePermohonan($hash) {
+	public static function deletePermohonan($hash) 
+    {
 		// ganti status peminjaman pada database
         DB::update(
         	DB::raw(
-        		"UPDATE PERMOHONAN
+        		'UPDATE PERMOHONAN
         		SET deleted = 1
-        		WHERE IdPermohonan = $hash"
+        		WHERE IdPermohonan = $hash'
         	)
         );
 	}

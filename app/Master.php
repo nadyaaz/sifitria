@@ -17,12 +17,11 @@ class Master extends Model
 	 * @return $table          table last single row
 	 */
     public static function getLast($table, $orderby, $where = [])
-    {
-    	// $where = [ 'nama', '=', 'Jundi' ]    	
-    	
-    	if (count($where) > 0) 
-    		return DB::table($table)->where($where)->orderby($orderby, 'desc')->first();
-    	else
-    		return DB::table($table)->orderby($orderby, 'desc')->first();
+    {    	
+    	if (count($where) > 0) {
+    		return DB::table($table)->where($where)->orderby($orderby, 'desc')->first();            
+        } else {
+    		return DB::table($table)->orderby($orderby, 'desc')->first();            
+        }
     }
 }
