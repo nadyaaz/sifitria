@@ -9,6 +9,11 @@ class Permohonan extends Model
 {
     protected $table = 'PERMOHONAN';
 
+    public static function createPermohonan($data)
+    {
+        DB::table('permohonan')->insert($data);
+    }
+
     public static function getPeminjaman()
     {
     	$allpermohonan = DB::select(
@@ -93,13 +98,7 @@ class Permohonan extends Model
 
 	public static function deletePermohonan($hash) 
     {
-		// ganti status peminjaman pada database
-        DB::update(
-        	DB::raw(
-        		'UPDATE PERMOHONAN
-        		SET deleted = 1
-        		WHERE IdPermohonan = $hash'
-        	)
-        );
+		// ganti status peminjaman pada database        
+        DB::table('permohonan')->where('hashPermohonan', $hash)->update(['deleted' => 1]);
 	}
 }

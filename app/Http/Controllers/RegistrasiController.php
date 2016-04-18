@@ -5,26 +5,54 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Permohonan;
+use App\KandidatBarang;
 use App\catatan;
+use App\Master;
 use DB;
 use validator;
 
 
 class RegistrasiController extends MasterController
 {
-    public function dashboard()
-    {  
-		// get permohonan registrasi barang data
-		$registrasi = Permohonan::getRegistrasi();
+    /**
+     * Get all permohonan registrasi and display it
+     * @return dashboard.blade.php
+     */
+    public function dashboard(Request $request)
+    {   
+        if (!$request->isMethod('POST')) {
+    		// get permohonan registrasi barang data
+    		$registrasi = Permohonan::getRegistrasi();
 
-		// render registrasi barang dashboard
-		return $this->render('registbarang.dashboard',
-			[
-				'title' => 'Dashboard Registrasi Barang',
-				'daftarregis' => $registrasi['daftarregis'],
-				'regiscatatan' => $registrasi['regiscatatan'],
-			]
-		);
+    		// render registrasi barang dashboard
+    		return $this->render('registbarang.dashboard',
+    			[
+    				'title' => 'Dashboard Registrasi Barang',
+    				'daftarregis' => $registrasi['daftarregis'],
+    				'regiscatatan' => $registrasi['regiscatatan'],
+    			]
+    		);            
+        } else {
+            // get registrasi selected
+            $registrasi = Permohonan::where('hashPermohonan', $request->input('hash'))->get();
+            $allkandidat = KandidatBarang::where('IdPermohonan', $registrasi[0]['IdPermohonan'])->get();
+            $catatan = Catatan::where([
+                ['IdPermohonan', '=', $registrasi[0]['IdPermohonan']],
+                ['NomorIndukPenulis', '=', $registrasi[0]['IdPemohon']],
+            ])->get();
+
+            // dd($allkandidat[0]['IdPermohonan']);
+
+            // set registrasi and nform session
+            session([
+                'registrasi' => $registrasi,
+                'allkandidat' => $allkandidat,
+                'catatan' => $catatan,
+            ]);
+
+            // redirect to update registrasi page
+            return redirect('registrasibarang/ubah');
+        }        
     }
 
     /**
@@ -42,69 +70,134 @@ class RegistrasiController extends MasterController
     			'title' => 'Buat Permohonan Registrasi Barang',
     		]
     	);
-        
     }
 
-    //Membuat permohonan registrasi barang
+    /**
+     * Create registrasi object and input it to database
+     * @param  Request $regbarang Request object
+     * @return redirect to dashboard.blade.php
+     */
     public function createRegistrasi(Request $regbarang)
     {
-        $input = $regbarang -> all();
-        $NomorSurat = $input['surat'];
-        $IdKandidatBarang = $input['kandidatid'];
-        $SubjekPermohonan = $input ['subjek'];
-        $NamaBarang = $input['nama'];
-        $KategoriBarang = $input['kategori'];
-        $SpesifikasiBarang= $input ['spesifikasi'];
-        $Penanggungjawab = $input ['pj'];
-        $KondisiBarang = $input ['kondisi'];
-        $JenisBarang = $input ['jenis'];
-        $UserId = $input['UserId'];
-        $KeteranganBarang = $input['keterangan'];
+        // get number of form submitted
+        $nform = count($regbarang->input('namabarang')); 
 
-         //Auto Increment Id Permohonan
-         $Permohonan = Permohonan::getPermohonanTerakhir();
-         $IdPermohonan = $Permohonan-> IdPermohonan + 1;
+        // set session for jmlform
+        session()->flash('jmlform', $nform);
 
-         //Memvalidasi isian form registrasi barang
-         $this->validate ($regbarang,
-            ['surat'=>'required|max:100',
-            'kandidatid' => 'required|numeric|max:11',
+        // Memvalidasi isian form registrasi barang
+        $this->validate ($regbarang, [
             'subjek'=> 'required|max:100',
-            'nama'=>'required|max:100',
-            'kategori' => 'required|max:100',
-            'kondisi' => 'required|max:100',
-            'spesifikasi' => 'required',
-            'jenis' => 'required|max:100',
-            'pj' => 'required|max:100',
-            'keterangan'=>'required',
-            ]
-        );
+            'catatanpemohon' => 'required',
+            'namabarang.*' => 'required|max:100',                
+            'tanggalbeli.*' => 'required',
+            'penanggungjawab.*' => 'required|max:100',
+            'kategoribarang.*' => 'required|max:100',
+            'jenisbarang.*' => 'required|max:100',
+            'kondisibarang.*' => 'required|max:100',
+            'spesifikasibarang.*' => 'required',
+            'keteranganbarang.*' => 'required',                                
+            'kerusakanbarang.*' => 'required',
+        ]);
 
-        //Memasukkan data dari form registrasi barang ke table permohonan
-        DB::insert(
-            DB::raw( "INSERT INTO permohonan ( IdPermohonan, NomorSurat, SubjekPermohonan, JenisPermohonan, IdPemohon, StatusPermohonan, TahapPermohonan) VALUES ('$IdPermohonan','$NomorSurat','$SubjekPermohonan',1, '$UserId', 0, 1)"
-                )
-             );
+        $input = $regbarang->all();
+
+        // Auto Increment IdPermohonan
+        $lastId = Master::getLastId('permohonan', 'IdPermohonan');
+        $IdPermohonan = $lastId + 1;        
+
+        // Memasukkan data dari form registrasi barang ke table permohonan
+        Permohonan::createPermohonan([
+            'IdPermohonan' => $IdPermohonan,             
+            'SubjekPermohonan' => $input['subjek'], 
+            'JenisPermohonan' => 2, 
+            'IdPemohon' => session('user_sess')->npm,
+            'hashPermohonan' => md5($IdPermohonan.$input['subjek']),
+        ]);           
         
-        //Memasukkan data dari form registrasi barang ke table kandidat_barang
-        DB::insert(
-            DB::raw( "INSERT INTO kandidat_barang(IdKandidatBarang, NamaBarang, KategoriBarang, KondisiBarang, SpesifikasiBarang, Penanggungjawab, JenisBarang, IdPermohonan, KeteranganBarang) VALUES ('$IdKandidatBarang','$NamaBarang', '$KategoriBarang', '$KondisiBarang', '$SpesifikasiBarang','$Penanggungjawab', '$JenisBarang', '$IdPermohonan','$KeteranganBarang')"
-                ) 
-            );
+        // get last object Barang           
+        $lastKandidatId = Master::getLastId('kandidat_barang', 'IdKandidatBarang');
 
-        //Mengembalikan ke halaman list daftar registrasi barang             
-        return redirect('/registrasibarang');
+        // Memasukkan data dari form registrasi barang ke table kandidat_barang        
+        for ($i=1; $i <= $nform; $i++, $lastKandidatId++) { 
+
+            $IdBarang = $lastKandidatId + 1;            
+            $namabarang = $input['namabarang'][$i];
+            $jenisbarang = $input['jenisbarang'][$i];
+            $kategoribarang = $input['kategoribarang'][$i];
+
+            // insert to database
+            KandidatBarang::createKandidatBarang([
+                'IdKandidatBarang' => $IdBarang,
+                'NamaBarang' => $namabarang,
+                'JenisBarang' => $jenisbarang,
+                'KategoriBarang' => $kategoribarang,
+                'KeteranganBarang' => $input['keteranganbarang'][$i],
+                'KondisiBarang' => $input['kondisibarang'][$i],
+                'PenanggungJawab' => $input['penanggungjawab'][$i],
+                'TanggalBeli' => date('Y-m-d H:i:s', strtotime($input['tanggalbeli'][$i])),
+                'SpesifikasiBarang' => $input['spesifikasibarang'][$i],
+                'IdPermohonan' => $IdPermohonan,
+                'hashKandidat' => md5($IdBarang.$namabarang.$jenisbarang.$kategoribarang),
+            ]);            
+        }
+
+        // create catatan record for this permohonan
+        Catatan::createCatatan($IdPermohonan, 1, $input['catatanpemohon'], session('user_sess')->npm);
+
+        // destroy jmlform session
+        session()->forget('jmlform');
+
+        // Mengembalikan ke halaman list daftar registrasi barang             
+        return redirect('registrasibarang');
     }
 
-    public function removeRegistrasi(Request $request)
+    /**
+     * [getUpdateBarang description]
+     * @param  string $value [description]
+     * @return [type]        [description]
+     */
+    public function getUpdateRegistrasi(Request $request)
     {
-        // get session peminjaman yang mau dibatalkan
-        $input = $request->all();
-        $hash = $input['Id'];
+        // if session registrasi not found, redirect to registrasi page
+        if (!session()->has('registrasi')) return redirect('registrasibarang');
 
+        // get registrasi selected
+        $registrasi = session('registrasi');
+        $allkandidat = session('allkandidat');
+        $catatan = session('catatan');
+
+        // return update registrasi page
+        return $this->render('registbarang.updateregistrasi', 
+            [
+                'title' => 'Update Permohonan Regsitrasi Barang',
+                'registrasi' => $registrasi,
+                'allkandidat' => $allkandidat,
+                'catatan' => $catatan,
+            ]
+        );
+    }
+
+    /**
+     * [updateBarang description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function updateRegistrasi(Request $request)
+    {
+
+    }
+
+    /**
+     * Soft-remove permohonan registrasi in database
+     * @param  Request $request Request object
+     * @return redirect to dashboard.blade.php
+     */
+    public function removeRegistrasi(Request $request)
+    {       
         // ganti status peminjaman pada database        
-        Permohonan::deletePermohonan($hash);
+        Permohonan::deletePermohonan($request->input('hash'));
         
-        return back();
+        return redirect('registrasibarang');
     }
 }

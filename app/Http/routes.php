@@ -53,10 +53,11 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::post('pinjamruang/gedung/hapus', 'GedungController@removeGedung');
 
 	// registrasi barang
-	Route::get('registrasibarang', 'RegistrasiController@dashboard');
+	Route::match(['get', 'post'], 'registrasibarang', 'RegistrasiController@dashboard');
 	Route::match(['get', 'post'], 'registrasibarang/buat', 'RegistrasiController@getCreateRegistrasi');	
-	Route::get('registrasibarang/update', 'RegistrasiController@getUpdateRegistrasi');
-	Route::post('registrasibarang/update', 'RegistrasiController@updateRegistrasi');
+	Route::post('registrasibarang/insert', 'RegistrasiController@createRegistrasi');
+	Route::get('registrasibarang/ubah', 'RegistrasiController@getUpdateRegistrasi');
+	Route::post('registrasibarang/ubah', 'RegistrasiController@updateRegistrasi');
 	Route::post('registrasibarang/batal', 'RegistrasiController@cancelRegistrasi');	
 	
 	Route::match(['get', 'post'], 'registrasibarang/barang', 'BarangController@getBarang');

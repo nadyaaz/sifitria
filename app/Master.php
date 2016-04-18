@@ -12,8 +12,8 @@ class Master extends Model
 	/**
 	 * Get last element on table and filter specified
 	 * @param  String $table   table name
-	 * @param  array  $where   where clause array
 	 * @param  String $orderby column name
+	 * @param  array  $where   where clause array
 	 * @return $table          table last single row
 	 */
     public static function getLast($table, $orderby, $where = [])
@@ -23,5 +23,26 @@ class Master extends Model
         } else {
     		return DB::table($table)->orderby($orderby, 'desc')->first();            
         }
+    }
+
+    /**
+	 * Get last element on table and filter specified
+	 * @param  String $table   table name
+	 * @param  String $orderby column name
+	 * @param  array  $where   where clause array
+	 * @return Integer         table last Id
+	 */
+    public static function getLastId($table, $orderby, $where = [])
+    {   
+    	$lastObj;
+    	if (count($where) > 0)
+    		$lastObj = DB::table($table)->where($where)->orderby($orderby, 'desc')->first();            
+        else
+    		$lastObj = DB::table($table)->orderby($orderby, 'desc')->first();            
+        
+        if ($lastObj == null)
+        	return 0;
+        else
+        	return $lastObj->$orderby;
     }
 }

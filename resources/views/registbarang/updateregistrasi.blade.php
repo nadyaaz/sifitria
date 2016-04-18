@@ -7,44 +7,22 @@
     <h5>Buat Permohonan Registrasi Barang</h5>
     <div class="divider"></div><br>
 
-    @if (!(session()->has('jmlform')))
-    
-    Tentukan jumlah barang yang ingin di registrasi, contoh: 3 (minimal 1 barang, maksimal 5 barang)<br><br>
-    <div class="row valign-wrapper">
-        <div class="col s12">           
-            <form action="{{ url('registrasibarang/buat') }}" method="POST">         
-                <div class="col s3">
-                    <input type="number" name="jmlform" min="1" max="5" step="1" value="1">           
-                </div>
-                <div class="col s3">
-                    {!! csrf_field() !!}
-                    <button class="btn waves-light waves-effect valign buat-form">
-                        BUAT FORM
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div><hr>
-
-    @else
-
     <div id="multiform" class="row">
-        <form action="{{ url('registrasibarang/insert') }}" method="POST">
+        <form action="{{ url('registrasibarang/ubah') }}" method="POST">
             <div class="row form-row">
                 <div class="col s6">
                     <b>Subjek</b><br>
-                    <input name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate" value="{{ old('subjek') }}">
+                    <input name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate" value="{{ (isset($data['registrasi'])) ? ($data['registrasi'][0]['SubjekPermohonan']) : old('subjek') }}">
                 </div><br>
 
                 <div class="col s12">
                     <b>Catatan Pemohon</b> <br>
-                    <textarea name="catatanpemohon" class="materialize-textarea" length="240">{{ old('catatanpemohon') }}</textarea>
+                    <textarea name="catatanpemohon" class="materialize-textarea" length="240">{{ (isset($data['catatan'][0])) ? ($data['catatan'][0]['DesksripsiCatatan']) : old('catatanpemohon') }}</textarea>
                 </div>
             </div><br><hr>
 
             <div id="barang-multiform">             
-                @for ($i=1; $i <= session('jmlform'); $i++)            
+                @for($i=1; $i <= count($data['allkandidat']); $i++)
                 <div id="barang-form[{{$i}}]">
                     <div class="valign-wrapper">                    
                         <span class="valign judul-add-barang">Barang</span>&nbsp;&nbsp;
@@ -53,19 +31,19 @@
                         <div class="col s6 input-field">
                             Nama Barang <br>
                             <span class="error red-text">{{ $errors->first('namabarang.'.$i) }}</span><br>
-                            <input type="text" name="namabarang[{{$i}}]" length="100" value="{{ old('namabarang.'.$i) }}">                          
+                            <input type="text" name="namabarang[{{$i}}]" length="100" value="{{ (isset($data['allkandidat'])) ? ($data['allkandidat'][$i-1]['NamaBarang']) : old('namabarang.'.$i) }}">                          
                         </div>
 
                         <div class="col s2 input-field">
                             Tanggal Beli <br>
                             <span class="error red-text">{{ $errors->first('tanggalbeli.'.$i) }}</span><br>                 
-                            <input type="date" name="tanggalbeli[{{$i}}]" value="{{ old('tanggalbeli.'.$i) }}" class="datepicker">          
+                            <input type="date" name="tanggalbeli[{{$i}}]" value="{{ (isset($data['allkandidat'])) ? (date('d M Y', strtotime($data['allkandidat'][$i-1]['TanggalBeli']))) : old('tanggalbeli.'.$i) }}" class="datepicker">          
                         </div>
 
                         <div class="col s4 input-field">
                             Penanggung Jawab <br> 
                             <span class="error red-text">{{ $errors->first('penanggungjawab.'.$i) }}</span><br>                 
-                            <input type="text" name="penanggungjawab[{{$i}}]" length="100" value="{{ old('penanggungjawab.'.$i) }}" class="">           
+                            <input type="text" name="penanggungjawab[{{$i}}]" length="100" value="{{ (isset($data['allkandidat'])) ? ($data['allkandidat'][$i-1]['Penanggungjawab']) : old('penanggungjawab.'.$i) }}" class="">           
                         </div>      
                     </div>   
 
@@ -87,7 +65,7 @@
                         <div class="col s4 input-field">
                             Jenis Barang <br>
                             <span class="error red-text">{{ $errors->first('jenisbarang.'.$i) }}</span><br>                 
-                            <input id="jenisbarang1" type="text" name="jenisbarang[{{$i}}]" value="{{ old('jenisbarang.'.$i) }}" length="100" class="">         
+                            <input id="jenisbarang1" type="text" name="jenisbarang[{{$i}}]" value="{{ (isset($data['allkandidat'])) ? ($data['allkandidat'][$i-1]['JenisBarang']) : old('jenisbarang.'.$i) }}" length="100" class="">         
                         </div>          
 
                         <div class="col s6 input-field">
@@ -102,23 +80,17 @@
                         </div>
                     </div>
 
-                    <div class="row form-row">   
-                        <div class="col s4 input-field">
-                            Kerusakan Barang <br>
-                            <span class="error red-text">{{ $errors->first('kerusakanbarang.'.$i) }}</span><br>                 
-                            <textarea name="kerusakanbarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ old('kerusakanbarang.'.$i) }}</textarea>
-                        </div>  
-
+                    <div class="row form-row">                           
                         <div class="col s4 input-field">
                             Spesifikasi Barang <br>
                             <span class="error red-text">{{ $errors->first('spesifikasibarang.'.$i) }}</span><br>                   
-                            <textarea name="spesifikasibarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ old('spesifikasibarang.'.$i) }}</textarea>
+                            <textarea name="spesifikasibarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ (isset($data['allkandidat'])) ? ($data['allkandidat'][$i-1]['SpesifikasiBarang']) : old('spesifikasibarang.'.$i) }}</textarea>
                         </div>
 
                         <div class="col s4 input-field">
                             Keterangan Barang <br>
                             <span class="error red-text">{{ $errors->first('keteranganbarang.'.$i) }}</span><br>                    
-                            <textarea name="keteranganbarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ old('keteranganbarang.'.$i) }}</textarea>
+                            <textarea name="keteranganbarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ (isset($data['allkandidat'])) ? ($data['allkandidat'][$i-1]['KeteranganBarang']) : old('keteranganbarang.'.$i) }}</textarea>
                         </div>    
                     </div><hr>
                 </div>      
@@ -131,7 +103,7 @@
                         <form action="{{ url('registrasibarang/buat') }}" method="POST"> 
                             {!! csrf_field() !!}                    
                             <button class="btn waves-light waves-effect teal">
-                                REGISTRASI SEMUA BARANG
+                                UBAH REGISTRASI BARANG
                                 <i class="material-icons right">send</i>
                             </button>&nbsp;&nbsp;               
                         </form>             
@@ -140,8 +112,5 @@
             </div>
         </form>
     </div>
-
-    @endif
-   
 </div>
 @stop

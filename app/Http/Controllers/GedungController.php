@@ -36,7 +36,7 @@ class GedungController extends MasterController
     		$gedung = Gedung::where('hash', $request->input('hash'))->get();
 
     		// set gedung session
-    		session()->flash('gedung', $gedung);
+    		session(['gedung' => $gedung]);
 
     		// redirect with data
     		return redirect('pinjamruang/gedung/ubah');

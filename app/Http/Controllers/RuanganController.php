@@ -32,7 +32,7 @@ class RuanganController extends MasterController
             $ruangan = Ruangan::where('hashRuang', $request->input('hash'))->get();
 
             //set session
-            session()->flash('ruangan', $ruangan);
+            session(['ruangan' => $ruangan]);
 
             // redirect with data
             return redirect('pinjamruang/ruangan/ubah');

@@ -136,14 +136,12 @@
 
                 <div class="row">
                     <div class="col s12 ">                            
-                        <form action="" class="right">
+                        <form action="{{ url('registrasibarang') }}" method="POST" class="right">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $barang->IdPermohonan }}"/>
-                            <a class="btn waves-effect waves-light teal white-text left">
-                                UBAH                                
-                            </a>&nbsp;
-                            <button class="btn waves-effect waves-light teal white-text disabled">
-                                SIMPAN                                    
+                            <input type="hidden" name="hash" value="{{ $barang->hashPermohonan }}"/>                            
+                            <button class="btn waves-effect waves-light teal white-text">
+                                UBAH
+                                <i class="material-icons right">edit</i>
                             </button>
                         </form> 
                     </div>

@@ -31,12 +31,12 @@ class MasterController extends Controller
     	$data = $input_data;
 
 		// cek apakah view yang ingin di render adalah home dan user belum terautentikasi
-    	if ($view == 'home' && !(SSO::check())) {
+    	if ($view == 'home' && !(SSO::check()) && !(session()->has('user_sess'))) {
 			// user belum terautentikasi, 			
     		$data['isLoggedIn'] = false;	// set passing data 'isLoggedIn' false			    		
     	} else {
 			// cek autentikasi user dengan SSO Check, 			
-	    	if (!SSO::check()) SSO::authenticate();
+	    	if (!SSO::check() && !(session()->has('user_sess'))) SSO::authenticate();
 	    	
 			// tambahkan passing data					
 			$data['isLoggedIn'] = SSO::check();		// isLoggedIn berisi boolean cek autentikasi

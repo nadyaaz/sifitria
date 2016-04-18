@@ -11,6 +11,11 @@ use Validator;
 
 class BarangController extends MasterController
 {
+    /**
+     * Get all barang and display it
+     * @param  Request $request Request object
+     * @return View
+     */
     public function getBarang(Request $request)
     {	
         // check if request method is post
@@ -37,6 +42,11 @@ class BarangController extends MasterController
         }
     }
 
+    /**
+     * Get create barang page
+     * @param  Request $request Request object
+     * @return buatbarang.blade.php
+     */
     public function getCreateBarang(Request $request)
     {
         // check if request method is post, if yes get jmlform input and create session 
@@ -51,6 +61,11 @@ class BarangController extends MasterController
         );
     }  
     
+    /**
+     * Create barang and input it to database
+     * @param  Request $request Request object
+     * @return redirect to barang.blade.php
+     */
     public function createBarang(Request $request)
     {
         // get number of form submitted
@@ -115,6 +130,11 @@ class BarangController extends MasterController
         return redirect('registrasibarang/barang');
     }  
 
+    /**
+     * Get update barang view
+     * @param  Request $request Request object
+     * @return updatebarang.blade.php
+     */
     public function getUpdateBarang(Request $request)
     {
         // if session barang not found, redirect to barang page
@@ -132,6 +152,11 @@ class BarangController extends MasterController
         );
     }
 
+    /**
+     * Update selected barang
+     * @param  Request $request Request object
+     * @return void
+     */
     public function updateBarang(Request $request)
     {
         // form validation
