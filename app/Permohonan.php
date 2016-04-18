@@ -14,7 +14,7 @@ class Permohonan extends Model
         DB::table('permohonan')->insert($data);
     }
 
-    public function updatePermohonan($hash, $data)
+    public static function updatePermohonan($hash, $data)
     {
         DB::table('permohonan')->where('hashPermohonan', $hash)->update($data);
     }

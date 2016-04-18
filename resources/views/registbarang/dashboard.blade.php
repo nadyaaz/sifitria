@@ -55,8 +55,7 @@
                         <b>Waktu Permohonan :</b><br>
                         {{ $data['allregistrasi'][$i]->created_at }}
                     </div>                        
-                </div>
-                
+                </div>                
                 
                 <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
                     LIHAT SEMUA BARANG
@@ -70,16 +69,39 @@
                         @if($kandidat->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)
                         <h4>{{$kandidat->NamaBarang}}</h4>
                         <div class="row">
-                            <div class="col s3">{{$kandidat->TanggalBeli}}</div>
-                            <div class="col s3">{{$kandidat->JenisBarang}}</div>
-                            <div class="col s3">{{$kandidat->KategoriBarang}}</div>
-                            <div class="col s3">{{$kandidat->KondisiBarang}}</div>
+                            <div class="col s3">
+                                <b>Tanggal Beli</b><br>
+                                {{date('d F Y', strtotime($kandidat->TanggalBeli))}}
+                            </div>
+                            <div class="col s3">
+                                <b>Jenis Barang</b><br>
+                                {{$kandidat->JenisBarang}}
+                            </div>
+                            <div class="col s3">
+                                <b>Kategori Barang</b><br>
+                                {{$kandidat->KategoriBarang}}
+                            </div>
+                            <div class="col s3">
+                                <b>Kondisi Barang</b><br>
+                                {{$kandidat->KondisiBarang}}
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col s12">{{$kandidat->Penanggungjawab}}</div><br>
-                            <div class="col s12">{{$kandidat->SpesifikasiBarang}}</div><br>
-                            <div class="col s12">{{$kandidat->KeteranganBarang}}</div>
+                            <div class="col s12">
+                                <b>Penanggung Jawab</b><br>
+                                {{$kandidat->Penanggungjawab}}
+                            </div><br>
                         </div>
+                        <div class="row">                            
+                            <div class="col s6">
+                                <b>Spesifikasi Barang</b><br>
+                                {{$kandidat->SpesifikasiBarang}}
+                            </div>
+                            <div class="col s6">
+                                <b>Keterangan Barang</b><br>
+                                {{$kandidat->KeteranganBarang}}
+                            </div>
+                        </div><hr>
                         @endif
 
                         @endforeach
@@ -111,7 +133,7 @@
                     <div class="col s12">
                         <form action="" method="POST">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $data['allregistrasi'][$i]->IdPermohonan }}"/>
+                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>
                             Catatan: <br>
                             <textarea class="materialize-textarea" name="catatan_txtarea" cols="30" rows="30"></textarea>
                             <button class="btn waves-effect waves-light teal white-text right">
@@ -121,7 +143,7 @@
                         </form>
                         <form action="{{ url('registregistrasi/batal') }}" method="POST" class="left">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $data['allregistrasi'][$i]->IdPermohonan }}">
+                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}">
                             <button class="waves-effect waves-red btn red">                                    
                                 TOLAK
                                 <i class="material-icons white-text right">clear</i>
@@ -132,7 +154,7 @@
 
                 <div class="row">
                     <div class="col s12 ">                            
-                        <form action="{{ url('registrasiregistrasi') }}" method="POST" class="right">
+                        <form action="{{ url('registrasibarang') }}" method="POST" class="right">
                             {!! csrf_field() !!}
                             <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
                             <button class="btn waves-effect waves-light teal white-text">

@@ -21,6 +21,7 @@ class MasterController extends Controller
 	 * render page. Method ini berfungsi untuk menambahkan 
 	 * data user dan cek login kedalam passing data yang 
 	 * akan diberikan kepada View
+	 * 
 	 * @param  String $view       Halaman blade yang ingin di render
 	 * @param  array  $input_data passing data dari controller
 	 * @return View               Halaman yang di-render
@@ -45,5 +46,36 @@ class MasterController extends Controller
     	
 		// kembalikan view yang sudah dirender kepada user
 		return view($view, compact('data'));
+    }
+
+    /**
+     * Check if user permitted to see given page
+     * @param  String  $page Page the user want to check
+     * @return boolean       Is user permitted to see the page given
+     */
+    public function isPermitted($page)
+    {
+    	// check user authentication
+    	if(!SSO::check()) SSO::authenticate();
+
+    	// permitted user rules
+    	$userrule = [
+    		'Manager Fasilitas & Infrastruktur' => ['registrasibarang', 'barang', 'buatbarang'],
+    		'Staf Fasilitas & Infrastruktur' => ['registrasibarang', 'barang', 'buatbarang'],
+    		'Staf PPAA' => ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+    		'Staf Sekretariat' => ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+    		'Staf' => ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+    		'HM' => ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+    		'Mahasiswa' => ['pinjamruang', 'buatpeminjaman'],
+    	];
+
+    	// get user type
+    	$usertype = SSO::getUser()->role;
+
+    	// check if user permittes
+    	if (isset($userrule[$usertype])) {
+    		if (in_array($page, $userrule[$usertype], true)) return true;
+    		else return false;
+    	} else return false;    	
     }
 }

@@ -39,7 +39,10 @@ class RegistrasiController extends MasterController
             // get registrasi selected
             $registrasi = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->get();
             $allkandidat = KandidatBarang::where('IdPermohonan', $registrasi[0]['IdPermohonan'])->get();
-            $catatan = Catatan::where('hashCatatan', $input['hashCatatan'][1])-get();
+            $catatan = Catatan::where([
+                ['IdPermohonan', '=', $registrasi[0]['IdPermohonan']],
+                ['TahapCatatan', '=', 0]
+            ])->get();
 
             // set registrasi and nform session
             session([
@@ -142,11 +145,11 @@ class RegistrasiController extends MasterController
 
         // create catatan record for this permohonan
         Catatan::createCatatan(
-            $IdPermohonan, 
-            1, 
-            $input['catatanpemohon'], 
-            session('user_sess')->npm,
-            md5($IdPermohonan.'1'.session('user_sess')->npm)
+            $IdPermohonan, // Id Permohonan terkait 
+            0, // tahap catatan
+            $input['catatanpemohon'], // deskripsi catatan dari pemohon
+            session('user_sess')->npm, // nomor induk pemohon
+            md5($IdPermohonan.'1'.session('user_sess')->npm) // hash catatan
         );
 
         // destroy jmlform session
@@ -190,7 +193,7 @@ class RegistrasiController extends MasterController
     public function updateRegistrasi(Request $request)
     {
         // Memvalidasi isian form registrasi barang
-        $this->validate ($regbarang, [
+        $this->validate ($request, [
             'subjek'=> 'required|max:100',
             'catatanpemohon' => 'required',
             'namabarang.*' => 'required|max:100',                
@@ -204,7 +207,7 @@ class RegistrasiController extends MasterController
             'kerusakanbarang.*' => 'required',
         ]);
 
-        $input = $request->all();
+        $input = $request->all();        
 
         // update data dari form registrasi barang ke table permohonan
         Permohonan::updatePermohonan($input['hashPermohonan'], [
@@ -212,14 +215,14 @@ class RegistrasiController extends MasterController
         ]);
 
         // update kandidat barang
-        for ($i=0; $i < count($input['namabarang']); $i++) { 
+        for ($i=1; $i <= count($input['namabarang']); $i++) { 
             KandidatBarang::updateKandidatBarang($input['hashKandidat'][$i], [
                 'NamaBarang' => $input['namabarang'][$i],
                 'JenisBarang' => $input['jenisbarang'][$i],
                 'KategoriBarang' => $input['kategoribarang'][$i],
                 'KeteranganBarang' => $input['keteranganbarang'][$i],
                 'KondisiBarang' => $input['kondisibarang'][$i],
-                'PenanggungJawab' => $input['penanggungjawab'][$i],
+                'Penanggungjawab' => $input['penanggungjawab'][$i],
                 'TanggalBeli' => date('Y-m-d H:i:s', strtotime($input['tanggalbeli'][$i])),
                 'SpesifikasiBarang' => $input['spesifikasibarang'][$i],
             ]);            

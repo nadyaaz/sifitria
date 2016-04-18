@@ -19,6 +19,9 @@ class GedungController extends MasterController
 	 */
     public function getGedung(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('gedung'))) return redirect('/');        
+
     	// check if request method is post or not
     	if(!$request->isMethod('POST')) {    		
     		// get gedung object from database
@@ -49,6 +52,9 @@ class GedungController extends MasterController
      */
     public function getCreateGedung()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+
     	// render buatgedung page
     	return $this->render('pinjamruang.buatgedung',
     		[
@@ -63,6 +69,9 @@ class GedungController extends MasterController
      */
     public function getUpdateGedung()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+
     	// if session gedung not found redirect to gedung
     	if (!session()->has('gedung')) return redirect('pinjamruang/gedung');
 
@@ -85,6 +94,9 @@ class GedungController extends MasterController
      */
     public function createGedung(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+
     	// form validation
     	$this->validate($request, [
     		'namagedung' => 'required|max:25'
@@ -116,6 +128,9 @@ class GedungController extends MasterController
      */
     public function updateGedung(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+
     	// form validation
     	$this->validate($request, [
     		'namagedung' => 'required|max:25'
@@ -137,6 +152,9 @@ class GedungController extends MasterController
      */
     public function removeGedung(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('gedung'))) return redirect('/');  
+
     	// set gedung to deleted
     	Gedung::removeGedung($request->input('hash'));
 

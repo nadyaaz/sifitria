@@ -34,6 +34,9 @@ class SSOController extends Controller
      */
     public function out(Request $request)    
     {	          	
+        // destroy session
+        session()->forget('user_sess');
+        
         // logout, then redirect to home portal
     	SSO::logout();    	    	
     }
