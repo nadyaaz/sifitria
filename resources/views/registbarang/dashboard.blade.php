@@ -15,32 +15,32 @@
     </div>
 
     <ul class="collapsible" data-collapsible="accordion">
-        @foreach($data['daftarregis'] as $barang)
+        @for($i=0; $i < count($data['allregistrasi']); $i++)
         
         <li>
             <div class="collapsible-header active">                                                        
-                <div class="col s1">{{ $barang->IdPermohonan }}</div>
-                <div class="col s5" style="word-wrap: normal">{{ $barang->SubjekPermohonan }}</div>                                          			
+                <div class="col s1">{{ $data['allregistrasi'][$i]->IdPermohonan }}</div>
+                <div class="col s5" style="word-wrap: normal">{{ $data['allregistrasi'][$i]->SubjekPermohonan }}</div>                                          			
                 <div class="col s3">
-                	@if($barang->TahapPermohonan == 1)
-                		@if($barang->StatusPermohonan == 0 )
+                	@if($data['allregistrasi'][$i]->TahapPermohonan == 1)
+                		@if($data['allregistrasi'][$i]->StatusPermohonan == 0 )
                 			{{'Ditinjau ke Lapangan'}}
-                		@elseif($barang->StatusPermohonan == 1 )
+                		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 1 )
                 			{{'Ditolak pada proses verifikasi'}}
-                		@elseif($barang->StatusPermohonan == 2 )
+                		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
             				{{'Sudah diverifikasi'}}
             			@endif
             		@else
-            			@if($barang->StatusPermohonan == 1 )
+            			@if($data['allregistrasi'][$i]->StatusPermohonan == 1 )
                 			{{'Ditolak'}}
-                		@elseif($barang->StatusPermohonan == 2 )
+                		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
                 			{{'Diterima'}}
             			@endif
             		@endif
                 </div>
-                <div class="col s3">{{ $barang->Nama }}</div>
+                <div class="col s3">{{ $data['allregistrasi'][$i]->Nama }}</div>
 
-                @if($barang->TahapPermohonan == 1 && $barang->StatusPermohonan == 0 )                
+                @if($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 0 )                
                                        
                 @endif                     
             </div>
@@ -49,73 +49,69 @@
                 <div class="row">
                     <div class="col s4">
                         <b>Nomor Surat :</b><br>
-                        {{ $barang->NomorSurat }}
+                        {{ $data['allregistrasi'][$i]->NomorSurat }}
                     </div>
                     <div class="col s4">
                         <b>Waktu Permohonan :</b><br>
-                        {{ $barang->created_at }}
+                        {{ $data['allregistrasi'][$i]->created_at }}
                     </div>                        
                 </div>
-                <div class="row">
-                    <div class="col s4">
-                       	<b>Nama Barang :</b><br>
-                       	{{ $barang->NamaBarang}}
+                
+                
+                <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
+                    LIHAT SEMUA BARANG
+                </a>
+
+                <!-- Modal Structure -->
+                <div id="kandidat-barang{{$i}}" class="modal">
+                    <div class="modal-content">
+                        @foreach($data['allkandidat'] as $kandidat)
+
+                        @if($kandidat->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)
+                        <h4>{{$kandidat->NamaBarang}}</h4>
+                        <div class="row">
+                            <div class="col s3">{{$kandidat->TanggalBeli}}</div>
+                            <div class="col s3">{{$kandidat->JenisBarang}}</div>
+                            <div class="col s3">{{$kandidat->KategoriBarang}}</div>
+                            <div class="col s3">{{$kandidat->KondisiBarang}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">{{$kandidat->Penanggungjawab}}</div><br>
+                            <div class="col s12">{{$kandidat->SpesifikasiBarang}}</div><br>
+                            <div class="col s12">{{$kandidat->KeteranganBarang}}</div>
+                        </div>
+                        @endif
+
+                        @endforeach
                     </div>
-                    <div class="col s4">
-                    	<b>Penanggung Jawab :</b><br>
-                    	{{ $barang->Penanggungjawab}}
-                    </div>
-                    <div class="col s4">
-                        <b>Tanggal Beli :</b><br>
-                        {{ $barang->TanggalBeli }}
+
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">TUTUP</a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col s4">
-                        <b>Kategori :</b> <br>
-                        {{ $barang->KategoriBarang}}
-                    </div>
-                    <div class="col s4">
-                        <b>Jenis :</b> <br>
-                        {{ $barang->JenisBarang }}
-                    </div>
-                    <div class="col s4">
-                        <b>Kondisi :</b> <br>
-                        {{ $barang->KondisiBarang}}
-                    </div>
-                </div>                    
-                <div class="row">                        
-                    <div class="col s6">
-                        <b>Spesifikasi :</b><br>
-                        {{ $barang->SpesifikasiBarang }}
-                    </div>
-                    <div class="col s6">
-                        <b>Keterangan :</b><br>
-                        {{ $barang->KeteranganBarang }}
-                    </div>
-                </div>
+
+                @for($j=0; $j < count($data['allcatatan']); $j++)
                 
-                @foreach($data['regiscatatan'] as $catatan)
-                
-                @if($catatan->IdPermohonan == $barang->IdPermohonan)
+                @if($data['allcatatan'][$j]->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)
                 <hr>
                 <div class="row">
                     <div class="col s12">
-                        <b>Catatan {{ $catatan->Role }}:</b><br>
-                        <i>Oleh {{ $catatan->Nama }}</i><br>
-                        <p>{{ $catatan->DeskripsiCatatan }}</p>
+                        <b>Catatan {{ $data['allcatatan'][$j]->Role }}:</b><br>
+                        <i>Oleh {{ $data['allcatatan'][$j]->Nama }}</i><br>
+                        <p>{{ $data['allcatatan'][$j]->DeskripsiCatatan }}</p>
+                        <input type="hidden" name="hashCatatan[{{$j+1}}]" value="{{ $data['allcatatan'][$j]->hashCatatan }}">
                     </div>
                 </div>   
                 @endif                    
 
-                @endforeach
+                @endfor
                 <!-- end foreach regiscatatan -->
                 
                 <div class="row">                    
                     <div class="col s12">
                         <form action="" method="POST">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $barang->IdPermohonan }}"/>
+                            <input type="hidden" name="Id" value="{{ $data['allregistrasi'][$i]->IdPermohonan }}"/>
                             Catatan: <br>
                             <textarea class="materialize-textarea" name="catatan_txtarea" cols="30" rows="30"></textarea>
                             <button class="btn waves-effect waves-light teal white-text right">
@@ -123,9 +119,9 @@
                                 <i class="material-icons white-text right">done</i>
                             </button>
                         </form>
-                        <form action="{{ url('registbarang/batal') }}" method="POST" class="left">
+                        <form action="{{ url('registregistrasi/batal') }}" method="POST" class="left">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $barang->IdPermohonan }}">
+                            <input type="hidden" name="Id" value="{{ $data['allregistrasi'][$i]->IdPermohonan }}">
                             <button class="waves-effect waves-red btn red">                                    
                                 TOLAK
                                 <i class="material-icons white-text right">clear</i>
@@ -136,9 +132,9 @@
 
                 <div class="row">
                     <div class="col s12 ">                            
-                        <form action="{{ url('registrasibarang') }}" method="POST" class="right">
+                        <form action="{{ url('registrasiregistrasi') }}" method="POST" class="right">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="hash" value="{{ $barang->hashPermohonan }}"/>                            
+                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
                             <button class="btn waves-effect waves-light teal white-text">
                                 UBAH
                                 <i class="material-icons right">edit</i>
@@ -146,14 +142,23 @@
                         </form> 
                     </div>
                 </div>
-            </div>
-         
+            </div>         
         </li> 
 
-    	@endforeach
-        <!-- foreach daftarregis -->
+    	@endfor
+        <!-- foreach allregistrasi -->
     </ul>
 </div>
 
+<script>
+    $(document).ready(function(){
+        $('.modal-trigger').leanModal({
+            dismissible: true, 
+            opacity: .3, 
+            in_duration: 148, 
+            out_duration: 148,
+        });
+    });
+</script>
 @stop
 <!-- stop section konten -->

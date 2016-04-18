@@ -28,20 +28,18 @@ class RegistrasiController extends MasterController
     		return $this->render('registbarang.dashboard',
     			[
     				'title' => 'Dashboard Registrasi Barang',
-    				'daftarregis' => $registrasi['daftarregis'],
-    				'regiscatatan' => $registrasi['regiscatatan'],
+    				'allregistrasi' => $registrasi['allregistrasi'],
+                    'allkandidat' => $registrasi['allkandidat'],
+    				'allcatatan' => $registrasi['allcatatan'],
     			]
     		);            
         } else {
-            // get registrasi selected
-            $registrasi = Permohonan::where('hashPermohonan', $request->input('hash'))->get();
-            $allkandidat = KandidatBarang::where('IdPermohonan', $registrasi[0]['IdPermohonan'])->get();
-            $catatan = Catatan::where([
-                ['IdPermohonan', '=', $registrasi[0]['IdPermohonan']],
-                ['NomorIndukPenulis', '=', $registrasi[0]['IdPemohon']],
-            ])->get();
+            $input = $request->all();
 
-            // dd($allkandidat[0]['IdPermohonan']);
+            // get registrasi selected
+            $registrasi = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->get();
+            $allkandidat = KandidatBarang::where('IdPermohonan', $registrasi[0]['IdPermohonan'])->get();
+            $catatan = Catatan::where('hashCatatan', $input['hashCatatan'][1])-get();
 
             // set registrasi and nform session
             session([
@@ -143,7 +141,13 @@ class RegistrasiController extends MasterController
         }
 
         // create catatan record for this permohonan
-        Catatan::createCatatan($IdPermohonan, 1, $input['catatanpemohon'], session('user_sess')->npm);
+        Catatan::createCatatan(
+            $IdPermohonan, 
+            1, 
+            $input['catatanpemohon'], 
+            session('user_sess')->npm,
+            md5($IdPermohonan.'1'.session('user_sess')->npm)
+        );
 
         // destroy jmlform session
         session()->forget('jmlform');
@@ -185,7 +189,52 @@ class RegistrasiController extends MasterController
      */
     public function updateRegistrasi(Request $request)
     {
+        // Memvalidasi isian form registrasi barang
+        $this->validate ($regbarang, [
+            'subjek'=> 'required|max:100',
+            'catatanpemohon' => 'required',
+            'namabarang.*' => 'required|max:100',                
+            'tanggalbeli.*' => 'required',
+            'penanggungjawab.*' => 'required|max:100',
+            'kategoribarang.*' => 'required|max:100',
+            'jenisbarang.*' => 'required|max:100',
+            'kondisibarang.*' => 'required|max:100',
+            'spesifikasibarang.*' => 'required',
+            'keteranganbarang.*' => 'required',                                
+            'kerusakanbarang.*' => 'required',
+        ]);
 
+        $input = $request->all();
+
+        // update data dari form registrasi barang ke table permohonan
+        Permohonan::updatePermohonan($input['hashPermohonan'], [
+            'SubjekPermohonan' => $input['subjek'],
+        ]);
+
+        // update kandidat barang
+        for ($i=0; $i < count($input['namabarang']); $i++) { 
+            KandidatBarang::updateKandidatBarang($input['hashKandidat'][$i], [
+                'NamaBarang' => $input['namabarang'][$i],
+                'JenisBarang' => $input['jenisbarang'][$i],
+                'KategoriBarang' => $input['kategoribarang'][$i],
+                'KeteranganBarang' => $input['keteranganbarang'][$i],
+                'KondisiBarang' => $input['kondisibarang'][$i],
+                'PenanggungJawab' => $input['penanggungjawab'][$i],
+                'TanggalBeli' => date('Y-m-d H:i:s', strtotime($input['tanggalbeli'][$i])),
+                'SpesifikasiBarang' => $input['spesifikasibarang'][$i],
+            ]);            
+        }
+
+        // update catatan
+        Catatan::updateCatatan($input['hashCatatan'], $input['catatanpemohon']);
+
+        // forget session        
+        session()->forget('registrasi');
+        session()->forget('allkandidat');
+        session()->forget('catatan');
+
+        // Mengembalikan ke halaman list daftar registrasi barang             
+        return redirect('registrasibarang');
     }
 
     /**

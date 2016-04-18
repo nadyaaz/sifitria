@@ -14,6 +14,11 @@ class Permohonan extends Model
         DB::table('permohonan')->insert($data);
     }
 
+    public function updatePermohonan($hash, $data)
+    {
+        DB::table('permohonan')->where('hashPermohonan', $hash)->update($data);
+    }
+
     public static function getPeminjaman()
     {
     	$allpermohonan = DB::select(
@@ -51,32 +56,29 @@ class Permohonan extends Model
     public static function getRegistrasi()
     {
     	// get list registrasi barang
-		$daftarregis = DB ::select(
-			DB::raw(
-				'SELECT * 
-				from permohonan p, kandidat_barang kb, users u 
-				where 
-					p.JenisPermohonan = 2 AND 
-					p.IdPermohonan = kb.IdPermohonan AND 
-					p.IdPemohon = u.NomorInduk AND
-					p.deleted= 0'
-			)
-		);
+		$allregistrasi = DB::select(DB::raw(
+			'SELECT * 
+			FROM permohonan p, users u 
+			WHERE
+				p.JenisPermohonan = 2 AND 
+				p.IdPemohon = u.NomorInduk AND
+				p.deleted= 0'
+		));   
+
+        // get list kandidat barang
+        $allkandidat = KandidatBarang::all();
 
 		// get list catatan
-		$regiscatatan = DB ::select(
-			DB::raw(
-				'SELECT * 
-				FROM permohonan p, catatan c, users u 
-				WHERE
-					p.IdPermohonan = c.IdPermohonan AND 
-					c.NomorIndukPenulis = u.NomorInduk'
-			)
-		);
+		$allcatatan = DB ::select(DB::raw(
+			'SELECT *
+			FROM catatan c, users u 
+			WHERE c.NomorIndukPenulis = u.NomorInduk'
+		));
 
 		return array(
-			'daftarregis' => $daftarregis,
-			'regiscatatan' => $regiscatatan
+			'allregistrasi' => $allregistrasi,
+            'allkandidat' => $allkandidat,
+			'allcatatan' => $allcatatan,
 		);
     }
 

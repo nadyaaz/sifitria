@@ -12,11 +12,13 @@
             <div class="row form-row">
                 <div class="col s6">
                     <b>Subjek</b><br>
+                    <input type="hidden" name="hashPermohonan" value="{{ $registrasi[0]['hashPermohonan'] }}">
                     <input name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate" value="{{ (isset($data['registrasi'])) ? ($data['registrasi'][0]['SubjekPermohonan']) : old('subjek') }}">
                 </div><br>
 
                 <div class="col s12">
-                    <b>Catatan Pemohon</b> <br>
+                    <b>Catatan Pemohon</b> <br> 
+                    <input type="hidden" name="hashCatatan" value="{{ $data['catatan'][0]['hashCatatan'] }}">
                     <textarea name="catatanpemohon" class="materialize-textarea" length="240">{{ (isset($data['catatan'][0])) ? ($data['catatan'][0]['DesksripsiCatatan']) : old('catatanpemohon') }}</textarea>
                 </div>
             </div><br><hr>
@@ -24,6 +26,7 @@
             <div id="barang-multiform">             
                 @for($i=1; $i <= count($data['allkandidat']); $i++)
                 <div id="barang-form[{{$i}}]">
+                    <input type="hidden" name="hashKandidat[{{$i}}]" value="{{ $data[$i]['hashKandidat'] }}">
                     <div class="valign-wrapper">                    
                         <span class="valign judul-add-barang">Barang</span>&nbsp;&nbsp;
                     </div>
@@ -100,13 +103,11 @@
             <div class="row">
                 <div class="col s4 offset-s4 valign-wrapper">
                     <div class="valign">    
-                        <form action="{{ url('registrasibarang/buat') }}" method="POST"> 
-                            {!! csrf_field() !!}                    
-                            <button class="btn waves-light waves-effect teal">
-                                UBAH REGISTRASI BARANG
-                                <i class="material-icons right">send</i>
-                            </button>&nbsp;&nbsp;               
-                        </form>             
+                        {!! csrf_field() !!}                    
+                        <button class="btn waves-light waves-effect teal">
+                            UBAH REGISTRASI BARANG
+                            <i class="material-icons right">send</i>
+                        </button>&nbsp;&nbsp;               
                     </div>
                 </div>        
             </div>
