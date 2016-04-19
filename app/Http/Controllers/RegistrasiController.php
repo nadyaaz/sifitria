@@ -21,7 +21,7 @@ class RegistrasiController extends MasterController
     public function dashboard(Request $request)
     {   
         // check if user permitted        
-        if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
+        // if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
 
         if (!$request->isMethod('POST')) {
     		// get permohonan registrasi barang data
@@ -67,7 +67,7 @@ class RegistrasiController extends MasterController
     public function getCreateRegistrasi(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatregistrasi'))) return redirect('/');    
+        if (!($this->isPermitted('buatregistrasi'))) return redirect('registrasibarang');    
 
         if ($request->isMethod('POST')) 
             session()->flash('jmlform', $request->input('jmlform'));

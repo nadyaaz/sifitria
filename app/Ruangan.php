@@ -27,15 +27,23 @@ class Ruangan extends Model
      */
     public static function getAllRuangan()
     {
-    	return DB::select(
-    		DB::raw(
-    			'SELECT *
-    			FROM ruangan r, gedung g
-    			WHERE 
-    				r.IdGed = g.IdGedung AND
-    				r.deleted = 0'	
-    		)
-    	);
+    	return DB::select(DB::raw(
+			'SELECT *
+			FROM ruangan r, gedung g
+			WHERE 
+				r.IdGed = g.IdGedung AND
+				r.deleted = 0'
+    	));
+    }
+
+    /**
+     * Get ruangan and related gedung given the hash
+     * @param  String $hash hashRuang
+     * @return Ruangan, Gedung
+     */
+    public static function getRuangan($hash)
+    {
+        return Ruangan::where('hashRuang', $hash)->get();
     }
 
     /**

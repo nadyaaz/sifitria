@@ -102,10 +102,12 @@ class JadwalController extends MasterController
             // push all jadwal to array
             foreach ($alljadwal as $jadwal) {
                 $jsonarr = [
-                    'title' => $jadwal->KeperluanPeminjaman.' ('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')',
+                    'title' => $jadwal->KeperluanPeminjaman.'('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')',
                     'start' => str_replace(' ', 'T', $jadwal->WaktuMulai),
                     'end'   => str_replace(' ', 'T', $jadwal->WaktuSelesai),
-                    'tooltip' => $jadwal->KeperluanPeminjaman.' ('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')'
+                    'ruangan' => $jadwal->NomorRuangan,
+                    'gedung' => str_replace('Gedung ', '', $jadwal->Nama),
+                    'tooltip' => $jadwal->KeperluanPeminjaman
                 ];
 
                 // push

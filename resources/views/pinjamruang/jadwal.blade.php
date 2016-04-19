@@ -68,7 +68,40 @@
 
 		<div class="row">
 			<div id="calendar"></div>
-		</div>		
+		</div>	
+
+		<div id="modaljadwal" class="modal">
+			<div class="modal-content">
+				<h4 id="modaltitle"></h4>
+				<div class="row">
+					<div class="col s4">
+						<b>Tanggal</b><br>
+						<span id="modaltanggal"></span>
+					</div>
+					<div class="col s4">
+						<b>Waktu Mulai</b><br>
+						<span id="modalmulai"></span>
+					</div>
+					<div class="col s4">
+						<b>Waktu Selesai</b><br>
+						<span id="modalselesai"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s6">
+						<b>Gedung</b><br>
+						<span id="modalgedung"></span>
+					</div>
+					<div class="col s6">
+						<b>Ruangan</b><br>
+						<span id="modalruangan"></span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">TUTUP</a>
+			</div>
+		</div>	
 	</div>
 </div>
 @stop
@@ -79,25 +112,52 @@
 		// tooltip settings
 		$('.tooltipped').tooltip({delay: 50});
 
+		$('.modal-trigger').leanModal({
+			dismissible: false, 
+			opacity: .3, 
+			in_duration: 148,
+			out_duration: 148,
+		});
+		
+		$(document).one('click', '.jadwalpopup', function(e) {
+			e.preventDefault();
+
+			$('.modal-trigger').leanModal({
+				dismissible: false, 
+				opacity: .3, 
+				in_duration: 148,
+				out_duration: 148,
+			});
+
+			$('#modaljadwal').openModal();
+
+			$(this).prop('disabled', true);
+		});
+			
 		// fullCalendar sources
 		var sources = {
 			RuangRapatBesar: {
 				url: 'jadwal/get?jenisruang=RuangRapatBesar',
+	            type: 'POST',		            	            
 	            color: '#F44336'
 			},
 			RuangRapatKecil: {
 				url: 'jadwal/get?jenisruang=RuangRapatKecil',
+	            type: 'POST',		            
 	            color: '#3F51B5'
 			},
 			Auditorium: {
 				url: 'jadwal/get?jenisruang=Auditorium',
+	            type: 'POST',		            
 	            color: '#4CAF50'
 			},
 			Kelas: {
 				url: 'jadwal/get?jenisruang=Kelas&nomorruang=',
+	            type: 'POST',		            
 	            color: '#FFC107'
 			}
 		};		
+
 
 		// AJAX setup, set headers attribut ' X-CSRF-Token' to validate the laravel POST request method
 		$.ajaxSetup({
@@ -138,13 +198,21 @@
 					eventLimit: 2,
 				},
 			},
-			type: 'POST'	
 	        error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },
 			eventSources: [		        
 		        sources.RuangRapatBesar, sources.RuangRapatKecil, sources.Auditorium, sources.Kelas		        
 		    ],
 		    eventRender: function(event, element) {
 		        element.attr('title', event.tooltip);
+		        element.attr('href', '#modaljadwal');
+		        element.click(function(){
+		        	$('#modaltitle').html(event.title);
+		        	$('#modaltanggal').html(moment(event.start).format("LL"));
+		        	$('#modalmulai').html(moment(event.start).format("HH:mm"));
+		        	$('#modalselesai').html(moment(event.end).format("HH:mm"));
+		        	$('#modalgedung').html(event.gedung);
+		        	$('#modalruangan').html(event.ruangan);
+		        });
 		    }
 	    });
 
@@ -178,7 +246,6 @@
 	    	} else if (selected == 'Kelas') {
 	    		var ruangan = $('select[name=nomorruang]').val();
 	    		sources.Kelas.url += ruangan;
-	    		alert(sources.Kelas.url);
 	    		$('#calendar').fullCalendar('addEventSource', sources.Kelas);
 	    	}
 

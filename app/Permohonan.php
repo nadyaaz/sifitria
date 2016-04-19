@@ -40,32 +40,28 @@ class Permohonan extends Model
     public static function getPeminjaman()
     {
         // get all permohonan peminjaman ruangan
-    	$allpermohonan = DB::select(
-    		DB::raw(
-    			'SELECT * 
-    			FROM permohonan p, jadwal j, ruangan r, users u
-    			WHERE  
-    				p.JenisPermohonan = 1 AND 
-    				p.IdRuangan = j.IdRuangan AND 
-    				j.IdRuangan = r.IdRuangan AND
-                    p.IdGedung = j.IdGedung AND
-                    j.IdGedung = r.IdGed AND
-                    p.IdJadwal = j.IdJadwal AND 
-                    p.IdPemohon = u.NomorInduk AND
-                    p.deleted = 0'
-    		)
-    	);
+    	$allpermohonan = DB::select(DB::raw(
+			'SELECT * 
+			FROM permohonan p, jadwal j, ruangan r, users u
+			WHERE  
+				p.JenisPermohonan = 1 AND 
+				p.IdRuangan = j.IdRuangan AND 
+				j.IdRuangan = r.IdRuangan AND
+                p.IdGedung = j.IdGedung AND
+                j.IdGedung = r.IdGed AND
+                p.IdJadwal = j.IdJadwal AND 
+                p.IdPemohon = u.NomorInduk AND
+                p.deleted = 0'
+    	));
 
         // get all catatan
-        $allcatatan = DB::select(
-        	DB::raw(
-        		'SELECT * 
-        		FROM permohonan p, catatan c, users u 
-        		WHERE  
-        			p.IdPermohonan = c.IdPermohonan AND 
-        			c.NomorIndukPenulis = u.NomorInduk'
-        	)
-        );
+        $allcatatan = DB::select(DB::raw(
+    		'SELECT * 
+    		FROM permohonan p, catatan c, users u 
+    		WHERE  
+    			p.IdPermohonan = c.IdPermohonan AND 
+    			c.NomorIndukPenulis = u.NomorInduk'
+        ));
 
         // return the array
         return array(

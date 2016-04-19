@@ -2,78 +2,137 @@
 
 @section('konten')	
 <div class="subsection">
-	<form action="{{ url('pinjamruang/buat_formdetail/proses') }}" method="POST">			
-		<div class="row">			
-			<div class="col s6">
+	<h5>Buat Permohonan Peminjaman Ruangan</h5>
+    <div class="divider"></div><br>
 
-			 	<p>
-					Pilih Jenis Ruangan :
-		 		</p>
-				<p>
-					<input name="jenisRuangan" type="radio" id="test1" value="Kelas"/>
-				    <label for="test1">Ruang Kelas</label>
-				 	
-				</p>
-				<p>
-				    <input name="jenisRuangan" type="radio" id="test2" value="Auditorium"/>
-				    <label for="test2">Ruang Auditorium</label>
-				</p>
-				<p>
-				    <input name="jenisRuangan" type="radio" id="test3" value="RuangRapatBesar"/>
-				    <label for="test3">Ruang Rapat Besar</label>
-				</p>
-				<p>
-				    <input name="jenisRuangan" type="radio" id="test4" value="RuangRapatKecil"/>
-				    <label for="test4">Ruang Rapat Kecil</label>
-				</p>
-			
-				   
-				Pilih Tanggal Peminjaman :
-				<input name="tanggal" type="date" class="datepicker">
+	<form action="{{ url('pinjamruang/buat_formdetail/proses') }}" method="POST">
+		<div class="row ajaxform">			
+			<div class="row">			
+				<div class="col s6">
+				 	<p>
+						Pilih Jenis Ruangan :
+			 		</p>
+					<p>
+						<input name="jenisRuangan" type="radio" id="Kelas" value="Kelas"/>
+					    <label for="Kelas">Ruang Kelas</label>				 	
+					</p>
+					<p>
+					    <input name="jenisRuangan" type="radio" id="Auditorium" value="Auditorium"/>
+					    <label for="Auditorium">Ruang Auditorium</label>
+					</p>
+					<p>
+					    <input name="jenisRuangan" type="radio" id="RuangRapatBesar" value="RuangRapatBesar"/>
+					    <label for="RuangRapatBesar">Ruang Rapat Besar</label>
+					</p>
+					<p>
+					    <input name="jenisRuangan" type="radio" id="RuangRapatKecil" value="RuangRapatKecil"/>
+					    <label for="RuangRapatKecil">Ruang Rapat Kecil</label>
+					</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s6">
+					Pilih Tanggal Peminjaman :
+					<input name="tanggal" type="date" class="datepicker">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					Isi Waktu Peminjaman : <br>
+				</div>	
+
+				<div class="col s2">
+					<select name="waktumulai" id="waktumulai">
+						<option value="800">08:00</option>
+						<option value="830">08:30</option>
+						<option value="900">09:00</option>
+						<option value="930">09:30</option>
+						<option value="1000">10:00</option>
+						<option value="1030">10:30</option>
+						<option value="1100">11:00</option>
+						<option value="1130">11:30</option>
+						<option value="1200">12:00</option>
+						<option value="1230">12:30</option>
+						<option value="1300">13:00</option>
+						<option value="1330">13:30</option>
+						<option value="1400">14:00</option>
+						<option value="1430">14:30</option>
+						<option value="1500">15:00</option>
+						<option value="1530">15:30</option>
+						<option value="1600">16:00</option>
+						<option value="1630">16:30</option>
+						<option value="1700">17:00</option>
+						<option value="1730">17:30</option>
+						<option value="1800">18:00</option>
+						<option value="1830">18:30</option>
+						<option value="1900">19:00</option>
+					</select>
+				</div>
+				<div class="col s2">
+					 <h6 style="text-align: center">s.d.</h6>
+				</div>
+				<div class="col s2">
+					<select name="waktuselesai" id="waktuselesai">
+						<option value="800">08:00</option>
+						<option value="830">08:30</option>
+						<option value="900">09:00</option>
+						<option value="930">09:30</option>
+						<option value="1000">10:00</option>
+						<option value="1030">10:30</option>
+						<option value="1100">11:00</option>
+						<option value="1130">11:30</option>
+						<option value="1200">12:00</option>
+						<option value="1230">12:30</option>
+						<option value="1300">13:00</option>
+						<option value="1330">13:30</option>
+						<option value="1400">14:00</option>
+						<option value="1430">14:30</option>
+						<option value="1500">15:00</option>
+						<option value="1530">15:30</option>
+						<option value="1600">16:00</option>
+						<option value="1630">16:30</option>
+						<option value="1700">17:00</option>
+						<option value="1730">17:30</option>
+						<option value="1800">18:00</option>
+						<option value="1830">18:30</option>
+						<option value="1900">19:00</option>
+					</select>
+				</div>
+			</div>		
+
+			<div class="row" id="xyz">
+				<div class="col s12">
+					<a class="btn waves-effect waves-light" id="jadwaljson" name="Next Page">	
+						CARI RUANGAN TERSEDIA
+			    		<i class="material-icons right">navigate_next</i>
+	  				</a>
+	  			</div>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col s12">
-				Isi Waktu Peminjaman : <br>
-			</div>	
+				Ruangan Tersedia :
+			</div>
+		
+			<div id="tableHead" class="row">
+				<div class="col s4">Gedung</div>
+	    		<div class="col s3">Ruangan</div>
+	    		<div class="col s3">Kapasitas</div>	
+	    	</div>						
+			<ul id="tabelRuangan" class="collection">
 
-			<div class="col s2">
-				<input name="waktuMulai" value="waktuAwal" type="text" id="waktuMulai" class="validate">
-			</div>
-			<div class="col s2">
-				 <h6 style="text-align: center">s.d.</h6>
-			</div>
-			<div class="col s2">
-				<input name="waktuSelesai" value="waktuAkhir" type="text" id="waktuSelesai" class="validate">
-			</div>
-		</div>		
-
-		<div class="row" id="xyz">
-			<div class="col s12">
-				<a class="btn waves-effect waves-light" id="jadwaljson" name="Next Page">	CARI RUANGAN TERSEDIA
-		    	<i class="material-icons right">navigate_next</i>
-  				</a>
-  			</div>
+			</ul>
 		</div>
-
-		<div id="tabelRuangan">
-			<div class="row">
-				<div class="col s12">
-					Ruangan Tersedia :
-				</div>
-			
-				<div id="tableHead" class="row">
-		    		<div class="col s6">Ruangan</div>
-		    		<div class="col s6">Kapasitas</div>	
-		    	</div>						
-			</div>
-		</div>
+		
+		
 
 		<div class="subsection">				
 			<div class="row">
 				<div class="col s12">
-					Subjek: <br>
+					Subjek Permohonan Peminjaman Ruangan: <br>
 				</div>	
 
 				<div class="col s6">
@@ -95,29 +154,20 @@
 				</div>	
 
 				<div class="col s6">
-					<input name="catatan" type="text" id="catatan" class="validate" required>
+					<textarea class="materialize-textarea" name="catatan" id="catatan" cols="30" rows="10"></textarea>					
 				</div>
 			</div>
 			<div class="row" id="xyz">
 				<div class="col s12">
 					{!! csrf_field() !!}
-					<input type="hidden" name = "pemohon" value = "{{$data['user_sess']->npm}}">
-					<button class="btn waves-effect waves-light" id="formruangan" name="Next Page">	Submit dan Simpan Permohonan
-			    	
+					<input type="hidden" name="pemohon" value="{{$data['user_sess']->npm}}">
+					<button class="btn waves-effect waves-light" id="formruangan" name="Next Page">	
+						Simpan Permohonan			    	
 	  				</button>
 	  				</div>
 				</div>		
 			</form>
-		</div>
-
-		<div class="row">		
-			<div class="col s12"><p></p></div>
-			<div class="col s12 m4 l2"><p></p></div>
-			<div class="col s12 m4 l8"><hr></hr></div>
-			<div class="col s12 m4 l2"><p></p></div>
-			<div class="col s12 m6 l3"><p></p></div>			
-			<div class="col s12 m6 l3"><p></p></div>			
-		</div>
+		</div>		
 	</form>
 </div>
 
@@ -129,29 +179,50 @@ $(document).ready(function() {
 	});
 
 	$('#jadwaljson').click(function(){
+
 		var kategori = $('input[type="radio"][name="jenisRuangan"]:checked').val();
 		var tanggal = $('.datepicker').val();
-		var waktumulai = $('#waktuMulai').val();
-		var waktuselesai = $('#waktuSelesai').val();
-			
-		
-		$.ajax({
-			url: 'buat/getruangan?jenisRuangan='+kategori+'&tanggal='+tanggal+'&waktuMulai='+waktumulai+'&waktuSelesai='+waktuselesai,
-			type: 'POST',				
-			processData:false,
-				
-			success: function(data){				
-				var myElementToAppendTo = $("#tabelRuangan");
-				$('.pilihan').html('');
-		       	$.each($.parseJSON(data), function(idx, obj) {		     		
-		           myElementToAppendTo.append("<ul class='collection'><li class='collection-item'><div class='row'><div class='col s6 pilihan'><input type='radio' name='ruangandipilih' id='radio"+obj.IdRuangan+"' value='"+obj.IdGedung+"."+obj.IdRuangan+"'/><label for='radio"+obj.IdRuangan+"'>"+obj.Nama+obj.NomorRuangan+"</label></div><div class='col s6'>"+obj.KapasitasRuangan+"</div></div></div></li></ul>");
-				});
-			},
-			error: function(xhr, status, error){
-				alert(status+' '+error);
-			}
-		})					
-	}); 
+		var waktumulai = new Number($('select[name=waktumulai] option:selected').val());
+		var waktuselesai = new Number($('select[name=waktuselesai] option:selected').val());
+
+		// form validation
+		var isWaktuSelesaiLebihKecil = (((waktumulai)-(waktuselesai)) >= 0) ? true : false;
+		var isKategoriUndefined = (kategori == undefined) ? true : false;
+		var isTanggalEmpty = (tanggal == '') ? true : false;
+
+		// if form not validated don't execute the AJAX calling
+		if (!isWaktuSelesaiLebihKecil && !isKategoriUndefined && !isTanggalEmpty) {
+			$.ajax({
+				url: 'buat/getruangan?jenisRuangan='+kategori+'&tanggal='+tanggal+'&waktuMulai='+waktumulai+'&waktuSelesai='+waktuselesai,
+				type: 'POST',				
+				processData:false,
+					
+				success: function(data){				
+					var myElementToAppendTo = $("#tabelRuangan");
+					var i = 1;	
+			       	$.each($.parseJSON(data), function(idx, obj) {	
+			       		myElementToAppendTo.html('');
+			           	myElementToAppendTo.append("<li class='collection-item'><div class='row form-row'><div class='col s4 pilihan'><input type='radio' name='ruangandipilih' id='radio"+i+"' value='"+obj.hashRuang+"'/><label for='radio"+i+"'>"+obj.Nama+"</label></div><div class='col s3'>"+obj.NomorRuangan+"</div><div class='col s3'>"+obj.KapasitasRuangan+"</div><div class='col s2'><a class='waves-light waves-effect uncheck' id='"+i+"'><i class='material-icons red-text'>cancel</i></a></div></div></div></li>");
+			           	i++;
+					});
+				},
+				error: function(xhr, status, error){
+					alert(status+' '+error);
+				}
+			})								
+		}
+
+	});
+
+	$(document).on('change', 'input[type=radio][name=ruangandipilih]', function(){
+		$('.ajaxform').hide(400);
+	});
+
+	$(document).on('click', '.uncheck', function(){
+		var id = $(this).attr('id');		
+		$('#radio'+id).prop('checked', false);
+		if($('input[type=radio][name=ruangandipilih]:checked').val() == undefined) $('.ajaxform').show(400);
+	});
 });		
 //]]>
 </script>

@@ -60,19 +60,19 @@ class MasterController extends Controller
 
     	// permitted user rules
     	$userrule = [
-    		'Manager Fasilitas & Infrastruktur' => 
+    		'Manager Fasilitas & Infrastruktur' =>
                 ['registrasibarang', 'barang', 'buatbarang'],
-    		'Staf Fasilitas & Infrastruktur' => 
+    		'Staf Fasilitas & Infrastruktur' =>
                 ['registrasibarang', 'barang', 'buatbarang'],
-    		'Staf PPAA' => 
+    		'Staf PPAA' =>
                 ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
-    		'Staf Sekretariat' => 
+    		'Staf Sekretariat' =>
                 ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
-    		'Staf' => 
+    		'Staf' =>
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
-    		'HM' => 
+    		'HM' =>
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
-    		'Mahasiswa' => 
+    		'Mahasiswa' =>
                 ['pinjamruang', 'buatpeminjaman'],
     	];
 
@@ -80,7 +80,7 @@ class MasterController extends Controller
     	$usertype = SSO::getUser()->role;
 
     	// check if user permittes
-    	if (isset($userrule[$usertype])) {
+    	if (array_key_exists($usertype, $userrule)) {
     		if (in_array($page, $userrule[$usertype], true)) return true;
     		else return false;
     	} else return false;    	

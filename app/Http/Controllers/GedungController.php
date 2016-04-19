@@ -64,6 +64,40 @@ class GedungController extends MasterController
     }    
 
     /**
+     * Create gedung object and input to database
+     * @param  Request $request request object
+     * @return redirect to gedung page
+     */
+    public function createGedung(Request $request)
+    {
+        // check if user permitted        
+        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+
+        // form validation
+        $this->validate($request, [
+            'namagedung' => 'required|max:25'
+        ]);
+
+        // get last object Gedung           
+        $lastObj = Master::getLast('gedung', 'IdGedung');       
+
+        if($lastObj == null) $IdGedung = 1;
+        else $IdGedung = $lastObj->IdGedung + 1;
+
+        $namagedung = $request->input('namagedung');
+
+        // input data to database
+        Gedung::createGedung([
+            'IdGedung' => $IdGedung,
+            'Nama' => $namagedung,
+            'hash' => md5($IdGedung.$namagedung) // create hash
+        ]);
+
+        // redirect to daftar gedung
+        return redirect('pinjamruang/gedung');
+    }
+
+    /**
      * Render update gedung page
      * @return view update gedung
      */
@@ -85,41 +119,7 @@ class GedungController extends MasterController
     			'gedung' => $gedung,
     		]
     	);
-    }
-
-    /**
-     * Create gedung object and input to database
-     * @param  Request $request request object
-     * @return redirect to gedung page
-     */
-    public function createGedung(Request $request)
-    {
-        // check if user permitted        
-        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
-
-    	// form validation
-    	$this->validate($request, [
-    		'namagedung' => 'required|max:25'
-    	]);
-
-    	// get last object Gedung    	    
-    	$lastObj = Master::getLast('gedung', 'IdGedung');    	
-
-    	if($lastObj == null) $IdGedung = 1;
-        else $IdGedung = $lastObj->IdGedung + 1;
-
-    	$namagedung = $request->input('namagedung');
-
-    	// input data to database
-    	Gedung::createGedung([
-    		'IdGedung' => $IdGedung,
-    		'Nama' => $namagedung,
-    		'hash' => md5($IdGedung.$namagedung) // create hash
-    	]);
-
-    	// redirect to daftar gedung
-    	return redirect('pinjamruang/gedung');
-    }
+    }    
 
     /**
      * Update gedung object in database
@@ -138,7 +138,7 @@ class GedungController extends MasterController
 
     	// input data to database
     	Gedung::updateGedung($request->input('hash'), [    		
-    		'Nama' => $request->input('namagedung')
+    		'Nama' => $request->input('namagedung'),
     	]);    	
 
     	// redirect to daftar gedung

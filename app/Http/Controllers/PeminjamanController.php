@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Permohonan;
 use App\Catatan;
+use App\Master;
 use DB;
 use Carbon\Carbon;
 
@@ -50,6 +51,71 @@ class PeminjamanController extends MasterController
     }
 
     /**
+     * [createPeminjaman description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function createPeminjaman(Request $request)
+    {
+        // get al input
+        $input = $request->all();
+
+        // validate input
+        $this->validate($request, [
+            'ruangandipilih' => 'required',
+            'pemohon' => 'required',
+            'subjek' => 'required',
+            'keperluan' => 'required',
+            'waktuMulai' => 'required',
+            'waktuSelesai' => 'required',
+            'catatan' => 'required'
+        ]);
+
+        $hashRuang = $input['ruangandipilih'];
+        $user = $input['pemohon'];
+        $subjek = $input['subjek'];
+        $keperluan = $input['keperluan'];
+        $catatan = $input['catatan'];
+        $tanggal = $input['tanggal'];
+        $waktuMulai = $input['waktuMulai'];
+        $waktuSelesai = $input['waktuSelesai'];        
+
+        $waktuMulai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$waktuMulai));
+        $waktuSelesai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$waktuSelesai));
+        $ruangan = Ruangan::getRuangan($hashRuang);
+
+        // get permohonan last ID
+        $lastPermohonanId = Master::getLastId('permohonan', 'IdPermohonan');        
+        $IdPermohonan = $lastPermohonanId + 1;
+
+        // get jadwal last ID
+        $lastJadwalId = Master::getLastId('jadwal', 'IdJadwal', [
+            ['IdGedung', '=', $ruangan->IdGed],
+            ['IdRuangan', '=', $ruangan->IdRuangan],
+        ]);
+        $IdJadwal = $lastJadwalId + 1;
+
+
+DB::insert(
+        DB::raw( "INSERT INTO jadwal (IdGedung, IdRuangan, IdJadwal, WaktuMulai, waktuSelesai, keperluanPeminjaman) VALUES ('$IdGedung','$IdRuangan', '$IdJadwal', '$timestampWaktuMulai', '$timestampWaktuSelesai', '$keperluan')"
+            )
+        ); 
+
+
+    DB::insert(
+        DB::raw( "INSERT INTO permohonan (IdPermohonan, SubjekPermohonan, IdPemohon, IdGedung, IdRuangan, IdJadwal, JenisPermohonan) VALUES ('$IdPermohonan','$subjek', '$user', '$IdGedung', '$IdRuangan','$IdJadwal',1)"
+            )
+        ); 
+
+       DB::insert(
+        DB::raw( "INSERT INTO catatan (IdPermohonan, TahapCatatan, DeskripsiCatatan, NomorIndukPenulis) VALUES ('$IdPermohonan', 1, '$catatan', '$user')"
+            )
+        ); 
+
+       return redirect('pinjamruang');
+    }
+
+    /**
      * Get ruangan available through AJAX request
      * @param  Request $request Request object
      * @return JSON
@@ -77,12 +143,10 @@ class PeminjamanController extends MasterController
                 r.JenisRuangan="'.$jenisRuangan.'" AND 
                 r.IdGed=g.IdGedung'
         ));
-
         
         $ruangantersedia = array();
 
-        foreach($allruangan as $ruangan) {
-            
+        foreach($allruangan as $ruangan) {            
             $IdGedung = $ruangan->IdGedung;
             $IdRuangan = $ruangan->IdRuangan;
 
@@ -104,7 +168,6 @@ class PeminjamanController extends MasterController
                     $datawaktumulai = strtotime($jadwal->WaktuMulai);
                     $datawaktuselesai = strtotime($jadwal->WaktuSelesai);
                     $waktusekarang = strtotime(Carbon::now());
-                    // dd($waktusekarang);
 
                     //Kalau waktu mulai jadwal yang udah ada lebih lama dari waktu sekarang 
                     if( !($datawaktumulai < $waktusekarang && $datawaktuselesai < $waktusekarang) )
@@ -121,22 +184,7 @@ class PeminjamanController extends MasterController
         }
 
         return json_encode($ruangantersedia); 
-    }
-
-    /**
-     * Soft-delete permohonan peminjaman ruangan
-     * set 'deleted' column to
-     * @param  Request $request Request object
-     * @return redirect to pinjamruang
-     */
-    public function removePeminjaman(Request $request)
-    {
-    	// ganti status peminjaman pada database
-        Permohonan::deletePermohonan($request->input('hashPermohonan'));
-    	
-		// redirect back to peminjaman dashboard
-        return redirect('pinjamruang');
-    }
+    }    
 
     /**
      * [setuju description]
@@ -165,4 +213,19 @@ class PeminjamanController extends MasterController
         
         return back();
     }  
+
+    /**
+     * Soft-delete permohonan peminjaman ruangan
+     * set 'deleted' column to
+     * @param  Request $request Request object
+     * @return redirect to pinjamruang
+     */
+    public function removePeminjaman(Request $request)
+    {
+        // ganti value delete peminjaman pada database
+        Permohonan::deletePermohonan($request->input('hashPermohonan'));
+        
+        // redirect back to peminjaman dashboard
+        return redirect('pinjamruang');
+    }
 }
