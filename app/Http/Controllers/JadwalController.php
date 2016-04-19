@@ -11,6 +11,10 @@ use Input;
 
 class JadwalController extends MasterController
 {       
+    /**
+     * Get Jadwal view
+     * @return jadwal view
+     */
     public function getJadwal()
     {
         // check if user permitted        
@@ -38,6 +42,10 @@ class JadwalController extends MasterController
     	);
     }
 
+    /**
+     * Get create jadwal view
+     * @return buatjadwal view
+     */
     public function getCreateJadwal()
     {
         // check if user permitted        
@@ -51,6 +59,11 @@ class JadwalController extends MasterController
     	);
     }
     
+    /**
+     * Get jadwal AJAX to feed fullCalendar object
+     * @param  Request $request Request object
+     * @return JSON             JSON Objetc to feed fullCalendar
+     */
     public function getJadwalAJAX(Request $request)
     {
     	// check if request is AJAX, if it's not ignore

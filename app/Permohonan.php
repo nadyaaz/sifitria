@@ -10,9 +10,9 @@ class Permohonan extends Model
     protected $table = 'PERMOHONAN';
 
     /**
-     * [createPermohonan description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
+     * Create permohonan record on database
+     * @param  Array $data  Create permohonan data
+     * @return void
      */
     public static function createPermohonan($data)
     {
@@ -21,10 +21,10 @@ class Permohonan extends Model
     }
 
     /**
-     * [updatePermohonan description]
-     * @param  [type] $hash [description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
+     * Update permohonan record on database
+     * @param  String $hash Permohonan hash
+     * @param  Array  $data Update permohonan data
+     * @return void
      */
     public static function updatePermohonan($hash, $data)
     {
@@ -33,8 +33,9 @@ class Permohonan extends Model
     }
 
     /**
-     * [getPeminjaman description]
-     * @return [type] [description]
+     * Get Permohonan peminjaman ruangan, jadwal, ruangan, 
+     * user, and catatan record
+     * @return Array   Peminjaman ruangan, Jadwal, Ruangan, Catatan, User record
      */
     public static function getPeminjaman()
     {
@@ -74,8 +75,8 @@ class Permohonan extends Model
     }
 
     /**
-     * [getPeminjaman description]
-     * @return [type] [description]
+     * Get Permohonan registrasi barang, kandidat barang, and catatan record
+     * @return Array
      */
     public static function getRegistrasi()
     {
@@ -108,7 +109,7 @@ class Permohonan extends Model
     }
 
     /**
-     * [updateStatus description]
+     * Update status permohonan on database
      * @param  [type] $id          [description]
      * @param  [type] $persetujuan [description]
      * @return [type]              [description]
@@ -130,9 +131,10 @@ class Permohonan extends Model
     }
 
     /**
-     * [deletePermohonan description]
-     * @param  [type] $hash [description]
-     * @return [type]       [description]
+     * Soft-delete permohonan on database
+     * Update 'deleted' column to 1
+     * @param  String $hash Hash value of permohonan
+     * @return void
      */
 	public static function deletePermohonan($hash) 
     {
