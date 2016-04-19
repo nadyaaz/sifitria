@@ -10,8 +10,15 @@ use DB;
 
 class PeminjamanController extends MasterController
 {
+    /**
+     * [dashboard description]
+     * @return [type] [description]
+     */
     public function dashboard()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('pinjamruang'))) return redirect('/');    
+
 		// get permohonan peminjaman ruangan data
         $peminjaman = Permohonan::getPeminjaman();
 
@@ -25,8 +32,15 @@ class PeminjamanController extends MasterController
     	);	
     }
 
+    /**
+     * [getCreatePeminjaman description]
+     * @return [type] [description]
+     */
     public function getCreatePeminjaman()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
+
         return $this->render('pinjamruang.buat1',
             [
                 'title' => 'Buat Permohonan Peminjaman Ruangan',
@@ -34,6 +48,11 @@ class PeminjamanController extends MasterController
         );
     }
 
+    /**
+     * [removePeminjaman description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function removePeminjaman(Request $request)
     {
     	// get session peminjaman yang mau dibatalkan
@@ -47,6 +66,11 @@ class PeminjamanController extends MasterController
         return back();
     }
 
+    /**
+     * [setuju description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function setuju(Request $request)
     {       
         // get session peminjaman yang mau dibatalkan
@@ -68,97 +92,5 @@ class PeminjamanController extends MasterController
         Permohonan::updateStatus($id, $persetujuan);
         
         return back();
-    }
-
-    ///////////////////////////////////
-
-    public function getBuat()
-    {
-        return $this->render('buat_peminjaman_ruangan',[
-            'title' => 'Buat',
-        ]); 
-    }
-
-    public function getRuanganAvailable(Request $request)
-    {
-        if($request->ajax()) {
-            
-            $jenisRuangan = $request->input('jenisRuangan');
-            $tanggal = $request->input('tanggal');
-            $waktuMulai = $request->input('waktuMulai');
-            $waktuSelesai = $request->input('waktuSelesai');
-
-            $waktuMulainya = strtotime("$tanggal.$waktuMulai");
-            $timestampWaktuMulai =date(' Y\-m\-d  H:i:s', $waktuMulainya);
-            
-            $waktuSelesainya = strtotime("$tanggal.$waktuSelesai");
-            $timestampWaktuSelesai = date(' Y\-m\-d  H:i:s', $waktuSelesainya);
-
-            // $ruanganAvailable = DB::select(
-            //     DB::raw( "SELECT * 
-            //                                  FROM Ruangan a, Jadwal b 
-            //                                  WHERE a.JenisRuangan='$jenisRuangan' AND a.IdRuangan=b.IdRuangan                                         "
-            //                                  )
-            //                                 );
-
-            // foreach($ruanganAvailable['waktuMulai'] as $waktu ) {
-            // //     foreach($allRuanganAvailable['waktuSelesai'] as $waktu2) {
-            // //         // $datawaktumulai = strtotime($waktu);
-            // //         // $datawaktuselesai = strtotime($waktu2);
-
-            // //         // $date = new DateTime();
-
-            // //         // $waktusekarang = strtotime($date);
-            // //         // $ruangantersedia = array();
-
-            // //         //Kalau waktu mulai jadwal yang udah ada lebih lama dari waktu sekarang 
-            // //         // if( !($datawaktumulai  < $waktusekarang) ){
-            // //         //     //diambil datanya
-            // //         //     array_push($ruangantersedia, $ruanganAvailable);
-            // //         // }
-            // //     }
-            // }
-
-            // return json_encode($ruangantersedia);
-            return json_encode($jenisRuangan);
-
-        }
-
-       
-
-        
-
-
-        // $allRuanganAvailable = DB::select( "SELECT * 
-        //                                  FROM Ruangan a, Jadwal b 
-        //                                  WHERE a.JenisRuangan='$jenisRuangan' AND a.IdRuangan=b.IdRuangan AND b.waktuMulai NOT BETWEEN '$timestampWaktuMulai' AND '$timestampWaktuSelesai' AND b.waktuSelesai NOT BETWEEN'$timestampWaktuMulai' AND '$timestampWaktuSelesai'
-        //                                  "
-        //                                 );
-        
-
-        // $ruangan = Ruangan::all()->where('jenisRuangan',$jenisRuangan);
-        // $jadwalAvailable = Jadwal::all()
-        //                         ->where('waktuMulai',$timestampWaktuMulai)
-        //                         ->andWhere('waktuSelesai', $timestampWaktuSelesai)
-        //                         ->andWhere('idRuangan',$ruangan->idRuangan)
-        //                         ->get();
-
-        // $allRuanganAvailable = Ruangan::all()->where('idRuangan',$jadwalAvailable->idRuangan);
-
-
-        
-        // $data = [ 'ruangan' => $ruangan, 'tanggal' => $tanggal, 'waktuMulai' => $waktuMulai, 'waktuSelesai' => $waktuSelesai, 'allRuanganAvailable' => $allRuanganAvailable];
-
-        
-
-   
-        
-        // return $this->render('pinjamruang.buat_peminjaman_ruangan_2',
-        //     [
-        //         'title' => '',
-        //         'allRuanganAvailable' => $allRuanganAvailable,
-        //     ]
-        //     );
-           
-    }
+    }  
 }

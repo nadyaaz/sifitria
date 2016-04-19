@@ -6,21 +6,39 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 
 class Permohonan extends Model
-{
+{   
     protected $table = 'PERMOHONAN';
 
+    /**
+     * [createPermohonan description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
     public static function createPermohonan($data)
     {
+        // create permohonan record on database
         DB::table('permohonan')->insert($data);
     }
 
+    /**
+     * [updatePermohonan description]
+     * @param  [type] $hash [description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
     public static function updatePermohonan($hash, $data)
     {
+        // update permohonan record given the hash
         DB::table('permohonan')->where('hashPermohonan', $hash)->update($data);
     }
 
+    /**
+     * [getPeminjaman description]
+     * @return [type] [description]
+     */
     public static function getPeminjaman()
     {
+        // get all permohonan peminjaman ruangan
     	$allpermohonan = DB::select(
     		DB::raw(
     			'SELECT * 
@@ -37,6 +55,7 @@ class Permohonan extends Model
     		)
     	);
 
+        // get all catatan
         $allcatatan = DB::select(
         	DB::raw(
         		'SELECT * 
@@ -47,12 +66,17 @@ class Permohonan extends Model
         	)
         );
 
+        // return the array
         return array(
         	'allpermohonan' => $allpermohonan,
         	'allcatatan' => $allcatatan
         );
     }
 
+    /**
+     * [getPeminjaman description]
+     * @return [type] [description]
+     */
     public static function getRegistrasi()
     {
     	// get list registrasi barang
@@ -75,6 +99,7 @@ class Permohonan extends Model
 			WHERE c.NomorIndukPenulis = u.NomorInduk'
 		));
 
+        // return the array
 		return array(
 			'allregistrasi' => $allregistrasi,
             'allkandidat' => $allkandidat,
@@ -82,6 +107,12 @@ class Permohonan extends Model
 		);
     }
 
+    /**
+     * [updateStatus description]
+     * @param  [type] $id          [description]
+     * @param  [type] $persetujuan [description]
+     * @return [type]              [description]
+     */
     public static function updateStatus($id, $persetujuan) 
     {
         if($persetujuan == 'setuju')
@@ -98,9 +129,14 @@ class Permohonan extends Model
         );
     }
 
+    /**
+     * [deletePermohonan description]
+     * @param  [type] $hash [description]
+     * @return [type]       [description]
+     */
 	public static function deletePermohonan($hash) 
     {
-		// ganti status peminjaman pada database        
+		// set deleted status permohonan given the hash    
         DB::table('permohonan')->where('hashPermohonan', $hash)->update(['deleted' => 1]);
 	}
 }

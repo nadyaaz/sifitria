@@ -60,13 +60,20 @@ class MasterController extends Controller
 
     	// permitted user rules
     	$userrule = [
-    		'Manager Fasilitas & Infrastruktur' => ['registrasibarang', 'barang', 'buatbarang'],
-    		'Staf Fasilitas & Infrastruktur' => ['registrasibarang', 'barang', 'buatbarang'],
-    		'Staf PPAA' => ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
-    		'Staf Sekretariat' => ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
-    		'Staf' => ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
-    		'HM' => ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
-    		'Mahasiswa' => ['pinjamruang', 'buatpeminjaman'],
+    		'Manager Fasilitas & Infrastruktur' => 
+                ['registrasibarang', 'barang', 'buatbarang'],
+    		'Staf Fasilitas & Infrastruktur' => 
+                ['registrasibarang', 'barang', 'buatbarang'],
+    		'Staf PPAA' => 
+                ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+    		'Staf Sekretariat' => 
+                ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+    		'Staf' => 
+                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+    		'HM' => 
+                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+    		'Mahasiswa' => 
+                ['pinjamruang', 'buatpeminjaman'],
     	];
 
     	// get user type

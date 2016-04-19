@@ -13,7 +13,13 @@ class JadwalController extends MasterController
 {       
     public function getJadwal()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('jadwal'))) return redirect('/');    
+
+        // get all gedung 
     	$allgedung = Gedung::all();
+
+        // get all ruangan
     	$allruangan = DB::select(
             DB::raw(
                 'SELECT *
@@ -22,6 +28,7 @@ class JadwalController extends MasterController
             )
         );
 
+        // return jadwal view
     	return $this->render('pinjamruang.jadwal',
     		[
     			'title' => 'Jadwal Ruangan',
@@ -33,6 +40,10 @@ class JadwalController extends MasterController
 
     public function getCreateJadwal()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatjadwal'))) return redirect('/');    
+
+        // return buatjadwal view
     	return $this->render('pinjamruang.buatjadwal',
     		[
     			'title' => 'Buat Jadwal Ruangan',
@@ -44,6 +55,8 @@ class JadwalController extends MasterController
     {
     	// check if request is AJAX, if it's not ignore
     	if ($request->ajax()) {
+
+            // default query
             $query = 
                 'SELECT * 
                 FROM jadwal j, ruangan r, gedung g 
@@ -53,21 +66,27 @@ class JadwalController extends MasterController
                     r.IdGed = g.IdGedung';
     		
             $params;
-            $qstring = parse_str($_SERVER['QUERY_STRING'], $params);
-
             $jadwalarr = array();
 
+            // get query string parameters
+            $qstring = parse_str($_SERVER['QUERY_STRING'], $params);
+
+            // check if parameters jenis ruang is available
             if (isset($params['jenisruang'])) {
+                // append query JenisRuangan to default query
                 $query = $query.' AND r.JenisRuangan = "'.$params['jenisruang'].'"';
             }
 
+            // check if parameters nomorruang is available
             if(isset($params['nomorruang'])) {
+                // append query NomorRuangan to default query
                 if($params['nomorruang'] != '') $query = $query.' AND r.NomorRuangan = "'.$params['nomorruang'].'"';
             }
 
             // get jadwal data
             $alljadwal = DB::select(DB::raw($query));
 
+            // push all jadwal to array
             foreach ($alljadwal as $jadwal) {
                 $jsonarr = [
                     'title' => $jadwal->KeperluanPeminjaman.' ('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')',
@@ -76,10 +95,11 @@ class JadwalController extends MasterController
                     'tooltip' => $jadwal->KeperluanPeminjaman.' ('.str_replace('Gedung ', '', $jadwal->Nama).$jadwal->NomorRuangan.')'
                 ];
 
+                // push
                 array_push($jadwalarr, $jsonarr);                
             }
             
-    		// return jadwal JSON object
+    		// return jadwal JSON object from jadwal array
     		return json_encode($jadwalarr);
     	}    	
     }

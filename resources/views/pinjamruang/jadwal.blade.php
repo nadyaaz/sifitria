@@ -76,6 +76,7 @@
 @section('ajax_calling')
 <script>
 	$(document).ready(function() {	
+		// tooltip settings
 		$('.tooltipped').tooltip({delay: 50});
 		
 		var type = 'POST';
@@ -105,10 +106,23 @@
 
 		var current = '';
 
+		// AJAX setup, set headers attribut ' X-CSRF-Token' to validate the laravel POST request method
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+		});
+
+		// enabled ruang kelas selection
+		$('input[type=radio][name=jenisruang]').change(function(){						
+			$value = $(this).val();			
+
+			if ($value == 'Kelas') {
+				$('#jenisruang-select').show();
+			} else {
+				$('#jenisruang-select').hide();
+			}
 		});			
 
+		// initiate and set the fullCalendar object
 		$('#calendar').fullCalendar({
 	        header: {
 	        	left: '',
@@ -138,6 +152,7 @@
 		    }
 	    });
 
+		// get jadwal when button clicked
 	    $('#get-jadwal').click(function(){	    	
 	    	if (current == 'RuangRapatBesar') {
 	    		$('#calendar').fullCalendar('removeEventSource', sources.RuangRapatBesar);
