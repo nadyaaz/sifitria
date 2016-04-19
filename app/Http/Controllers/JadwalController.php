@@ -18,7 +18,7 @@ class JadwalController extends MasterController
             DB::raw(
                 'SELECT *
                 FROM ruangan r, gedung g
-                WHERE r.IdGedung = g.IdGedung'
+                WHERE r.IdGed = g.IdGedung'
             )
         );
 
@@ -49,8 +49,8 @@ class JadwalController extends MasterController
                 FROM jadwal j, ruangan r, gedung g 
                 WHERE 
                     j.IdRuangan = r.IdRuangan AND
-                    j.IdGedung = r.IdGedung AND
-                    r.IdGedung = g.IdGedung';
+                    j.IdGedung = r.IdGed AND
+                    r.IdGed = g.IdGedung';
     		
             $params;
             $qstring = parse_str($_SERVER['QUERY_STRING'], $params);
@@ -60,7 +60,11 @@ class JadwalController extends MasterController
             if (isset($params['jenisruang'])) {
                 $query = $query.' AND r.JenisRuangan = "'.$params['jenisruang'].'"';
             }
-        
+
+            if(isset($params['nomorruang'])) {
+                if($params['nomorruang'] != '') $query = $query.' AND r.NomorRuangan = "'.$params['nomorruang'].'"';
+            }
+
             // get jadwal data
             $alljadwal = DB::select(DB::raw($query));
 

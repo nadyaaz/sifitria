@@ -37,16 +37,16 @@
 		</div>
 
 		<div class="row">			
-			<div id="ruangkelas-select" class="input-field col s12">
+			<div id="jenisruang-select" class="input-field col s12">
 				Pilih Ruangan
-			    <select id="jenisruang" name="jenisruang">
+			    <select id="nomorruang" name="nomorruang">
 			    	@foreach ($data['allgedung'] as $gedung)
 				    <optgroup label="{{ $gedung->Nama }}">
 
 					@foreach ($data['allruangan'] as $ruangan)
 
 					@if($ruangan->IdGedung == $gedung->IdGedung)
-				        <option value="{{ str_replace('Gedung ','',$gedung->Nama).$ruangan->NomorRuangan }}" selected>{{ str_replace('Gedung ','',$gedung->Nama).$ruangan->NomorRuangan }}</option>
+				        <option value="{{ $ruangan->NomorRuangan }}">{{ $ruangan->NomorRuangan }}</option>
 				    @endif
 
 					@endforeach
@@ -81,35 +81,29 @@
 		var type = 'POST';
 
 		var sources = {
-			rapatbesar: {
+			RuangRapatBesar: {
 				url: 'jadwal/get?jenisruang=RuangRapatBesar',
-	            type: type,		            
-	            success: function(result) { alert(result); },
-	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
+	            type: type,		            	            
 	            color: '#F44336'
 			},
-			rapatkecil: {
+			RuangRapatKecil: {
 				url: 'jadwal/get?jenisruang=RuangRapatKecil',
 	            type: type,		            
-	            success: function(result) { alert(result); },
-	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
 	            color: '#3F51B5'
 			},
-			auditorium: {
+			Auditorium: {
 				url: 'jadwal/get?jenisruang=Auditorium',
 	            type: type,		            
-	            success: function(result) { alert(result); },
-	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
 	            color: '#4CAF50'
 			},
-			kelas: {
-				url: 'jadwal/get?jenisruang=Kelas',
+			Kelas: {
+				url: 'jadwal/get?jenisruang=Kelas&nomorruang=',
 	            type: type,		            
-	            success: function(result) { alert(result); },
-	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal'); },
 	            color: '#FFC107'
 			}
-		};
+		};		
+
+		var current = '';
 
 		$.ajaxSetup({
 			headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
@@ -134,9 +128,10 @@
 				agendaWeek: {
 					eventLimit: 2,
 				},
-			},
+			},	
+	        error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },
 			eventSources: [		        
-		        sources.rapatbesar, sources.rapatkecil, sources.auditorium, sources.kelas		        
+		        sources.RuangRapatBesar, sources.RuangRapatKecil, sources.Auditorium, sources.Kelas		        
 		    ],
 		    eventRender: function(event, element) {
 		        element.attr('title', event.tooltip);
@@ -144,7 +139,39 @@
 	    });
 
 	    $('#get-jadwal').click(function(){	    	
-	    	$('#calendar').fullCalendar('refetchEvents');
+	    	if (current == 'RuangRapatBesar') {
+	    		$('#calendar').fullCalendar('removeEventSource', sources.RuangRapatBesar);
+	    	} else if (current == 'RuangRapatKecil') {
+	    		$('#calendar').fullCalendar('removeEventSource', sources.RuangRapatKecil);	
+	    	} else if (current == 'Auditorium') {
+	    		$('#calendar').fullCalendar('removeEventSource', sources.Auditorium);
+	    	} else if (current == 'Kelas') {
+	    		$('#calendar').fullCalendar('removeEventSource', sources.Kelas);
+	    		sources.Kelas.url = 'jadwal/get?jenisruang=Kelas&nomorruang=';
+	    	} else {
+	    		$('#calendar').fullCalendar('removeEventSource', sources.RuangRapatBesar);
+	    		$('#calendar').fullCalendar('removeEventSource', sources.RuangRapatKecil);	
+	    		$('#calendar').fullCalendar('removeEventSource', sources.Auditorium);
+	    		$('#calendar').fullCalendar('removeEventSource', sources.Kelas);
+	    	}
+
+	    	var selected = $('input[type=radio][name=jenisruang]:checked').val();
+	    	current = selected;
+
+	    	if (selected == 'RuangRapatBesar') {
+	    		$('#calendar').fullCalendar('addEventSource', sources.RuangRapatBesar);
+	    	} else if (selected == 'RuangRapatKecil') {
+	    		$('#calendar').fullCalendar('addEventSource', sources.RuangRapatKecil);		    		
+	    	} else if (selected == 'Auditorium') {
+	    		$('#calendar').fullCalendar('addEventSource', sources.Auditorium);
+	    	} else if (selected == 'Kelas') {
+	    		var ruangan = $('select[name=nomorruang]').val();
+	    		sources.Kelas.url += ruangan;
+	    		alert(sources.Kelas.url);
+	    		$('#calendar').fullCalendar('addEventSource', sources.Kelas);
+	    	}
+
+	    	$('#calendar').fullCalendar('refetchEvents');	    		    
 	    });
 	});
 </script>

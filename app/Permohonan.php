@@ -30,7 +30,7 @@ class Permohonan extends Model
     				p.IdRuangan = j.IdRuangan AND 
     				j.IdRuangan = r.IdRuangan AND
                     p.IdGedung = j.IdGedung AND
-                    j.IdGedung = r.IdGedung AND
+                    j.IdGedung = r.IdGed AND
                     p.IdJadwal = j.IdJadwal AND 
                     p.IdPemohon = u.NomorInduk AND
                     p.deleted = 0'
