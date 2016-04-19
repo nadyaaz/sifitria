@@ -107,16 +107,13 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col s12 ">                            
-                        <form action="" class="right">
+                <div class="row">                    
+                    <div class="col s1 right">                        
+                        <form action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $peminjaman->IdPermohonan }}"/>
-                            <a class="btn waves-effect waves-light teal white-text left">
-                                UBAH                                
-                            </a>&nbsp;
-                            <button class="btn waves-effect waves-light teal white-text disabled">
-                                SIMPAN                                    
+                            <input type="hidden" name="hashPermohonan" value="{{ $peminjaman->hashPermohonan }}"/>                            
+                            <button class="btn waves-effect waves-light red white-text">                                
+                                <i class="material-icons">delete</i>
                             </button>
                         </form> 
                     </div>

@@ -17,7 +17,7 @@ class SSOController extends Controller
     {   
         // check if user is authenticated
         // if is not, authenticate
-    	if (!SSO::check() && !(session()->has('user_sess'))) SSO::authenticate();
+    	if (!SSO::check()) SSO::authenticate();
 
         // get SSO user data and store user data if it's not exist
     	$user_sess = SSO::getUser();

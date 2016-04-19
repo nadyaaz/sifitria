@@ -7,12 +7,13 @@ use App\Http\Requests;
 use App\Permohonan;
 use App\Catatan;
 use DB;
+use Carbon\Carbon;
 
 class PeminjamanController extends MasterController
 {
     /**
-     * [dashboard description]
-     * @return [type] [description]
+     * Get dashoard permohonan peminjaman ruangan view
+     * @return dashboard page
      */
     public function dashboard()
     {
@@ -33,15 +34,15 @@ class PeminjamanController extends MasterController
     }
 
     /**
-     * [getCreatePeminjaman description]
-     * @return [type] [description]
+     * Get create permohonan peminjaman ruangan page
+     * @return buatpinjam page
      */
     public function getCreatePeminjaman()
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
+        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
 
-        return $this->render('pinjamruang.buat1',
+        return $this->render('pinjamruang.buatpeminjaman',
             [
                 'title' => 'Buat Permohonan Peminjaman Ruangan',
             ]
@@ -49,21 +50,92 @@ class PeminjamanController extends MasterController
     }
 
     /**
-     * [removePeminjaman description]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * Get ruangan available through AJAX request
+     * @param  Request $request Request object
+     * @return JSON
+     */
+    public function getRuanganAvailableAJAX(Request $request)
+    {
+        $params;
+
+        // get all query string variable passed
+        $qstring = parse_str($_SERVER['QUERY_STRING'], $params);
+
+        $jenisRuangan= $params['jenisRuangan'];
+        $tanggal = $params['tanggal'];
+        $waktuMulai = $params['waktuMulai'];
+        $waktuSelesai = $params['waktuSelesai'];
+        $waktuMulainya = strtotime($tanggal.$waktuMulai);
+        $timestampWaktuMulai = date('Y\-m\-d  H:i:s', $waktuMulainya);
+        $waktuSelesainya = strtotime($tanggal.$waktuSelesai);
+        $timestampWaktuSelesai = date('Y\-m\-d  H:i:s', $waktuSelesainya);
+
+        $allruangan = DB::select(DB::raw(
+            'SELECT * 
+            FROM Ruangan r, Gedung g
+            WHERE 
+                r.JenisRuangan="'.$jenisRuangan.'" AND 
+                r.IdGed=g.IdGedung'
+        ));
+
+        
+        $ruangantersedia = array();
+
+        foreach($allruangan as $ruangan) {
+            
+            $IdGedung = $ruangan->IdGedung;
+            $IdRuangan = $ruangan->IdRuangan;
+
+            $jadwalRuangan = DB::select(DB::raw(
+                'SELECT * 
+                FROM jadwal
+                WHERE 
+                    IdGedung = "'.$IdGedung.'" AND
+                    IdRuangan = "'.$IdRuangan.'"'
+            ));
+
+
+            if ($jadwalRuangan == null) {
+                array_push($ruangantersedia, $ruangan);
+            } else {
+
+                foreach($jadwalRuangan as $jadwal){
+                    
+                    $datawaktumulai = strtotime($jadwal->WaktuMulai);
+                    $datawaktuselesai = strtotime($jadwal->WaktuSelesai);
+                    $waktusekarang = strtotime(Carbon::now());
+                    // dd($waktusekarang);
+
+                    //Kalau waktu mulai jadwal yang udah ada lebih lama dari waktu sekarang 
+                    if( !($datawaktumulai < $waktusekarang && $datawaktuselesai < $waktusekarang) )
+                    {
+                        if( ($waktuMulainya > $datawaktuselesai || $waktuMulainya < $datawaktumulai) && 
+                            ($waktuSelesainya > $datawaktuselesai || $waktuSelesainya < $datawaktumulai)
+                        ) 
+                        {
+                            array_push($ruangantersedia, $ruangan); 
+                        }
+                    }   
+                }
+            }                    
+        }
+
+        return json_encode($ruangantersedia); 
+    }
+
+    /**
+     * Soft-delete permohonan peminjaman ruangan
+     * set 'deleted' column to
+     * @param  Request $request Request object
+     * @return redirect to pinjamruang
      */
     public function removePeminjaman(Request $request)
     {
-    	// get session peminjaman yang mau dibatalkan
-        $input = $request->all();
-        $hash = $input['Id'];
-
     	// ganti status peminjaman pada database
-        Permohonan::deletePermohonan($hash);
+        Permohonan::deletePermohonan($request->input('hashPermohonan'));
     	
 		// redirect back to peminjaman dashboard
-        return back();
+        return redirect('pinjamruang');
     }
 
     /**
@@ -72,7 +144,7 @@ class PeminjamanController extends MasterController
      * @return [type]           [description]
      */
     public function setuju(Request $request)
-    {       
+    {
         // get session peminjaman yang mau dibatalkan
         $input = $request->all();
 

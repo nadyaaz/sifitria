@@ -78,33 +78,26 @@
 	$(document).ready(function() {	
 		// tooltip settings
 		$('.tooltipped').tooltip({delay: 50});
-		
-		var type = 'POST';
 
+		// fullCalendar sources
 		var sources = {
 			RuangRapatBesar: {
 				url: 'jadwal/get?jenisruang=RuangRapatBesar',
-	            type: type,		            	            
 	            color: '#F44336'
 			},
 			RuangRapatKecil: {
 				url: 'jadwal/get?jenisruang=RuangRapatKecil',
-	            type: type,		            
 	            color: '#3F51B5'
 			},
 			Auditorium: {
 				url: 'jadwal/get?jenisruang=Auditorium',
-	            type: type,		            
 	            color: '#4CAF50'
 			},
 			Kelas: {
 				url: 'jadwal/get?jenisruang=Kelas&nomorruang=',
-	            type: type,		            
 	            color: '#FFC107'
 			}
 		};		
-
-		var current = '';
 
 		// AJAX setup, set headers attribut ' X-CSRF-Token' to validate the laravel POST request method
 		$.ajaxSetup({
@@ -120,7 +113,9 @@
 			} else {
 				$('#jenisruang-select').hide();
 			}
-		});			
+		});		
+
+		var current = '';
 
 		// initiate and set the fullCalendar object
 		$('#calendar').fullCalendar({
@@ -142,7 +137,8 @@
 				agendaWeek: {
 					eventLimit: 2,
 				},
-			},	
+			},
+			type: 'POST'	
 	        error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },
 			eventSources: [		        
 		        sources.RuangRapatBesar, sources.RuangRapatKecil, sources.Auditorium, sources.Kelas		        

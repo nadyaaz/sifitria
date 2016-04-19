@@ -136,17 +136,7 @@ class PeminjamanController extends MasterController
                 // else{
                 //     f
                 // }
-                    
-
-            
-
-        
-
-        
-
-        
-           
-            
+     
     }
 
     public function getFormDetailPeminjamanRuangan()
@@ -213,9 +203,6 @@ DB::insert(
 
        return redirect('pinjamruang');
     }
-
-
-
 }
 
 
