@@ -20,7 +20,6 @@
         @foreach($data['allpermohonan'] as $peminjaman)                
         <li>            
             <div class="collapsible-header active">                              
-
                 <div class="col s1"> {{ $peminjaman->IdPermohonan }} </div>
                 <div class="col s2"> {{ $peminjaman->JenisRuangan }} </div>
                 <div class="col s2"> {{ date('j F Y', strtotime($peminjaman->WaktuMulai)) }} </div>
@@ -34,12 +33,7 @@
                     @elseif($peminjaman->StatusPermohonan === 2)
                         {{ 'Disetujui' }}                    
                     @endif
-                </div>
-
-                @if($peminjaman->StatusPermohonan === 0)                        
-                    
-                @endif
-            
+                </div>            
             </div>
 
             <div class="collapsible-body">
@@ -59,9 +53,12 @@
 
                         @else
 
-                            @if ($peminjaman->NomorSurat == null)
+                            @if ($peminjaman->NomorSurat != null)
                             <b>Nomor Surat:</b><br>
                             {{ $peminjaman->NomorSurat }}
+                            @else
+                            <b>Nomor Surat:</b><br>
+                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
                             @endif
 
                         @endif
@@ -149,7 +146,7 @@
                         </form> 
                     </div>
                     @endif
-                    
+
                     @endif
                 </div>
             </div>         

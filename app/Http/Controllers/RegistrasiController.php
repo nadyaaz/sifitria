@@ -253,6 +253,107 @@ class RegistrasiController extends MasterController
         return redirect('registrasibarang');
     }
 
+    public function updateStatusRegistrasi(Request $request)
+    {
+        // validate request
+        $this->validate($request, [
+            'nomorsurat' => 'required',
+            'catatan_txtarea' => 'required',
+        ]);
+
+        $input = $request->all();
+        $newStatus = 0;        
+        $newTahap = 1;
+        $lastTahap = Master::getLastId('permohonan', 'TahapPermohonan', [
+            ['hashPermohonan', '=', $input['hashPermohonan']]
+        ]);        
+        $lastStatus = Master::getLastId('permohonan', 'StatusPermohonan', [
+            ['hashPermohonan', '=', $input['hashPermohonan']]
+        ]);
+
+        // check update, TOLAK / SETUJU
+        if (array_key_exists('setuju', $input))
+            $newStatus = 2;
+        else if (array_key_exists('tolak', $input))          
+            $newStatus = 1;
+
+        // increment new tahap
+        if($lastTahap == 1 && $lastStatus == 2) {
+            $newTahap = 2;
+        }            
+
+        // update permohonan
+        $updatePermohonanArray = [
+            'NomorSurat' => $input['nomorsurat'],
+            'StatusPermohonan' => $newStatus,
+        ];
+
+        // if tahap change, push TahapPermohonan to updatePermohonanArray
+        if ($lastTahap != $newTahap) 
+            $updatePermohonanArray['TahapPermohonan'] = 2;
+
+        // update permohonan registrasi barang
+        Permohonan::updatePermohonan($input['hashPermohonan'], $updatePermohonanArray);
+
+        dd($permohonan);
+
+        // if tahap 2 and status 2, insert kandidat_barang to barang
+        if ($newTahap == 2 && $newStatus == 2) {
+            // get permohonan object
+            $permohonan = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->first();
+
+            // get all kandidat barang related to permohonan
+            $allkandidat = KandidatBarang::where('IdPermohonan', $permohonan->IdPermohonan)->get();
+            
+            $lastBarangId = Master::getLastId('barang', 'IdBarang');
+            $IdBarang = $lastBarangId + 1;
+
+            foreach ($allkandidat as $kandidat) {                
+                $namabarang = $kandidat->NamaBarang;
+                $jenisbarang = $kandidat->JenisBarang;
+                $kategoribarang = $kandidat->KategoriBarang;
+                
+                // insert to database
+                Barang::createBarang([
+                    'IdBarang' => $IdBarang,
+                    'NamaBarang' => $namabarang,
+                    'JenisBarang' => $jenisbarang,
+                    'SpesifikasiBarang' => $kandidat->SpesifikasiBarang,
+                    'TanggalBeli' => $kandidat->TanggalBeli,
+                    'PenanggungJawab' => $kandidat->Penanggungjawab,
+                    'KategoriBarang' => $kategoribarang,
+                    'KondisiBarang' => $kandidat->KondisiBarang,
+                    'KeteranganBarang' => $kandidat->KeteranganBarang,
+                    'WaktuRegistrasi' => date('Y-m-d H:i:s', time()),
+                    'NomorBarcode' => $IdBarang,
+                    'hashBarang' => md5($IdBarang.$namabarang.$jenisbarang.$kategoribarang),
+                ]);
+
+                $IdBarang++;
+            }
+        }
+
+        // last tahap catatan 
+        $lastTahapCatatan = Master::getLastId('catatan', 'TahapCatatan', [
+            ['IdPermohonan', '=', $permohonan[0]->IdPermohonan],
+        ]);
+
+        // new tahap catatan
+        $tahapCatatan = $lastTahapCatatan + 1;
+
+        // create catatan
+        Catatan::createCatatan(
+            $permohonan[0]->IdPermohonan, 
+            $tahapCatatan,
+            $input['catatan_txtarea'],
+            session('user_sess')->npm,
+            md5($permohonan[0]->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+        );
+
+        // redirect to registrasi barang page
+        return redirect('registrasibarang');
+    }
+
     /**
      * Soft-remove permohonan registrasi in database
      * @param  Request $request Request object

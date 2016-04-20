@@ -38,18 +38,33 @@
             			@endif
             		@endif
                 </div>
-                <div class="col s3">{{ $data['allregistrasi'][$i]->Nama }}</div>
-
-                @if($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 0 )                
-                                       
-                @endif                     
+                <div class="col s3">{{ $data['allregistrasi'][$i]->Nama }}</div>                   
             </div>
 
             <div class="collapsible-body">                                        
                 <div class="row">
                     <div class="col s4">
-                        <b>Nomor Surat :</b><br>
-                        {{ $data['allregistrasi'][$i]->NomorSurat }}
+                        @if ($data['user_sess']->role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->role == 'Staf Fasilitas & Infrastruktur')
+
+                            @if ($data['allregistrasi'][$i]->NomorSurat != null)                            
+                            <b>Nomor Surat:</b><br>
+                            {{ $data['allregistrasi'][$i]->NomorSurat }}
+                            @else
+                            <b>Nomor Surat:</b><br>
+                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                            @endif
+
+                        @else
+
+                            @if ($data['allregistrasi'][$i]->NomorSurat != null)
+                            <b>Nomor Surat:</b><br>
+                            {{ $data['allregistrasi'][$i]->NomorSurat }}
+                            @else
+                            <b>Nomor Surat:</b><br>
+                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                            @endif
+
+                        @endif
                     </div>
                     <div class="col s4">
                         <b>Waktu Permohonan :</b><br>
@@ -137,7 +152,7 @@
                         ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 0) ||
                         ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 2 && $data['user_sess']->role == 'Manager Fasilitas & Infrastruktur') 
                     )
-                    <form action="{{ url('pinjamruang/ubah') }}" method="POST">
+                    <form action="{{ url('registrasibarang/ubahstatus') }}" method="POST">
                         <div class="col s6">
                             <b>Setujui/Tolak Permohonan</b><br>
                             @if ($data['allregistrasi'][$i]->NomorSurat == null)

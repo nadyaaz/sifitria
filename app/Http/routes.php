@@ -61,6 +61,7 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::post('registrasibarang/insert', 'RegistrasiController@createRegistrasi');
 	Route::get('registrasibarang/ubah', 'RegistrasiController@getUpdateRegistrasi');
 	Route::post('registrasibarang/ubah', 'RegistrasiController@updateRegistrasi');
+	Route::post('registrasibarang/ubahstatus', 'RegistrasiController@updateStatusRegistrasi');
 	Route::post('registrasibarang/batal', 'RegistrasiController@removeRegistrasi');	
 	
 	Route::match(['get', 'post'], 'registrasibarang/barang', 'BarangController@getBarang');
