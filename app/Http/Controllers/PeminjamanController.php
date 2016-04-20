@@ -24,7 +24,14 @@ class PeminjamanController extends MasterController
         if (!($this->isPermitted('pinjamruang'))) return redirect('/');    
 
 		// get permohonan peminjaman ruangan data
-        $peminjaman = Permohonan::getPeminjaman();
+        // check the user role
+        if (session('user_sess')->role != 'Staf PPAA' &&
+            session('user_sess')->role != 'Staf Sekretariat') 
+        {
+            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role, session('user_sess')->npm);
+        } else {
+            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role);
+        }
 
 		// render peminjaman ruangan dashboard
     	return $this->render('pinjamruang.dashboard',

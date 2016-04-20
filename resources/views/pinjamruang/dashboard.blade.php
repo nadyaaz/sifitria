@@ -84,7 +84,8 @@
 
                 @endforeach
 
-                <div class="row">                    
+                <div class="row"> 
+                    @if ($data['user_sess']->role == 'Staf PPAA') || $data['user_sess']->role == 'Staf Sekretariat')
                     <div class="col s12">
                         <form action="" method="POST">
                             {!! csrf_field() !!}
@@ -105,9 +106,11 @@
                             </button>
                         </form>                                                                                        
                     </div>
+                    @endif
                 </div>
 
-                <div class="row">                    
+                <div class="row">
+                    @if (!($data['user_sess']->role == 'Staf PPAA') && !($data['user_sess']->role == 'Staf Sekretariat'))
                     <div class="col s1 right">                        
                         <form action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
@@ -117,6 +120,7 @@
                             </button>
                         </form> 
                     </div>
+                    @endif
                 </div>
 
             </div>         

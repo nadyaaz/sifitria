@@ -37,22 +37,39 @@ class Permohonan extends Model
      * user, and catatan record
      * @return Array   Peminjaman ruangan, Jadwal, Ruangan, Catatan, User record
      */
-    public static function getPeminjaman()
+    public static function getPeminjaman($role, $nomorinduk = '')
     {
-        // get all permohonan peminjaman ruangan
-    	$allpermohonan = DB::select(DB::raw(
-			'SELECT * 
-			FROM permohonan p, jadwal j, ruangan r, users u
-			WHERE  
-				p.JenisPermohonan = 1 AND 
-				p.IdRuangan = j.IdRuangan AND 
-				j.IdRuangan = r.IdRuangan AND
+        $query = 
+            'SELECT * 
+            FROM permohonan p, jadwal j, ruangan r, users u
+            WHERE  
+                p.JenisPermohonan = 1 AND 
+                p.IdRuangan = j.IdRuangan AND 
+                j.IdRuangan = r.IdRuangan AND
                 p.IdGedung = j.IdGedung AND
                 j.IdGedung = r.IdGed AND
                 p.IdJadwal = j.IdJadwal AND 
                 p.IdPemohon = u.NomorInduk AND
-                p.deleted = 0'
-    	));
+                p.deleted = 0';
+        dd($role);
+        // check role user, different role different data will be retrieve
+        if ($role == 'Staf PPAA') {
+            // staf PPAA only see jenis ruangan Kelas
+            $query .= ' AND r.JenisRuangan="Kelas"';
+        } else if ($role == 'Staf Sekretariat') {
+            // staf sekertariat can see all ruangan except Kelas
+            $query .= ' AND (r.JenisRuangan="Auditoriun" OR 
+                            r.JenisRuangan="RuangRapatBesar" OR 
+                            r.JenisRuangan="RuangRapatKecil")' ;  
+        } else {
+            // if user != manajer peminjaman get only his/her permohonan
+            if($nomorinduk != '') $query .= ' AND p.IdPemohon = "'.$nomorinduk.'"';            
+        }
+        
+        // get all permohonan peminjaman ruangan
+    	$allpermohonan = DB::select(DB::raw($query));
+
+        // dd($allpermohonan);
 
         // get all catatan
         $allcatatan = DB::select(DB::raw(
@@ -85,7 +102,7 @@ class Permohonan extends Model
                 p.deleted= 0';
 
         // if user != pihak fasilitas
-        // // get only his/her permohonan
+        // get only his/her permohonan
         if($nomorinduk != '') $query .= ' AND p.IdPemohon = "'.$nomorinduk.'"';
 
     	// get list registrasi barang
