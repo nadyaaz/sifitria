@@ -30,6 +30,7 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::get('pinjamruang', 'PeminjamanController@dashboard');
 	Route::get('pinjamruang/buat', 'PeminjamanController@getCreatePeminjaman');
 	Route::post('pinjamruang/buat', 'PeminjamanController@createPeminjaman');
+	Route::post('pinjamruang/ubah', 'PeminjamanController@updateStatusPeminjaman');
 	Route::post('pinjamruang/getruangan', 'PeminjamanController@getRuanganAvailableAJAX');
 	Route::post('pinjamruang/batal', 'PeminjamanController@removePeminjaman');	
 

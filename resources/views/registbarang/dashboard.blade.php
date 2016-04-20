@@ -28,9 +28,9 @@
                 		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 1 )
                 			{{'Ditolak pada proses verifikasi'}}
                 		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
-            				{{'Sudah diverifikasi'}}
+            				{{'Sudah diverifikasi Staf'}}
             			@endif
-            		@else
+            		@elseif($data['allregistrasi'][$i]->TahapPermohonan == 2)
             			@if($data['allregistrasi'][$i]->StatusPermohonan == 1 )
                 			{{'Ditolak'}}
                 		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
@@ -129,29 +129,37 @@
                 @endfor
                 <!-- end foreach regiscatatan -->
                 
-                <div class="row">                    
-                    <div class="col s12">
-                        <form action="" method="POST">
+                <hr>
+                <div class="row"> 
+                    @if ($data['user_sess']->role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->role == 'Staf Fasilitas & Infrastruktur')
+                    
+                    @if (
+                        ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 0) ||
+                        ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 2 && $data['user_sess']->role == 'Manager Fasilitas & Infrastruktur') 
+                    )
+                    <form action="{{ url('pinjamruang/ubah') }}" method="POST">
+                        <div class="col s6">
+                            <b>Setujui/Tolak Permohonan</b><br>
+                            @if ($data['allregistrasi'][$i]->NomorSurat == null)
+                            Nomor Surat <br>
+                            <input type="text" name="nomorsurat" required/>
+                            @endif                        
+                        </div>
+                        <div class="col s12">                                               
                             {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>
+                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"><br>
                             Catatan: <br>
-                            <textarea class="materialize-textarea" name="catatan_txtarea" cols="30" rows="30"></textarea>
-                            <button class="btn waves-effect waves-light teal white-text right">
-                                SETUJU
-                                <i class="material-icons white-text right">done</i>
-                            </button>
-                        </form>
-                        <form action="{{ url('registregistrasi/batal') }}" method="POST" class="left">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}">
-                            <button class="waves-effect waves-red btn red">                                    
-                                TOLAK
-                                <i class="material-icons white-text right">clear</i>
-                            </button>
-                        </form>                                                                                        
-                    </div>
-                </div>
+                            <textarea class="materialize-textarea" class="validate" name="catatan_txtarea" cols="30" rows="30" required>Jika tidak ada catatan tulis "Tidak ada"</textarea>
+                            <input type="submit" value="TOLAK" name="tolak" class="waves-effect waves-red btn red right"/>
+                            <input type="submit" value="SETUJU" name="setuju" class="btn waves-effect waves-light teal white-text right"/>
+                        </div>
+                    </form>
+                    @endif
 
+                    @endif
+                </div>
+                
+                @if ($data['user_sess']->role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur')
                 <div class="row">
                     <div class="col s11">
                         <form action="{{ url('registrasibarang') }}" method="POST" class="right">
@@ -173,6 +181,7 @@
                         </form> 
                     </div>
                 </div>
+                @endif
             </div>         
         </li> 
 

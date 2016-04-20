@@ -25,12 +25,12 @@ class PeminjamanController extends MasterController
 
 		// get permohonan peminjaman ruangan data
         // check the user role
-        if (session('user_sess')->role != 'Staf PPAA' &&
-            session('user_sess')->role != 'Staf Sekretariat') 
+        if (session('user_sess')->role == 'Staf PPAA' ||
+            session('user_sess')->role == 'Staf Sekretariat') 
         {
-            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role, session('user_sess')->npm);
-        } else {
             $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role);
+        } else {
+            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role, session('user_sess')->npm);
         }
 
 		// render peminjaman ruangan dashboard
@@ -243,6 +243,58 @@ class PeminjamanController extends MasterController
         Permohonan::updateStatus($id, $persetujuan);
         
         return back();
+    }
+
+    /**
+     * Update status peminjaman selected
+     * @param  Request $request Request object
+     * @return void
+     */
+    public function updateStatusPeminjaman(Request $request)
+    {
+        // validate request
+        $this->validate($request, [
+            'nomorsurat' => 'required',
+            'catatan_txtarea' => 'required',
+        ]);
+
+        $input = $request->all();
+        $status = 0;
+
+        // check update, TOLAK / SETUJU
+        if (array_key_exists('setuju', $input))
+            $status = 2;
+        else if (array_key_exists('tolak', $input))          
+            $status = 1;
+
+        // update permohonan
+        Permohonan::updatePermohonan($input['hashPermohonan'], [
+            'NomorSurat' => $input['nomorsurat'],
+            'StatusPermohonan' => $status,
+        ]);
+
+        // get permohonan object
+        $permohonan = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->get();
+
+        // last tahap catatan 
+        $lastTahapCatatan = Master::getLastId('catatan', 'TahapCatatan', [
+            ['IdPermohonan', '=', $permohonan[0]->IdPermohonan],
+        ]);
+
+        // new tahap catatan
+        $tahapCatatan = $lastTahapCatatan + 1;
+
+        // create catatan
+        Catatan::createCatatan(
+            $permohonan[0]->IdPermohonan, 
+            $tahapCatatan,
+            $input['catatan_txtarea'],
+            session('user_sess')->npm,
+            md5($permohonan[0]->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+        );
+
+        // return to pinjamruang dashboard
+        return redirect('pinjamruang');
     }  
 
     /**

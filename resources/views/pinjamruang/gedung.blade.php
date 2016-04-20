@@ -24,7 +24,7 @@
 
 					<tr>
 						<td>{{$gedung->IdGedung}}</td>
-						<td colspan="5" class="NamaGedung">{{$gedung->Nama}}</td>							
+						<td colspan="5" class="NamaGedung">{{$gedung->NamaGedung}}</td>							
 						<td>
 							<form action="{{ url('pinjamruang/gedung') }}" method="POST">									
 								{!! csrf_field() !!}

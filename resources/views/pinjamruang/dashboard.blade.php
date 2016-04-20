@@ -17,10 +17,10 @@
     </div>
 
     <ul class="collapsible" data-collapsible="accordion">        
-        @foreach($data['allpermohonan'] as $peminjaman)
-
+        @foreach($data['allpermohonan'] as $peminjaman)                
         <li>            
             <div class="collapsible-header active">                              
+
                 <div class="col s1"> {{ $peminjaman->IdPermohonan }} </div>
                 <div class="col s2"> {{ $peminjaman->JenisRuangan }} </div>
                 <div class="col s2"> {{ date('j F Y', strtotime($peminjaman->WaktuMulai)) }} </div>
@@ -28,14 +28,11 @@
                 <div class="col s2"> {{ $peminjaman->Nama }} </div>
                 <div class="col s2">                         
                     @if($peminjaman->StatusPermohonan === 0)
-                        {{ 'Sedang Menunggu Persetujuan' }}
-                   
+                        {{ 'Sedang Menunggu Persetujuan' }}                   
                     @elseif($peminjaman->StatusPermohonan === 1)
-                        {{ 'Ditolak' }}
-                    
-                    @else
-                        {{ 'Disetujui' }}
-                    
+                        {{ 'Ditolak' }}                    
+                    @elseif($peminjaman->StatusPermohonan === 2)
+                        {{ 'Disetujui' }}                    
                     @endif
                 </div>
 
@@ -49,8 +46,25 @@
                 
                 <div class = "row">
                     <div class="col s6">
-                        <b>Nomor Surat:</b><br>
-                        {{ $peminjaman->NomorSurat }}
+                        
+                        @if ($data['user_sess']->role == 'Staf PPAA' || $data['user_sess']->role == 'Staf Sekretariat')
+
+                            @if ($peminjaman->NomorSurat != null)                            
+                            <b>Nomor Surat:</b><br>
+                            {{ $peminjaman->NomorSurat }}
+                            @else
+                            <b>Nomor Surat:</b><br>
+                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                            @endif
+
+                        @else
+
+                            @if ($peminjaman->NomorSurat == null)
+                            <b>Nomor Surat:</b><br>
+                            {{ $peminjaman->NomorSurat }}
+                            @endif
+
+                        @endif
                     </div>
                     <div class="col s6">
                         <b>Waktu Permohonan:</b><br>
@@ -68,6 +82,17 @@
                         {{ $peminjaman->KeperluanPeminjaman }}
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col s6">
+                        <b>Gedung:</b><br>
+                        {{ $peminjaman->NamaGedung }}
+                    </div>
+                    <div class="col s6">
+                        <b>Ruangan:</b><br>
+                        {{ $peminjaman->NomorRuangan }}
+                    </div>
+                </div>
                 
                 @foreach($data['allcatatan'] as $catatan)
 
@@ -83,36 +108,39 @@
                 @endif
 
                 @endforeach
-
+                <hr>
                 <div class="row"> 
-                    @if ($data['user_sess']->role == 'Staf PPAA') || $data['user_sess']->role == 'Staf Sekretariat')
-                    <div class="col s12">
-                        <form action="" method="POST">
+                    @if ($data['user_sess']->role == 'Staf PPAA' || $data['user_sess']->role == 'Staf Sekretariat')
+                    
+                    @if ($peminjaman->StatusPermohonan == 0)
+                    <form action="{{ url('pinjamruang/ubah') }}" method="POST">
+                        <div class="col s6">
+                            <b>Setujui/Tolak Permohonan</b><br>
+                            @if ($peminjaman->NomorSurat == null)
+                            Nomor Surat <br>
+                            <input type="text" name="nomorsurat" required/>
+                            @endif                        
+                        </div>
+                        <div class="col s12">                                               
                             {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $peminjaman->IdPermohonan }}"/>
+                            <input type="hidden" name="hashPermohonan" value="{{ $peminjaman->hashPermohonan }}"><br>
                             Catatan: <br>
-                            <textarea class="materialize-textarea" name="catatan_txtarea" cols="30" rows="30"></textarea>
-                            <button class="btn waves-effect waves-light teal white-text right">
-                                SETUJU
-                                <i class="material-icons white-text right">done</i>
-                            </button>
-                        </form>
-                        <form action="{{ url('registbarang/batal') }}" method="POST" class="left">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="Id" value="{{ $peminjaman->IdPermohonan }}">
-                            <button class="waves-effect waves-red btn red">                                    
-                                TOLAK
-                                <i class="material-icons white-text right">clear</i>
-                            </button>
-                        </form>                                                                                        
-                    </div>
+                            <textarea class="materialize-textarea" class="validate" name="catatan_txtarea" cols="30" rows="30" required>Jika tidak ada catatan tulis "Tidak ada"</textarea>
+                            <input type="submit" value="TOLAK" name="tolak" class="waves-effect waves-red btn red right"/>
+                            <input type="submit" value="SETUJU" name="setuju" class="btn waves-effect waves-light teal white-text right"/>
+                        </div>
+                    </form>
+                    @endif
+
                     @endif
                 </div>
 
                 <div class="row">
                     @if (!($data['user_sess']->role == 'Staf PPAA') && !($data['user_sess']->role == 'Staf Sekretariat'))
+
+                    @if($peminjaman->StatusPermohonan == 0)
                     <div class="col s1 right">                        
-                        <form action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
+                        <form name="userbatal" action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
                             <input type="hidden" name="hashPermohonan" value="{{ $peminjaman->hashPermohonan }}"/>                            
                             <button class="btn waves-effect waves-light red white-text">                                
@@ -121,11 +149,11 @@
                         </form> 
                     </div>
                     @endif
+                    
+                    @endif
                 </div>
-
             </div>         
-        </li>
-
+        </li>        
         @endforeach
     </ul>
 </div>                    

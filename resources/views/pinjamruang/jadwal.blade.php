@@ -41,7 +41,7 @@
 				Pilih Ruangan
 			    <select id="nomorruang" name="nomorruang">
 			    	@foreach ($data['allgedung'] as $gedung)
-				    <optgroup label="{{ $gedung->Nama }}">
+				    <optgroup label="{{ $gedung->NamaGedung }}">
 
 					@foreach ($data['allruangan'] as $ruangan)
 

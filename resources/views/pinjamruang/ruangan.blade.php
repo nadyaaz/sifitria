@@ -20,13 +20,13 @@
         <div class="col s12">
             <ul class="tabs">
                 @foreach ($data['allgedung'] as $gedung)
-                <li class="tab col s2"><a class="active" href="#{{str_replace(' ', '',$gedung->Nama)}}">{{$gedung->Nama}}</a></li>                
+                <li class="tab col s2"><a class="active" href="#{{str_replace(' ', '',$gedung->NamaGedung)}}">{{$gedung->NamaGedung}}</a></li>                
                 @endforeach
             </ul>
         </div>
 
         @foreach ($data['allgedung'] as $gedung)
-        <div id="{{str_replace(' ', '',$gedung->Nama)}}" class="col s12">      
+        <div id="{{str_replace(' ', '',$gedung->NamaGedung)}}" class="col s12">      
             <br>
 
             <div class="col s10 push-s1">
@@ -50,7 +50,7 @@
                         @if ($ruangan->IdGed == $gedung->IdGedung)
                         <tr>
                             <td>{{$ruangan->IdRuangan}}</td>
-                            <td>{{$ruangan->Nama}}</td>                           
+                            <td>{{$ruangan->NamaGedung}}</td>                           
                             <td>{{$ruangan->NomorRuangan}}</td>
                             <td>{{$ruangan->JenisRuangan}}</td>
                             <td>{{$ruangan->KapasitasRuangan}}</td>

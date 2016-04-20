@@ -41,7 +41,7 @@ class Permohonan extends Model
     {
         $query = 
             'SELECT * 
-            FROM permohonan p, jadwal j, ruangan r, users u
+            FROM permohonan p, jadwal j, ruangan r, gedung g, users u
             WHERE  
                 p.JenisPermohonan = 1 AND 
                 p.IdRuangan = j.IdRuangan AND 
@@ -50,15 +50,18 @@ class Permohonan extends Model
                 j.IdGedung = r.IdGed AND
                 p.IdJadwal = j.IdJadwal AND 
                 p.IdPemohon = u.NomorInduk AND
+                p.IdGedung = g.IdGedung AND
+                j.IdGedung = g.IdGedung AND
+                r.IdGed = g.IdGedung AND
                 p.deleted = 0';
-        dd($role);
+
         // check role user, different role different data will be retrieve
         if ($role == 'Staf PPAA') {
             // staf PPAA only see jenis ruangan Kelas
             $query .= ' AND r.JenisRuangan="Kelas"';
         } else if ($role == 'Staf Sekretariat') {
             // staf sekertariat can see all ruangan except Kelas
-            $query .= ' AND (r.JenisRuangan="Auditoriun" OR 
+            $query .= ' AND (r.JenisRuangan="Auditorium" OR 
                             r.JenisRuangan="RuangRapatBesar" OR 
                             r.JenisRuangan="RuangRapatKecil")' ;  
         } else {
