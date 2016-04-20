@@ -72,7 +72,7 @@ class MasterController extends Controller
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
     		'HM' =>
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
-    		'Mahasiswa' =>
+    		'mahasiswa' =>
                 ['pinjamruang', 'buatpeminjaman'],
     	];
 

@@ -36,7 +36,7 @@
 			<div class="row">
 				<div class="col s6">
 					Pilih Tanggal Peminjaman :
-					<input name="tanggal" type="date" class="datepicker">
+					<input name="tanggal" type="date" class="pilihtanggalpinjam">
 				</div>
 			</div>
 

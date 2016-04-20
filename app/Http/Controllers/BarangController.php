@@ -18,6 +18,9 @@ class BarangController extends MasterController
      */
     public function getBarang(Request $request)
     {	
+        // check if user permitted        
+        if (!($this->isPermitted('barang'))) return redirect('/');
+
         // check if request method is post
         if(!$request->isMethod('POST')) {
             // get all barang
@@ -49,6 +52,12 @@ class BarangController extends MasterController
      */
     public function getCreateBarang(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatbarang'))) return redirect('/');
+
+        // reset the session
+        session()->forget('jmlform');
+        
         // check if request method is post, if yes get jmlform input and create session 
         if ($request->isMethod('POST')) 
             session()->flash('jmlform', $request->input('jmlbarang'));
@@ -68,6 +77,9 @@ class BarangController extends MasterController
      */
     public function createBarang(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatbarang'))) return redirect('/');
+
         // get number of form submitted
         $nform = count($request->input('namabarang')); 
 
@@ -137,6 +149,9 @@ class BarangController extends MasterController
      */
     public function getUpdateBarang(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatbarang'))) return redirect('/');
+
         // if session barang not found, redirect to barang page
         if (!session()->has('barang')) return redirect('registrasibarang/barang');
 
@@ -159,6 +174,9 @@ class BarangController extends MasterController
      */
     public function updateBarang(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatbarang'))) return redirect('/');
+        
         // form validation
         $this->validate($request, 
             [

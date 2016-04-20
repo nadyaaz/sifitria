@@ -15,6 +15,9 @@ class RuanganController extends MasterController
     public function getRuangan(Request $request)
     {
         if(!$request->isMethod('POST')) {
+            // check if user permitted        
+            if (!($this->isPermitted('ruangan'))) return redirect('/');
+
             // get list gedung dan ruangan pada database
             $allgedung = Gedung::getAllGedung();
         	$allruangan = Ruangan::getAllRuangan();        
@@ -28,6 +31,9 @@ class RuanganController extends MasterController
         		]
         	);
         } else {
+            // check if user permitted        
+            if (!($this->isPermitted('ruarngan'))) return redirect('/');
+
             // get ruangan selected
             $ruangan = Ruangan::where('hashRuang', $request->input('hash'))->get();
 
@@ -41,6 +47,9 @@ class RuanganController extends MasterController
 
     public function getCreateRuangan()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+
         // get all gedung object
         $allgedung = Gedung::getAllGedung();
 
@@ -55,6 +64,9 @@ class RuanganController extends MasterController
 
     public function getUpdateRuangan()
     {  
+        // check if user permitted        
+        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+
         // get all gedung object
         $allgedung = Gedung::getAllGedung();
 
@@ -73,6 +85,9 @@ class RuanganController extends MasterController
 
     public function updateRuangan(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+
         // form validation
         $this->validate($request,
             [
@@ -97,6 +112,9 @@ class RuanganController extends MasterController
 
     public function createRuangan(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+
         $this->validate($request,
             [
                 'nomorruangan' => 'required|min:4|max:4',
@@ -139,6 +157,9 @@ class RuanganController extends MasterController
 
     public function removeRuangan(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+
         // set ruangan to deleted
         Ruangan::removeRuangan($request->input('hash'));
 

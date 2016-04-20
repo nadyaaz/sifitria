@@ -21,7 +21,7 @@ class RegistrasiController extends MasterController
     public function dashboard(Request $request)
     {   
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
+        if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
 
         if (!$request->isMethod('POST')) {
     		// get permohonan registrasi barang data
@@ -74,7 +74,10 @@ class RegistrasiController extends MasterController
     public function getCreateRegistrasi(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatregistrasi'))) return redirect('registrasibarang');    
+        if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');    
+
+        // reset the session
+        session()->forget('jmlform');
 
         if ($request->isMethod('POST')) 
             session()->flash('jmlform', $request->input('jmlform'));
@@ -93,6 +96,9 @@ class RegistrasiController extends MasterController
      */
     public function createRegistrasi(Request $regbarang)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+
         // get number of form submitted
         $nform = count($regbarang->input('namabarang')); 
 
@@ -180,7 +186,7 @@ class RegistrasiController extends MasterController
     public function getUpdateRegistrasi(Request $request)
     {
         // if session registrasi not found, redirect to registrasi page
-        if (!session()->has('registrasi')) return redirect('registrasibarang');
+        if (!session()->has('registrasibarang')) return redirect('registrasibarang');
 
         // get registrasi selected
         $registrasi = session('registrasi');
@@ -205,6 +211,9 @@ class RegistrasiController extends MasterController
      */
     public function updateRegistrasi(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+
         // Memvalidasi isian form registrasi barang
         $this->validate ($request, [
             'subjek'=> 'required|max:100',
@@ -312,7 +321,7 @@ class RegistrasiController extends MasterController
                 $namabarang = $kandidat->NamaBarang;
                 $jenisbarang = $kandidat->JenisBarang;
                 $kategoribarang = $kandidat->KategoriBarang;
-                
+
                 // insert to database
                 Barang::createBarang([
                     'IdBarang' => $IdBarang,

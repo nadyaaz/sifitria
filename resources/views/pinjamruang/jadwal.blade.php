@@ -99,7 +99,18 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">TUTUP</a>
+				<div class="col s6">
+					<form action="{{ url('pinjamruang/jadwal/hapus') }}" method="POST" class="left">
+						{!! csrf_field() !!}
+						<input type="hidden" name="hashJadwal" value="">
+						<button class="btn waves-light waves-effect red">
+							HAPUS
+						</button>
+					</form>					
+				</div>
+				<div class="col s6 right">
+					<a class="modal-action modal-close waves-effect waves-green btn-flat">TUTUP</a>					
+				</div>
 			</div>
 		</div>	
 	</div>
@@ -112,48 +123,32 @@
 		// tooltip settings
 		$('.tooltipped').tooltip({delay: 50});
 
-		$('.modal-trigger').leanModal({
-			dismissible: false, 
-			opacity: .3, 
-			in_duration: 148,
-			out_duration: 148,
-		});
 		
-		$(document).one('click', '.jadwalpopup', function(e) {
-			e.preventDefault();
-
-			$('.modal-trigger').leanModal({
-				dismissible: false, 
-				opacity: .3, 
-				in_duration: 148,
-				out_duration: 148,
-			});
-
-			$('#modaljadwal').openModal();
-
-			$(this).prop('disabled', true);
-		});
 			
 		// fullCalendar sources
 		var sources = {
 			RuangRapatBesar: {
 				url: 'jadwal/get?jenisruang=RuangRapatBesar',
 	            type: 'POST',		            	            
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },	        
 	            color: '#F44336'
 			},
 			RuangRapatKecil: {
 				url: 'jadwal/get?jenisruang=RuangRapatKecil',
 	            type: 'POST',		            
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },	        
 	            color: '#3F51B5'
 			},
 			Auditorium: {
 				url: 'jadwal/get?jenisruang=Auditorium',
 	            type: 'POST',		            
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },	        
 	            color: '#4CAF50'
 			},
 			Kelas: {
 				url: 'jadwal/get?jenisruang=Kelas&nomorruang=',
 	            type: 'POST',		            
+	            error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },	        
 	            color: '#FFC107'
 			}
 		};		
@@ -198,7 +193,15 @@
 					eventLimit: 2,
 				},
 			},
-	        error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },
+	        error: function() { alert('Terjadi error ketika mencoba mengambil jadwal. Silakan refresh kembali. Tekan F5.'); },	        
+	        eventAfterAllRender: function(){
+	        	$('.modal-trigger').leanModal({
+					dismissible: false, 
+					opacity: .3, 
+					in_duration: 148,
+					out_duration: 148,
+				});	        	
+	        },
 			eventSources: [		        
 		        sources.RuangRapatBesar, sources.RuangRapatKecil, sources.Auditorium, sources.Kelas		        
 		    ],
@@ -212,6 +215,7 @@
 		        	$('#modalselesai').html(moment(event.end).format("HH:mm"));
 		        	$('#modalgedung').html(event.gedung);
 		        	$('#modalruangan').html(event.ruangan);
+		        	$('input[type=hidden][name=hashJadwal]').prop('value', event.hashJadwal);
 		        });
 		    }
 	    });

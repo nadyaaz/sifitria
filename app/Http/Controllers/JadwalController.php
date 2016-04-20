@@ -68,7 +68,7 @@ class JadwalController extends MasterController
      */
     public function createJadwal(Request $request)
     {
-         // get al input
+        // get al input
         $input = $request->all();        
 
         // validate input
@@ -114,7 +114,7 @@ class JadwalController extends MasterController
             'WaktuMulai' => $waktuMulai,
             'WaktuSelesai' => $waktuSelesai,
             'KeperluanPeminjaman' => $input['keperluan'],
-            'hashJadwal' => $IdGedung.$IdRuangan.$IdJadwal
+            'hashJadwal' => md5($IdGedung.$IdRuangan.$IdJadwal)
         ]);
 
         // redirect to permohonan peminjaman ruangan page
@@ -138,7 +138,8 @@ class JadwalController extends MasterController
                 WHERE 
                     j.IdRuangan = r.IdRuangan AND
                     j.IdGedung = r.IdGed AND
-                    r.IdGed = g.IdGedung';
+                    r.IdGed = g.IdGedung AND
+                    j.deleted = 0';
     		
             $params;
             $jadwalarr = array();
@@ -169,7 +170,8 @@ class JadwalController extends MasterController
                     'end'   => str_replace(' ', 'T', $jadwal->WaktuSelesai),
                     'ruangan' => $jadwal->NomorRuangan,
                     'gedung' => str_replace('Gedung ', '', $jadwal->NamaGedung),
-                    'tooltip' => $jadwal->KeperluanPeminjaman
+                    'hashJadwal' => $jadwal->hashJadwal,
+                    'tooltip' => $jadwal->KeperluanPeminjaman,
                 ];
 
                 // push
@@ -179,5 +181,19 @@ class JadwalController extends MasterController
     		// return jadwal JSON object from jadwal array
     		return json_encode($jadwalarr);
     	}    	
+    }
+
+    /**
+     * [deleteJadwal description]
+     * @param  String $hash Hash Jadwal
+     * @return redirect to jadwal page
+     */
+    public function removeJadwal(Request $request)
+    {
+        // soft delete jadwal from database
+        Jadwal::removeJadwal($request->input('hashJadwal'));
+
+        // redirect back to jadwal page
+        return redirect('pinjamruang/jadwal');
     }
 }

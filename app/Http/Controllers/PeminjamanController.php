@@ -50,7 +50,7 @@ class PeminjamanController extends MasterController
     public function getCreatePeminjaman()
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
+        if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
 
         return $this->render('pinjamruang.buatpeminjaman',
             [
@@ -66,6 +66,9 @@ class PeminjamanController extends MasterController
      */
     public function createPeminjaman(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatpinjam'))) return redirect('/');
+
         // get al input
         $input = $request->all();        
 
@@ -252,6 +255,9 @@ class PeminjamanController extends MasterController
      */
     public function updateStatusPeminjaman(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatpinjam'))) return redirect('/');
+        
         // validate request
         $this->validate($request, [
             'nomorsurat' => 'required',

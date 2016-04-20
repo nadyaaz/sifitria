@@ -47,7 +47,7 @@
 						<div class="col s2 input-field">
 				    		Tanggal Beli <br>
 				    		<span class="error red-text">{{ $errors->first('tanggalbeli.'.$i) }}</span><br>    				
-							<input type="date" name="tanggalbeli[{{$i}}]" value="{{ old('tanggalbeli.'.$i) }}" class="datepicker">			
+							<input type="date" name="tanggalbeli[{{$i}}]" value="{{ old('tanggalbeli.'.$i) }}" class="tanggalbeli">			
 				    	</div>
 
 				    	<div class="col s4 input-field">

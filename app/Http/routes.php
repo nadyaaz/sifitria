@@ -46,7 +46,7 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::post('pinjamruang/jadwal/get', 'JadwalController@getJadwalAJAX');
 	Route::post('pinjamruang/jadwal/getruangan', 'PeminjamanController@getRuanganAvailableAJAX');
 	Route::post('pinjamruang/jadwal/buat', 'JadwalController@createJadwal');	
-	Route::post('pinjamruang/jadwal/hapus', 'JadwalController@deleteJadwal');	
+	Route::post('pinjamruang/jadwal/hapus', 'JadwalController@removeJadwal');	
 
 	Route::match(['get', 'post'], 'pinjamruang/gedung', 'GedungController@getGedung');
 	Route::get('pinjamruang/gedung/buat', 'GedungController@getCreateGedung');

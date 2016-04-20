@@ -29,6 +29,6 @@ class Jadwal extends Model
     public static function removeJadwal($hashJadwal)
     {
     	// delete jadwal record from database
-    	DB::table('jadwal')->where('hashJadwal', $hashJadwal)->delete();
+    	DB::table('jadwal')->where('hashJadwal', $hashJadwal)->update(['deleted' => 1]);
     }
 }
