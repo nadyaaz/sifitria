@@ -2,119 +2,214 @@
 
 @section('sidebar_buatjadwal', 'active')
 
-@section('konten')
-	<div class="subsection">
-		<h5>Buat Jadwal</h5>
-		<div class="divider"></div><br>
-		<div class="row">
-			
-			<div class="col s6">
+@section('konten')	
+<div class="subsection">
+	<h5>Buat Jadwal</h5>
+    <div class="divider"></div><br>
 
-			
-				Pilih Jenis Ruangan :<br>
-					<input name="group1" type="radio" id="test1" />
-				    <label for="test1">Ruang Kelas</label>
-				 	<br>
-				
-				    <input name="group1" type="radio" id="test2" />
-				    <label for="test2">Ruang Auditorium</label>
-					<br>
-				    <input name="group1" type="radio" id="test3"  />
-				    <label for="test3">Ruang Rapat</label>
-				
+	<form action="{{ url('pinjamruang/jadwal/buat') }}" method="POST">
+		<div class="row ajaxform">			
+			<div class="row">			
+				<div class="col s6">
+				 	<p>
+						Pilih Jenis Ruangan :
+			 		</p>
+					<p>
+						<input name="jenisRuangan" type="radio" id="Kelas" value="Kelas"/>
+					    <label for="Kelas">Ruang Kelas</label>				 	
+					</p>
+					<p>
+					    <input name="jenisRuangan" type="radio" id="Auditorium" value="Auditorium"/>
+					    <label for="Auditorium">Ruang Auditorium</label>
+					</p>
+					<p>
+					    <input name="jenisRuangan" type="radio" id="RuangRapatBesar" value="RuangRapatBesar"/>
+					    <label for="RuangRapatBesar">Ruang Rapat Besar</label>
+					</p>
+					<p>
+					    <input name="jenisRuangan" type="radio" id="RuangRapatKecil" value="RuangRapatKecil"/>
+					    <label for="RuangRapatKecil">Ruang Rapat Kecil</label>
+					</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s6">
+					Pilih Tanggal Peminjaman :
+					<input name="tanggal" type="date" class="datepicker">
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12">
+					Isi Waktu Peminjaman : <br>
+				</div>	
+
+				<div class="col s2">
+					<select name="waktumulai" id="waktumulai">
+						<option value="800">08:00</option>
+						<option value="830">08:30</option>
+						<option value="900">09:00</option>
+						<option value="930">09:30</option>
+						<option value="1000">10:00</option>
+						<option value="1030">10:30</option>
+						<option value="1100">11:00</option>
+						<option value="1130">11:30</option>
+						<option value="1200">12:00</option>
+						<option value="1230">12:30</option>
+						<option value="1300">13:00</option>
+						<option value="1330">13:30</option>
+						<option value="1400">14:00</option>
+						<option value="1430">14:30</option>
+						<option value="1500">15:00</option>
+						<option value="1530">15:30</option>
+						<option value="1600">16:00</option>
+						<option value="1630">16:30</option>
+						<option value="1700">17:00</option>
+						<option value="1730">17:30</option>
+						<option value="1800">18:00</option>
+						<option value="1830">18:30</option>
+						<option value="1900">19:00</option>
+					</select>
+				</div>
+				<div class="col s2">
+					 <h6 style="text-align: center">s.d.</h6>
+				</div>
+				<div class="col s2">
+					<select name="waktuselesai" id="waktuselesai">
+						<option value="800">08:00</option>
+						<option value="830">08:30</option>
+						<option value="900">09:00</option>
+						<option value="930">09:30</option>
+						<option value="1000">10:00</option>
+						<option value="1030">10:30</option>
+						<option value="1100">11:00</option>
+						<option value="1130">11:30</option>
+						<option value="1200">12:00</option>
+						<option value="1230">12:30</option>
+						<option value="1300">13:00</option>
+						<option value="1330">13:30</option>
+						<option value="1400">14:00</option>
+						<option value="1430">14:30</option>
+						<option value="1500">15:00</option>
+						<option value="1530">15:30</option>
+						<option value="1600">16:00</option>
+						<option value="1630">16:30</option>
+						<option value="1700">17:00</option>
+						<option value="1730">17:30</option>
+						<option value="1800">18:00</option>
+						<option value="1830">18:30</option>
+						<option value="1900">19:00</option>
+					</select>
+				</div>
+			</div>		
+
+			<div class="row" id="xyz">
+				<div class="col s12">
+					<a class="btn waves-effect waves-light" id="jadwaljson" name="Next Page">	
+						CARI RUANGAN TERSEDIA
+			    		<i class="material-icons right">navigate_next</i>
+	  				</a>
+	  			</div>
 			</div>
 		</div>
-	
-		<div class="row">
-			<div class="input-field col s6">
-				Pilih Ruangan
-			    <select >
-			      	<optgroup label="Gedung M">
-			        	<option value="M1102">M1102</option>
-			        	<option value="M1103">M1103</option>
-			      	</optgroup>
-			      	<optgroup label="Gedung G">
-			        	<option value="G1102">G1102</option>
-			        	<option value="G1103">G1103</option>
-			      	</optgroup>
-			    </select>
-			  </div>
-		</div>
 
-		<div class="row">
-		
-	        	<b>Periode Jadwal</b><br>
-	        		<div class="col s2">
-	        			<input type="date" id="periodeawal" class="datepicker">
-	          		</div>
-	          		<div class="col s1">
-	          			<h5>s.d.</h5>
-	          		</div>
-	          		<div class="col s2">
-	          			<input type="date" id="periodeakhir" class="datepicker">
-	          		</div>
-	      
-	       
-        </div>
 		<div class="row">
 			<div class="col s12">
-				<ul class="tabs">
-					<li class="tab col s2"><a class="active"href="#test1">Senin</a></li>
-					<li class="tab col s2"><a href="#test2">Selasa</a></li>
-					<li class="tab col s2"><a href="#test3">Rabu</a></li>
-					<li class="tab col s2"><a href="#test4">Kamis</a></li>
-					<li class="tab col s2"><a href="#test5">Jumat</a></li>
-					<li class="tab col s2"><a href="#test6">Sabtu</a></li>
-					<li class="tab col s2"><a href="#test6">Minggu</a></li>
+				Ruangan Tersedia :
+			</div>
+		
+			<div id="tableHead" class="row">
+				<div class="col s4">Gedung</div>
+	    		<div class="col s3">Ruangan</div>
+	    		<div class="col s3">Kapasitas</div>	
+	    	</div>						
+			<ul id="tabelRuangan" class="collection">
 
-				</ul>
+			</ul>
+		</div>
+			
+		<div class="subsection">							
+			<div class="row">
+				<div class="col s12">
+					Keperluan Penggunaan: <br>
+				</div>
+				<div class="col s6">
+					<input name="keperluan" type="text" id="keperluan" class="validate" required>
+				</div>
 			</div>	
-		</div>
+			
+			<div class="row" id="xyz">
+				<div class="col s12">
+					{!! csrf_field() !!}
+					<input type="hidden" name="pemohon" value="{{$data['user_sess']->npm}}">
+					<button class="btn waves-effect waves-light" id="formruangan" name="Next Page">	
+						SIMPAN JADWAL			    	
+	  				</button>
+	  				</div>
+				</div>		
+			</form>
+		</div>		
+	</form>
+</div>
 
-		<div class="row">
-		    <div id="tableHead" class="row">
-		        <div class="col s1">No</div>
-		        <div class="col s2">Waktu Awal</div>
-		        <div class="col s2">Waktu Akhir</div>
-		        <div class="col s4">Keperluan</div>
-		        <div class="col s3">Pengulangan</div>
-		                
-		    </div>
-		                
-			<hr>
-		</div>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+	$.ajaxSetup({
+		headers: {'X-CSRF-Token': $('meta[name=_token]').attr('content')}
+	});
+
+	$('#jadwaljson').click(function(){
+
+		var kategori = $('input[type="radio"][name="jenisRuangan"]:checked').val();
+		var tanggal = $('.datepicker').val();
+		var waktumulai = new Number($('select[name=waktumulai] option:selected').val());
+		var waktuselesai = new Number($('select[name=waktuselesai] option:selected').val());
+
+		// form validation
+		var isWaktuSelesaiLebihKecil = (((waktumulai)-(waktuselesai)) >= 0) ? true : false;
+		var isKategoriUndefined = (kategori == undefined) ? true : false;
+		var isTanggalEmpty = (tanggal == '') ? true : false;
+
+		// if form not validated don't execute the AJAX calling
+		if (!isWaktuSelesaiLebihKecil && !isKategoriUndefined && !isTanggalEmpty) {
+			$.ajax({
+				url: 'getruangan?jenisRuangan='+kategori+'&tanggal='+tanggal+'&waktuMulai='+waktumulai+'&waktuSelesai='+waktuselesai,
+				type: 'POST',				
+				processData:false,
+					
+				success: function(data){				
+					var myElementToAppendTo = $("#tabelRuangan");
+					var i = 1;	
+			       	$.each($.parseJSON(data), function(idx, obj) {	
+			       		myElementToAppendTo.html('');
+			           	myElementToAppendTo.append("<li class='collection-item'><div class='row form-row'><div class='col s4 pilihan'><input type='radio' name='ruangandipilih' id='radio"+i+"' value='"+obj.hashRuang+"'/><label for='radio"+i+"'>"+obj.Nama+"</label></div><div class='col s3'>"+obj.NomorRuangan+"</div><div class='col s3'>"+obj.KapasitasRuangan+"</div><div class='col s2'><a class='waves-light waves-effect uncheck' id='"+i+"'><i class='material-icons red-text'>cancel</i></a></div></div></div></li>");
+			           	i++;
+					});
+				},
+				error: function(xhr, status, error){
+					alert(status+' '+error);
+				}
+			})								
+		}
+	});
+
+	$(document).on('change', 'input[type=radio][name=ruangandipilih]', function(){
+		$('.ajaxform').hide(400);
+	});
+
+	$(document).on('click', '.uncheck', function(){
+		var id = $(this).attr('id');		
+		$('#radio'+id).prop('checked', false);
+		if($('input[type=radio][name=ruangandipilih]:checked').val() == undefined) $('.ajaxform').show(400);
+	});
+});		
+//]]>
+</script>
 
 
-		<div class="row-jadwal">
-			<div class="col s1">
-				<h5>1</h5>
-			</div>
-			<div class="col s2">
-				<input id="waktuawal" type="number" class="validate">
-			</div>
-			<div class="col s2">
-				<input id="waktuakhir" type="number" class="validate">
-			</div>
-			<div class="col s4">
-				<input placeholder="contoh: Kelas"  id="subject" type="text" class="validate">
-			</div>
-			<div class="col s1">
-				<input id="pengulangan" type="number" class="validate"> kali/minggu
-			</div>
-		</div>
-		<div class="row">
-	      	<div class="col s4"><p></p></div>
-	      	<div class="col s4">
-	       	 	<a id="submit"style="width:100%;"class="waves-effect waves-light btn"><i class="material-icons left">add</i>Tambahkan Jadwal</a>
-	    	</div>
-    	</div>
-    	<hr>
-	    <div class="row">
-	      	<div class="col s12 m4 12"><p></p></div>
-	      	<div class="col s12 m4 18">
-	        	<a id="submit"style="width:100%;"class="waves-effect waves-light btn-large">Submit & Simpan Jadwal</a>
-	      	</div>
-	      	<div class="col s12 m4 12"><p></p></div>
-	    </div>
-	</div>
+  	
+
+
 @stop

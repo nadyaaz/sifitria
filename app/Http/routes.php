@@ -30,7 +30,7 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::get('pinjamruang', 'PeminjamanController@dashboard');
 	Route::get('pinjamruang/buat', 'PeminjamanController@getCreatePeminjaman');
 	Route::post('pinjamruang/buat', 'PeminjamanController@createPeminjaman');
-	Route::post('pinjamruang/buat/getruangan', 'PeminjamanController@getRuanganAvailableAJAX');
+	Route::post('pinjamruang/getruangan', 'PeminjamanController@getRuanganAvailableAJAX');
 	Route::post('pinjamruang/batal', 'PeminjamanController@removePeminjaman');	
 
 	Route::match(['get', 'post'], 'pinjamruang/ruangan', 'RuanganController@getRuangan');
@@ -43,6 +43,7 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::get('pinjamruang/jadwal', 'JadwalController@getJadwal');
 	Route::get('pinjamruang/jadwal/buat', 'JadwalController@getCreateJadwal');	
 	Route::post('pinjamruang/jadwal/get', 'JadwalController@getJadwalAJAX');
+	Route::post('pinjamruang/jadwal/getruangan', 'PeminjamanController@getRuanganAvailableAJAX');
 	Route::post('pinjamruang/jadwal/buat', 'JadwalController@createJadwal');	
 	Route::post('pinjamruang/jadwal/hapus', 'JadwalController@deleteJadwal');	
 

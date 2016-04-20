@@ -1,5 +1,7 @@
 @extends('sidebar')
 
+@section('sidebar_buatpinjam', 'active')
+
 @section('konten')	
 <div class="subsection">
 	<h5>Buat Permohonan Peminjaman Ruangan</h5>
@@ -193,7 +195,7 @@ $(document).ready(function() {
 		// if form not validated don't execute the AJAX calling
 		if (!isWaktuSelesaiLebihKecil && !isKategoriUndefined && !isTanggalEmpty) {
 			$.ajax({
-				url: 'buat/getruangan?jenisRuangan='+kategori+'&tanggal='+tanggal+'&waktuMulai='+waktumulai+'&waktuSelesai='+waktuselesai,
+				url: 'getruangan?jenisRuangan='+kategori+'&tanggal='+tanggal+'&waktuMulai='+waktumulai+'&waktuSelesai='+waktuselesai,
 				type: 'POST',				
 				processData:false,
 					

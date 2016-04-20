@@ -79,6 +79,8 @@ class MasterController extends Controller
     	// get user type
     	$usertype = SSO::getUser()->role;
 
+        
+        
     	// check if user permittes
     	if (array_key_exists($usertype, $userrule)) {
     		if (in_array($page, $userrule[$usertype], true)) return true;

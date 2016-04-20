@@ -25,7 +25,14 @@ class RegistrasiController extends MasterController
 
         if (!$request->isMethod('POST')) {
     		// get permohonan registrasi barang data
-    		$registrasi = Permohonan::getRegistrasi();
+            // check the user role
+            if (session('user_sess')->role != 'Manager Fasilitas & Infrastruktur' &&
+                session('user_sess')->role != 'Staf Fasilitas & Infrastruktur') 
+            {
+                $registrasi = Permohonan::getRegistrasi(session('user_sess')->npm);                
+            } else {
+                $registrasi = Permohonan::getRegistrasi();                
+            }
 
     		// render registrasi barang dashboard
     		return $this->render('registbarang.dashboard',

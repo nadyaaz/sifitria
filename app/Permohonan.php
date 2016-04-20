@@ -74,17 +74,22 @@ class Permohonan extends Model
      * Get Permohonan registrasi barang, kandidat barang, and catatan record
      * @return Array
      */
-    public static function getRegistrasi()
+    public static function getRegistrasi($nomorinduk = '')
     {
+        $query = 
+            'SELECT * 
+            FROM permohonan p, users u 
+            WHERE
+                p.JenisPermohonan = 2 AND 
+                p.IdPemohon = u.NomorInduk AND
+                p.deleted= 0';
+
+        // if user != pihak fasilitas
+        // // get only his/her permohonan
+        if($nomorinduk != '') $query .= ' AND p.IdPemohon = "'.$nomorinduk.'"';
+
     	// get list registrasi barang
-		$allregistrasi = DB::select(DB::raw(
-			'SELECT * 
-			FROM permohonan p, users u 
-			WHERE
-				p.JenisPermohonan = 2 AND 
-				p.IdPemohon = u.NomorInduk AND
-				p.deleted= 0'
-		));   
+		$allregistrasi = DB::select(DB::raw($query));   
 
         // get list kandidat barang
         $allkandidat = KandidatBarang::all();

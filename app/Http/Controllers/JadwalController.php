@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Jadwal;
+use App\Ruangan;
+use App\Master;
 use App\Gedung;
 use DB;
 use Input;
@@ -57,6 +59,66 @@ class JadwalController extends MasterController
     			'title' => 'Buat Jadwal Ruangan',
     		]
     	);
+    }
+
+    /**
+     * [createJadwal description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function createJadwal(Request $request)
+    {
+         // get al input
+        $input = $request->all();        
+
+        // validate input
+        $this->validate($request, [
+            'ruangandipilih' => 'required',
+            'pemohon' => 'required',
+            'keperluan' => 'required',
+            'waktumulai' => 'required',
+            'waktuselesai' => 'required',
+            'jenisRuangan' => 'required',
+            'tanggal' => 'required'
+        ]);
+
+        $tanggal = $input['tanggal'];
+        $inputmulai = substr_replace($input['waktumulai'], ':', strlen($input['waktumulai'])-2, 0);
+        $inputselesai = substr_replace($input['waktuselesai'], ':', strlen($input['waktuselesai'])-2, 0);
+
+        // normalize date
+        if (strlen($inputmulai) == 4) $inputmulai = '0'.$inputmulai;
+        if (strlen($inputselesai) == 4) $inputselesai = '0'.$inputselesai;
+
+        // get timestamp
+        $waktuMulai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$inputmulai));
+        $waktuSelesai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$inputselesai));
+        $ruangan = Ruangan::getRuangan($input['ruangandipilih']);
+
+        $IdGedung = $ruangan[0]->IdGed;
+        $IdRuangan = $ruangan[0]->IdRuangan;
+        $user = $input['pemohon'];
+
+        // get jadwal last ID
+        $lastJadwalId = Master::getLastId('jadwal', 'IdJadwal', [
+            ['IdGedung', '=', $IdGedung],
+            ['IdRuangan', '=', $IdRuangan],
+        ]);        
+        $IdJadwal = $lastJadwalId + 1;
+
+        // Memasukkan data ke database tabel jadwal
+        Jadwal::createJadwal([
+            'IdJadwal' => $IdJadwal,
+            'IdRuangan' => $IdRuangan,
+            'IdGedung' => $IdGedung,
+            'WaktuMulai' => $waktuMulai,
+            'WaktuSelesai' => $waktuSelesai,
+            'KeperluanPeminjaman' => $input['keperluan'],
+            'hashJadwal' => $IdGedung.$IdRuangan.$IdJadwal
+        ]);
+
+        // redirect to permohonan peminjaman ruangan page
+        return redirect('pinjamruang/jadwal');
     }
     
     /**
