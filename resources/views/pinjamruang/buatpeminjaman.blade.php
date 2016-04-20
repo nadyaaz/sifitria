@@ -5,7 +5,7 @@
 	<h5>Buat Permohonan Peminjaman Ruangan</h5>
     <div class="divider"></div><br>
 
-	<form action="{{ url('pinjamruang/buat_formdetail/proses') }}" method="POST">
+	<form action="{{ url('pinjamruang/buat') }}" method="POST">
 		<div class="row ajaxform">			
 			<div class="row">			
 				<div class="col s6">

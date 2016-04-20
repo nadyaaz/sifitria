@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Permohonan;
+use App\Ruangan;
 use App\Catatan;
+use App\Jadwal;
 use App\Master;
 use DB;
 use Carbon\Carbon;
@@ -58,7 +60,7 @@ class PeminjamanController extends MasterController
     public function createPeminjaman(Request $request)
     {
         // get al input
-        $input = $request->all();
+        $input = $request->all();        
 
         // validate input
         $this->validate($request, [
@@ -66,23 +68,29 @@ class PeminjamanController extends MasterController
             'pemohon' => 'required',
             'subjek' => 'required',
             'keperluan' => 'required',
-            'waktuMulai' => 'required',
-            'waktuSelesai' => 'required',
-            'catatan' => 'required'
+            'waktumulai' => 'required',
+            'waktuselesai' => 'required',
+            'catatan' => 'required',
+            'jenisRuangan' => 'required',
+            'tanggal' => 'required'
         ]);
 
-        $hashRuang = $input['ruangandipilih'];
-        $user = $input['pemohon'];
-        $subjek = $input['subjek'];
-        $keperluan = $input['keperluan'];
-        $catatan = $input['catatan'];
         $tanggal = $input['tanggal'];
-        $waktuMulai = $input['waktuMulai'];
-        $waktuSelesai = $input['waktuSelesai'];        
+        $inputmulai = substr_replace($input['waktumulai'], ':', strlen($input['waktumulai'])-2, 0);
+        $inputselesai = substr_replace($input['waktuselesai'], ':', strlen($input['waktuselesai'])-2, 0);
 
-        $waktuMulai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$waktuMulai));
-        $waktuSelesai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$waktuSelesai));
-        $ruangan = Ruangan::getRuangan($hashRuang);
+        // normalize date
+        if (strlen($inputmulai) == 4) $inputmulai = '0'.$inputmulai;
+        if (strlen($inputselesai) == 4) $inputselesai = '0'.$inputselesai;
+
+        // get timestamp
+        $waktuMulai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$inputmulai));
+        $waktuSelesai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$inputselesai));
+        $ruangan = Ruangan::getRuangan($input['ruangandipilih']);
+
+        $IdGedung = $ruangan[0]->IdGed;
+        $IdRuangan = $ruangan[0]->IdRuangan;
+        $user = $input['pemohon'];
 
         // get permohonan last ID
         $lastPermohonanId = Master::getLastId('permohonan', 'IdPermohonan');        
@@ -90,29 +98,45 @@ class PeminjamanController extends MasterController
 
         // get jadwal last ID
         $lastJadwalId = Master::getLastId('jadwal', 'IdJadwal', [
-            ['IdGedung', '=', $ruangan->IdGed],
-            ['IdRuangan', '=', $ruangan->IdRuangan],
-        ]);
+            ['IdGedung', '=', $IdGedung],
+            ['IdRuangan', '=', $IdRuangan],
+        ]);        
         $IdJadwal = $lastJadwalId + 1;
 
+        // Memasukkan data ke database tabel jadwal
+        Jadwal::createJadwal([
+            'IdJadwal' => $IdJadwal,
+            'IdRuangan' => $IdRuangan,
+            'IdGedung' => $IdGedung,
+            'WaktuMulai' => $waktuMulai,
+            'WaktuSelesai' => $waktuSelesai,
+            'KeperluanPeminjaman' => $input['keperluan'],
+            'hashJadwal' => $IdGedung.$IdRuangan.$IdJadwal
+        ]);
 
-DB::insert(
-        DB::raw( "INSERT INTO jadwal (IdGedung, IdRuangan, IdJadwal, WaktuMulai, waktuSelesai, keperluanPeminjaman) VALUES ('$IdGedung','$IdRuangan', '$IdJadwal', '$timestampWaktuMulai', '$timestampWaktuSelesai', '$keperluan')"
-            )
-        ); 
+        // Memasukkan data dari form peminjaman ruangan ke table permohonan
+        Permohonan::createPermohonan([
+            'IdPermohonan' => $IdPermohonan,             
+            'SubjekPermohonan' => $input['subjek'], 
+            'JenisPermohonan' => 1, 
+            'IdPemohon' => $user,
+            'IdGedung' => $IdGedung,
+            'IdRuangan' => $IdRuangan,
+            'IdJadwal' => $IdJadwal,
+            'hashPermohonan' => md5($IdPermohonan.$input['subjek']),
+        ]);
 
+        // Memasukkan data catatan ke database table catatan
+        Catatan::createCatatan(
+            $IdPermohonan, 
+            0, 
+            $input['catatan'], 
+            $user, 
+            md5($IdPermohonan.'0'.$user) // hash catatan
+        );       
 
-    DB::insert(
-        DB::raw( "INSERT INTO permohonan (IdPermohonan, SubjekPermohonan, IdPemohon, IdGedung, IdRuangan, IdJadwal, JenisPermohonan) VALUES ('$IdPermohonan','$subjek', '$user', '$IdGedung', '$IdRuangan','$IdJadwal',1)"
-            )
-        ); 
-
-       DB::insert(
-        DB::raw( "INSERT INTO catatan (IdPermohonan, TahapCatatan, DeskripsiCatatan, NomorIndukPenulis) VALUES ('$IdPermohonan', 1, '$catatan', '$user')"
-            )
-        ); 
-
-       return redirect('pinjamruang');
+        // redirect to permohonan peminjaman ruangan page
+        return redirect('pinjamruang');
     }
 
     /**

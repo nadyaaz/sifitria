@@ -72,7 +72,7 @@ class JadwalController extends MasterController
             // default query
             $query = 
                 'SELECT * 
-                FROM jadwal j, ruangan r, gedung g 
+                FROM jadwal j, ruangan r, gedung g
                 WHERE 
                     j.IdRuangan = r.IdRuangan AND
                     j.IdGedung = r.IdGed AND

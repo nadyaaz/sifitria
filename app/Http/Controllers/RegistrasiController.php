@@ -155,7 +155,7 @@ class RegistrasiController extends MasterController
             0, // tahap catatan
             $input['catatanpemohon'], // deskripsi catatan dari pemohon
             session('user_sess')->npm, // nomor induk pemohon
-            md5($IdPermohonan.'1'.session('user_sess')->npm) // hash catatan
+            md5($IdPermohonan.'0'.session('user_sess')->npm) // hash catatan
         );
 
         // destroy jmlform session

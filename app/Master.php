@@ -25,7 +25,7 @@ class Master extends Model
 	 */
     public static function getLast($table, $orderby, $where = [])
     {    	
-        // check if there is addition of filter gien by user
+        // check if there is addition of filter given by user
     	if (count($where) > 0) {
     		return DB::table($table)->where($where)->orderby($orderby, 'desc')->first();            
         } else {
