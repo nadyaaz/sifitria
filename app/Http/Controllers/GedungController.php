@@ -17,132 +17,114 @@ class GedungController extends MasterController
 	 * @param  Request $request Request object
 	 * @return view gedung
 	 */
-    public function getGedung(Request $request)
+    public function getGedung()
     {
         // check if user permitted        
-        if (!($this->isPermitted('gedung'))) return redirect('/');        
+        // if (!($this->isPermitted('gedung'))) return redirect('/');        
+		
+		// get gedung object from database
+		$allgedung = Gedung::getAllGedung();
 
-    	// check if request method is post or not
-    	if(!$request->isMethod('POST')) {    		
-    		// get gedung object from database
-			$allgedung = Gedung::getAllGedung();
-
-			// render gedung page
-			return $this->render('pinjamruang.gedung',
-				[
-					'title' => 'Daftar Gedung',
-					'allgedung' => $allgedung
-				]
-			);
-    	} else {
-    		// get gedung selected
-    		$gedung = Gedung::where('hash', $request->input('hash'))->get();
-
-    		// set gedung session
-    		session(['gedung' => $gedung]);
-
-    		// redirect with data
-    		return redirect('pinjamruang/gedung/ubah');
-    	}
+		// render gedung page
+		return $this->render('pinjamruang.gedung',
+			[
+				'title' => 'Daftar Gedung',
+				'allgedung' => $allgedung
+			]
+		);
     }
 
     /**
-     * Render create gedung page
-     * @return view create gedung
-     */
-    public function getCreateGedung()
-    {
-        // check if user permitted        
-        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
-
-    	// render buatgedung page
-    	return $this->render('pinjamruang.buatgedung',
-    		[
-    			'title' => 'Buat Gedung',    			
-    		]
-    	);
-    }    
-
-    /**
      * Create gedung object and input to database
+     * or get create gedung form
      * @param  Request $request request object
      * @return redirect to gedung page
      */
     public function createGedung(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+        // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
 
-        // form validation
-        $this->validate($request, [
-            'namagedung' => 'required|max:25'
-        ]);
+        if ($request->isMethod('POST')) {
+            // request method is post
+            
+            // form validation
+            $this->validate($request, [
+                'namagedung' => 'required|max:25'
+            ]);
 
-        // get last object Gedung           
-        $lastObj = Master::getLast('gedung', 'IdGedung');       
+            // get last ID Gedung           
+            $lastId = Master::getLastId('gedung', 'IdGedung');       
+            $IdGedung = $lastId + 1;
 
-        if($lastObj == null) $IdGedung = 1;
-        else $IdGedung = $lastObj->IdGedung + 1;
+            $namagedung = $request->input('namagedung');
 
-        $namagedung = $request->input('namagedung');
+            // input data to database
+            Gedung::createGedung([
+                'IdGedung' => $IdGedung,
+                'NamaGedung' => $namagedung,
+                'hash' => md5($IdGedung.$namagedung) // create hash
+            ]);
 
-        // input data to database
-        Gedung::createGedung([
-            'IdGedung' => $IdGedung,
-            'Nama' => $namagedung,
-            'hash' => md5($IdGedung.$namagedung) // create hash
-        ]);
+            // redirect to daftar gedung
+            return redirect('pinjamruang/gedung');
 
-        // redirect to daftar gedung
-        return redirect('pinjamruang/gedung');
-    }
-
-    /**
-     * Render update gedung page
-     * @return view update gedung
-     */
-    public function getUpdateGedung()
-    {
-        // check if user permitted        
-        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
-
-    	// if session gedung not found redirect to gedung
-    	if (!session()->has('gedung')) return redirect('pinjamruang/gedung');
-
-    	// get gedung selected
-    	$gedung = session('gedung');
-
-    	// render update gedung page
-    	return $this->render('pinjamruang.updategedung',
-    		[
-    			'title' => 'Update Gedung',
-    			'gedung' => $gedung,
-    		]
-    	);
-    }    
+        } else {
+            // request method is get
+            
+            // render buatgedung page
+            return $this->render('pinjamruang.buatgedung',
+                [
+                    'title' => 'Buat Gedung',
+                ]
+            );
+        }
+        
+    }   
 
     /**
      * Update gedung object in database
+     * or get update gedung UI
      * @param  Request $request request object
      * @return redirect to gedung page
      */
-    public function updateGedung(Request $request)
+    public function updateGedung(Request $request, $hash = '')
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+        // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+        
+        // check if hash parameter is empty
+        if($hash == '') return redirect('pinjamruang/gedung');
 
-    	// form validation
-    	$this->validate($request, [
-    		'namagedung' => 'required|max:25'
-    	]);    	
+        // check the request method
+        if ($request->isMethod('POST')) {
+            // request method is post
+            
+            // form validation
+            $this->validate($request, [
+                'namagedung' => 'required|max:25'
+            ]);     
 
-    	// input data to database
-    	Gedung::updateGedung($request->input('hash'), [    		
-    		'Nama' => $request->input('namagedung'),
-    	]);    	
+            // input data to database
+            Gedung::updateGedung($hash, [         
+                'NamaGedung' => $request->input('namagedung'),
+            ]);     
 
-    	// redirect to daftar gedung
-    	return redirect('pinjamruang/gedung');
+            // redirect to daftar gedung
+            return redirect('pinjamruang/gedung');
+
+        } else {                        
+            // request method is get
+            
+            // get gedung object
+            $gedung = Gedung::where('hash', $hash)->get();
+            
+            // render the update page form
+            return $this->render('pinjamruang.updategedung', [
+                'title' => 'Update Gedung',
+                'gedung' => $gedung,
+            ]);
+        }
     }
 
     /**
@@ -153,7 +135,7 @@ class GedungController extends MasterController
     public function removeGedung(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('gedung'))) return redirect('/');  
+        // if (!($this->isPermitted('gedung'))) return redirect('/');  
 
     	// set gedung to deleted
     	Gedung::removeGedung($request->input('hash'));

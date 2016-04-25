@@ -16,7 +16,7 @@ class RuanganController extends MasterController
     {
         if(!$request->isMethod('POST')) {
             // check if user permitted        
-            if (!($this->isPermitted('ruangan'))) return redirect('/');
+            // if (!($this->isPermitted('ruangan'))) return redirect('/');
 
             // get list gedung dan ruangan pada database
             $allgedung = Gedung::getAllGedung();
@@ -32,7 +32,7 @@ class RuanganController extends MasterController
         	);
         } else {
             // check if user permitted        
-            if (!($this->isPermitted('ruarngan'))) return redirect('/');
+            // if (!($this->isPermitted('ruarngan'))) return redirect('/');
 
             // get ruangan selected
             $ruangan = Ruangan::where('hashRuang', $request->input('hash'))->get();
@@ -48,7 +48,7 @@ class RuanganController extends MasterController
     public function getCreateRuangan()
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
 
         // get all gedung object
         $allgedung = Gedung::getAllGedung();
@@ -62,58 +62,63 @@ class RuanganController extends MasterController
         );  
     }
 
-    public function getUpdateRuangan()
-    {  
-        // check if user permitted        
-        if (!($this->isPermitted('buatruangan'))) return redirect('/');
-
-        // get all gedung object
-        $allgedung = Gedung::getAllGedung();
-
-        // get ruangan selected
-        $ruangan = session('ruangan');
-
-        // render buat ruangan view
-        return $this->render('pinjamruang.updateruangan',
-            [
-                'title' => 'Buat Ruangan',
-                'allgedung' => $allgedung,
-                'ruangan' => $ruangan
-            ]
-        );  
-    }
-
-    public function updateRuangan(Request $request)
+    public function updateRuangan(Request $request, $hashRuang ='')
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
 
-        // form validation
-        $this->validate($request,
-            [
-                'nomorruangan' => 'required|min:4|max:4',
-                'jenisruangan' => 'required',                
-                'kapasitasruangan' => 'required|numeric'
-            ]
-        );            
+        if ($hashRuang == '') return redirect('pinjamruang/ruangan');
 
-        // insert data to table
-        Ruangan::updateRuangan($request->input('hash'),
-            [                
-                'JenisRuangan' => $request->input('jenisruangan'),                
-                'NomorRuangan' => $request->input('nomorruangan'),
-                'KapasitasRuangan' => $request->input('kapasitasruangan'),                
-            ]
-        );
+        if ($request->isMethod('POST')) {
+            // form validation
+            $this->validate($request,
+                [
+                    'nomorruangan' => 'required|min:4|max:4',
+                    'jenisruangan' => 'required',                
+                    'kapasitasruangan' => 'required|numeric'
+                ]
+            );
 
-        // redirect to ruangan view
-        return redirect('pinjamruang/ruangan');
+            // // get gedung object selected
+            // $gedung = Gedung::where('hash', '=', $request->input('gedungruangan'))->first();
+            
+            // // get ruangan last object
+            // $lastObjId = Master::getLastId('ruangan', 'IdRuangan', [['IdGed', '=', $gedung->IdGedung]]);
+            // $IdRuangan = $lastObjId + 1;            
+
+            // insert data to table
+            Ruangan::updateRuangan($request->input('hash'),
+                [                                    
+                    'JenisRuangan' => $request->input('jenisruangan'),                
+                    'NomorRuangan' => $request->input('nomorruangan'),
+                    'KapasitasRuangan' => $request->input('kapasitasruangan'),                
+                ]
+            );
+
+            // redirect to ruangan view
+            return redirect('pinjamruang/ruangan');            
+        } else {
+            // get all gedung object
+            $allgedung = Gedung::getAllGedung();
+
+            // get ruangan selected
+            $ruangan = Ruangan::where('hashRuang', $hashRuang)->get();
+
+            // render buat ruangan view
+            return $this->render('pinjamruang.updateruangan',
+                [
+                    'title' => 'Buat Ruangan',
+                    'allgedung' => $allgedung,
+                    'ruangan' => $ruangan
+                ]
+            ); 
+        }
     }
 
     public function createRuangan(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
 
         $this->validate($request,
             [
@@ -131,11 +136,8 @@ class RuanganController extends MasterController
         $gedung = Gedung::where('hash', '=', $input['gedungruangan'])->first();
         
         // get ruangan last object
-        $lastObj = Master::getLast('ruangan', 'IdRuangan', [['IdGed', '=', $gedung->IdGedung]]);
-        
-        // check if last object is null or not
-        if($lastObj == null) $IdRuangan = 1;
-        else $IdRuangan = $lastObj->IdRuangan + 1;
+        $lastObjId = Master::getLastId('ruangan', 'IdRuangan', [['IdGed', '=', $gedung->IdGedung]]);
+        $IdRuangan = $lastObjId + 1;
 
         $NomorRuangan = $input['nomorruangan'];
         $JenisRuangan = $input['jenisruangan'];
@@ -158,7 +160,7 @@ class RuanganController extends MasterController
     public function removeRuangan(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
 
         // set ruangan to deleted
         Ruangan::removeRuangan($request->input('hash'));

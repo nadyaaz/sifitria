@@ -36,9 +36,8 @@ Route::group(['middlewareGroups' => 'web'], function() {
 
 	Route::match(['get', 'post'], 'pinjamruang/ruangan', 'RuanganController@getRuangan');
 	Route::get('pinjamruang/ruangan/buat', 'RuanganController@getCreateRuangan');	
-	Route::post('pinjamruang/ruangan/buat', 'RuanganController@createRuangan');
-	Route::get('pinjamruang/ruangan/ubah', 'RuanganController@getUpdateRuangan');
-	Route::post('pinjamruang/ruangan/ubah', 'RuanganController@updateRuangan');	
+	Route::post('pinjamruang/ruangan/buat', 'RuanganController@createRuangan');	
+	Route::match(['get', 'post'], 'pinjamruang/ruangan/ubah/{hashRuang?}', 'RuanganController@updateRuangan');	
 	Route::post('pinjamruang/ruangan/hapus', 'RuanganController@removeRuangan');	
 	
 	Route::get('pinjamruang/jadwal', 'JadwalController@getJadwal');
@@ -48,11 +47,9 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::post('pinjamruang/jadwal/buat', 'JadwalController@createJadwal');	
 	Route::post('pinjamruang/jadwal/hapus', 'JadwalController@removeJadwal');	
 
-	Route::match(['get', 'post'], 'pinjamruang/gedung', 'GedungController@getGedung');
-	Route::get('pinjamruang/gedung/buat', 'GedungController@getCreateGedung');
-	Route::post('pinjamruang/gedung/buat', 'GedungController@createGedung');	
-	Route::get('pinjamruang/gedung/ubah', 'GedungController@getUpdateGedung');
-	Route::post('pinjamruang/gedung/ubah', 'GedungController@updateGedung');
+	Route::get('pinjamruang/gedung', 'GedungController@getGedung');	
+	Route::match(['get', 'post'], 'pinjamruang/gedung/buat', 'GedungController@createGedung');
+	Route::match(['get', 'post'], 'pinjamruang/gedung/ubah/{hash?}', 'GedungController@updateGedung');
 	Route::post('pinjamruang/gedung/hapus', 'GedungController@removeGedung');
 
 	// registrasi barang

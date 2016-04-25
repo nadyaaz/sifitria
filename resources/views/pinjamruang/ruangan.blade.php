@@ -29,17 +29,13 @@
         <div id="{{str_replace(' ', '',$gedung->NamaGedung)}}" class="col s12">      
             <br>
 
-            <div class="col s10 push-s1">
+            <div class="col s8 push-s2">
                 <table class="bordered responsive-table">                       
                     <thead>
                         <tr>
-                            <th><b>Id</b></th>
-                            <th><b>Gedung</b></th>
                             <th><b>Nomor</b></th>
                             <th><b>Jenis</b></th>
                             <th><b>Kapasitas</b></th>
-                            <th><p></p></th>
-                            <th><p></p></th>
                             <th><p></p></th>
                         </tr>
                     </thead>
@@ -49,27 +45,31 @@
                         
                         @if ($ruangan->IdGed == $gedung->IdGedung)
                         <tr>
-                            <td>{{$ruangan->IdRuangan}}</td>
-                            <td>{{$ruangan->NamaGedung}}</td>                           
                             <td>{{$ruangan->NomorRuangan}}</td>
                             <td>{{$ruangan->JenisRuangan}}</td>
                             <td>{{$ruangan->KapasitasRuangan}}</td>
                             <td></td>
                             <td>
-                                <form action="{{ url('pinjamruang/ruangan') }}" method="POST">                                   
+                                <!-- <form action="{{ url('pinjamruang/ruangan') }}" method="POST">                                   
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="hash" value="{{$ruangan->hashRuang}}">
                                     <button class="btn teal waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="UBAH">
-                                        <i class="material-icons">edit</i>
+                                        UBAH
+                                        <i class="material-icons right">edit</i>
                                     </button>
-                                </form>     
+                                </form>      -->
                             </td>
                             <td>
                                 <form action="{{ url('pinjamruang/ruangan/hapus') }}" method="POST">                                 
                                     {!! csrf_field() !!}
                                     <input type="hidden" name="hash" value="{{$ruangan->hashRuang}}">
-                                    <button class="btn red waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="HAPUS">
-                                        <i class="material-icons">delete</i>
+                                    <a href="{{ url('pinjamruang/ruangan/ubah/'.$ruangan->hashRuang) }}" class="btn purple">                                        
+                                        UBAH
+                                        <i class="material-icons left">edit</i>
+                                    </a>
+                                    <button class="btn-flat waves-light waves-effect grey-text tooltipped" data-position="right" data-delay="10" data-tooltip="HAPUS">
+                                        HAPUS
+                                        <i class="material-icons grey-text left">delete</i>
                                     </button>
                                 </form>                                                                                 
                             </td>

@@ -21,7 +21,7 @@ class PeminjamanController extends MasterController
     public function dashboard()
     {
         // check if user permitted        
-        if (!($this->isPermitted('pinjamruang'))) return redirect('/');    
+        // if (!($this->isPermitted('pinjamruang'))) return redirect('/');    
 
 		// get permohonan peminjaman ruangan data
         // check the user role
@@ -50,7 +50,7 @@ class PeminjamanController extends MasterController
     public function getCreatePeminjaman()
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
+        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
 
         return $this->render('pinjamruang.buatpeminjaman',
             [
@@ -67,7 +67,7 @@ class PeminjamanController extends MasterController
     public function createPeminjaman(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatpinjam'))) return redirect('/');
+        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');
 
         // get al input
         $input = $request->all();        
@@ -163,12 +163,23 @@ class PeminjamanController extends MasterController
 
         $jenisRuangan= $params['jenisRuangan'];
         $tanggal = $params['tanggal'];
-        $waktuMulai = $params['waktuMulai'];
-        $waktuSelesai = $params['waktuSelesai'];
-        $waktuMulainya = strtotime($tanggal.$waktuMulai);
-        $timestampWaktuMulai = date('Y\-m\-d  H:i:s', $waktuMulainya);
-        $waktuSelesainya = strtotime($tanggal.$waktuSelesai);
-        $timestampWaktuSelesai = date('Y\-m\-d  H:i:s', $waktuSelesainya);
+        //$waktuMulai = $params['waktuMulai'];
+        //$waktuSelesai = $params['waktuSelesai'];
+        $inputmulai = substr_replace($params['waktuMulai'], ':', strlen($params['waktuMulai'])-2, 0);
+        $inputselesai = substr_replace($params['waktuSelesai'], ':', strlen($params['waktuSelesai'])-2, 0);
+
+        // normalize date
+        if (strlen($inputmulai) == 4) $inputmulai = '0'.$inputmulai;
+        if (strlen($inputselesai) == 4) $inputselesai = '0'.$inputselesai;
+
+        $waktuMulainya = strtotime($tanggal.$inputmulai);
+        $waktuSelesainya = strtotime($tanggal.$inputselesai);
+
+
+
+        // get timestamp
+        $waktuMulai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$inputmulai));
+        $waktuSelesai = date('Y\-m\-d  H:i:s', strtotime($tanggal.$inputselesai));
 
         $allruangan = DB::select(DB::raw(
             'SELECT * 
@@ -184,41 +195,39 @@ class PeminjamanController extends MasterController
             $IdGedung = $ruangan->IdGedung;
             $IdRuangan = $ruangan->IdRuangan;
 
-            $jadwalRuangan = DB::select(DB::raw(
-                'SELECT * 
-                FROM jadwal
-                WHERE 
-                    IdGedung = "'.$IdGedung.'" AND
-                    IdRuangan = "'.$IdRuangan.'"'
-            ));
+             $boolean = false;
+
+          $jadwalRuangan = DB::select(DB::raw("SELECT * 
+                                                         FROM jadwal j,permohonan p
+                                                         WHERE j.IdGedung = '$IdGedung' AND
+                                                                j.IdRuangan = '$IdRuangan' AND j.IdJadwal=p.IdJadwal AND j.IdGedung=p.IdGedung AND j.IdRuangan=p.IdRuangan"));
 
 
-            if ($jadwalRuangan == null) {
-                array_push($ruangantersedia, $ruangan);
+
+            if (count($jadwalRuangan) == 0) {
+                // array_push($ruangantersedia, $ruangan);
+
             } else {
 
                 foreach($jadwalRuangan as $jadwal){
                     
                     $datawaktumulai = strtotime($jadwal->WaktuMulai);
                     $datawaktuselesai = strtotime($jadwal->WaktuSelesai);
-                    $waktusekarang = strtotime(Carbon::now());
+                    $waktusekarang = strtotime(time());
+                   
 
                     //Kalau waktu mulai jadwal yang udah ada lebih lama dari waktu sekarang 
                     if( !($datawaktumulai < $waktusekarang && $datawaktuselesai < $waktusekarang) )
                     {
-                        if( ($waktuMulainya > $datawaktuselesai || $waktuMulainya < $datawaktumulai) && 
-                            ($waktuSelesainya > $datawaktuselesai || $waktuSelesainya < $datawaktumulai)
-                        ) 
-                        {
-                            array_push($ruangantersedia, $ruangan); 
-                        }
-                    }   
-                }
+                        if( (($waktuMulainya > $datawaktuselesai || $waktuMulainya < $datawaktumulai) && 
+                             ($waktuSelesainya > $datawaktuselesai || $waktuSelesainya < $datawaktumulai)) )
+                               array_push($ruangantersedia, $ruangan);                
+                    }  
+                }                        
             }                    
         }
-
-        return json_encode($ruangantersedia); 
-    }    
+        return json_encode($ruangantersedia);
+    }
 
     /**
      * [setuju description]
@@ -256,7 +265,7 @@ class PeminjamanController extends MasterController
     public function updateStatusPeminjaman(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatpinjam'))) return redirect('/');
+        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');
         
         // validate request
         $this->validate($request, [

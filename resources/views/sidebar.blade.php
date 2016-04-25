@@ -9,51 +9,51 @@
 @endsection
 
 @section('pinjamruang')
-	<a href="{{ url('pinjamruang') }}" class="collection-item @yield('sidebar_dashboard')">Dashboard</a>
+	<a href="{{ url('pinjamruang') }}" class="collection-item @yield('sidebar_dashboard') grey-text ">Dashboard</a>
 @endsection
 
 @section('pinjamruang/buat')
-	<a href="{{ url('pinjamruang/buat') }}" class="collection-item @yield('sidebar_buatpinjam')">Buat Permohonan Peminjaman Ruangan</a>
+	<a href="{{ url('pinjamruang/buat') }}" class="collection-item @yield('sidebar_buatpinjam') grey-text ">Buat Permohonan Peminjaman Ruangan</a>
 @endsection
 
 @section('pinjamruang/ruangan')
-	<a href="{{ url('pinjamruang/ruangan') }}" class="collection-item @yield('sidebar_ruangan')">Ruangan</a>
+	<a href="{{ url('pinjamruang/ruangan') }}" class="collection-item @yield('sidebar_ruangan') grey-text ">Ruangan</a>
 @endsection
 
 @section('pinjamruang/ruangan/buat')
-	<a href="{{ url('pinjamruang/ruangan/buat') }}" class="collection-item @yield('sidebar_buatruang')">Buat Ruangan</a>
+	<a href="{{ url('pinjamruang/ruangan/buat') }}" class="collection-item @yield('sidebar_buatruang') grey-text ">Buat Ruangan</a>
 @endsection
 
 @section('pinjamruang/jadwal')
-	<a href="{{ url('pinjamruang/jadwal') }}" class="collection-item @yield('sidebar_jadwal')">Jadwal</a>
+	<a href="{{ url('pinjamruang/jadwal') }}" class="collection-item @yield('sidebar_jadwal') grey-text ">Jadwal</a>
 @endsection
 
 @section('pinjamruang/jadwal/buat')
-	<a href="{{ url('pinjamruang/jadwal/buat') }}" class="collection-item @yield('sidebar_buatjadwal')">Buat Jadwal</a>
+	<a href="{{ url('pinjamruang/jadwal/buat') }}" class="collection-item @yield('sidebar_buatjadwal') grey-text ">Buat Jadwal</a>
 @endsection
 
 @section('pinjamruang/gedung')
-	<a href="{{ url('pinjamruang/gedung') }}" class="collection-item @yield('sidebar_gedung')">Gedung</a>
+	<a href="{{ url('pinjamruang/gedung') }}" class="collection-item @yield('sidebar_gedung') grey-text">Gedung</a>
 @endsection
 
 @section('pinjamruang/gedung/buat')
-	<a href="{{ url('pinjamruang/gedung/buat') }}" class="collection-item @yield('sidebar_buatgedung')">Buat Gedung</a>
+	<a href="{{ url('pinjamruang/gedung/buat') }}" class="collection-item @yield('sidebar_buatgedung') grey-text">Buat Gedung</a>
 @endsection
 
 @section('registrasibarang')
-	<a href="{{ url('registrasibarang') }}" class="collection-item @yield('sidebar_dashboard')">Dashboard</a>
+	<a href="{{ url('registrasibarang') }}" class="collection-item @yield('sidebar_dashboard') grey-text ">Dashboard</a>
 @endsection
 
 @section('registrasibarang/buat')
-	<a href="{{ url('registrasibarang/buat') }}" class="collection-item @yield('sidebar_buatregis')">Buat Permohonan Registrasi Barang</a>
+	<a href="{{ url('registrasibarang/buat') }}" class="collection-item @yield('sidebar_buatregis') grey-text ">Buat Permohonan Registrasi Barang</a>
 @endsection
 
 @section('registrasibarang/barang')
-	<a href="{{ url('registrasibarang/barang') }}" class="collection-item @yield('sidebar_barang')">Barang</a>	          		
+	<a href="{{ url('registrasibarang/barang') }}" class="collection-item @yield('sidebar_barang') grey-text ">Barang</a>	          		
 @endsection
 
 @section('registrasibarang/barang/buat')
-	<a href="{{ url('registrasibarang/barang/buat') }}" class="collection-item @yield('sidebar_buatbarang')">Buat Barang</a>
+	<a href="{{ url('registrasibarang/barang/buat') }}" class="collection-item @yield('sidebar_buatbarang') grey-text ">Buat Barang</a>
 @endsection
 
 @section('sidebar_menu')

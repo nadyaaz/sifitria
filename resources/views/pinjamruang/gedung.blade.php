@@ -1,6 +1,6 @@
 @extends('sidebar')
 
-@section('sidebar_gedung', 'active')
+@section('sidebar_gedung', 'active white-text purple')
 
 @section('konten')
 <div class="subsection">
@@ -8,12 +8,12 @@
 	<div class="divider"></div><br>
 
 	<div class="row">
-		<div class="col s6 push-s3">
+		<div class="col s8 push-s2">
 			<table class="bordered responsive-table">						
 		        <thead>
 		          	<tr>
-		            	<th><b>Id</b></th>
 		            	<th><b>Nama Gedung</b></th>
+	            		<th><p></p></th>
 	            		<th><p></p></th>
 	            		<th><p></p></th>
 		          	</tr>
@@ -23,23 +23,20 @@
 		        	@foreach ($data['allgedung'] as $gedung)
 
 					<tr>
-						<td>{{$gedung->IdGedung}}</td>
 						<td colspan="5" class="NamaGedung">{{$gedung->NamaGedung}}</td>							
-						<td>
-							<form action="{{ url('pinjamruang/gedung') }}" method="POST">									
-								{!! csrf_field() !!}
-								<input type="hidden" name="hash" value="{{$gedung->hash}}">
-								<button class="btn teal waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="UBAH">
-									<i class="material-icons">edit</i>
-								</button>
-							</form>		
+						<td>							
 						</td>
 						<td>
 							<form action="{{ url('pinjamruang/gedung/hapus') }}" method="POST">									
 								{!! csrf_field() !!}
 								<input type="hidden" name="hash" value="{{$gedung->hash}}">
-								<button class="btn red waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="HAPUS">
-									<i class="material-icons">delete</i>
+								<a href="{{ url('pinjamruang/gedung/ubah/'.$gedung->hash) }}" class="btn purple waves-light waves-effect">
+									UBAH
+									<i class="material-icons left">edit</i>
+								</a>
+								<button class="btn-flat grey-text">
+									HAPUS
+									<i class="material-icons left">delete</i>
 								</button>
 							</form>																					
 						</td>

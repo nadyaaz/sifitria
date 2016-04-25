@@ -7,7 +7,7 @@
 	<h5>Update Ruangan</h5>
 	<div class="divider"></div><br>
 
-	<form action="{{ url('pinjamruang/ruangan/ubah') }}" method="POST">	
+	<form action="{{ url('pinjamruang/ruangan/ubah/'.$data['ruangan'][0]['hashRuang']) }}" method="POST">	
 		<div class="row form-row">
 			<div class="input-field col s6">
 				<b>Nomor Ruangan </b><br>
@@ -24,9 +24,9 @@
 					@foreach ($data['allgedung'] as $gedung)
 
 					@if($data['ruangan'][0]['IdGed'] == $gedung->IdGedung)
-				   	<option value="{{$gedung->hash}}" selected>{{ $gedung->Nama }}</option>
+				   	<option value="{{$gedung->hash}}" selected>{{ $gedung->NamaGedung }}</option>
 					@else
-					<option value="{{$gedung->hash}}">{{ $gedung->Nama }}</option>
+					<option value="{{$gedung->hash}}">{{ $gedung->NamaGedung }}</option>
 				   	@endif
 
 			    	@endforeach	

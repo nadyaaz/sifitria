@@ -183,28 +183,33 @@ $(document).ready(function() {
 	$('#jadwaljson').click(function(){
 
 		var kategori = $('input[type="radio"][name="jenisRuangan"]:checked').val();
-		var tanggal = $('.datepicker').val();
-		var waktumulai = new Number($('select[name=waktumulai] option:selected').val());
-		var waktuselesai = new Number($('select[name=waktuselesai] option:selected').val());
+		var tanggal = $('.pilihtanggalpinjam').val();
+		//var waktumulai = new Number($('select[name=waktumulai] option:selected').val());
+		//var waktuselesai = new Number($('select[name=waktuselesai] option:selected').val());
+		var waktumulai = $('select[name=waktumulai] option:selected').val();
+		var waktuselesai = $('select[name=waktuselesai] option:selected').val();
 
+		
 		// form validation
-		var isWaktuSelesaiLebihKecil = (((waktumulai)-(waktuselesai)) >= 0) ? true : false;
-		var isKategoriUndefined = (kategori == undefined) ? true : false;
-		var isTanggalEmpty = (tanggal == '') ? true : false;
-
+		//var isWaktuSelesaiLebihKecil = (((waktumulai)-(waktuselesai)) >= 0) ? true : false;
+		//var isKategoriUndefined = (kategori == undefined) ? true : false;
+		//var isTanggalEmpty = (tanggal == '') ? true : false;
+						
 		// if form not validated don't execute the AJAX calling
-		if (!isWaktuSelesaiLebihKecil && !isKategoriUndefined && !isTanggalEmpty) {
+		//if (!isWaktuSelesaiLebihKecil && !isKategoriUndefined && !isTanggalEmpty) {
 			$.ajax({
+
 				url: 'getruangan?jenisRuangan='+kategori+'&tanggal='+tanggal+'&waktuMulai='+waktumulai+'&waktuSelesai='+waktuselesai,
 				type: 'POST',				
 				processData:false,
 					
-				success: function(data){				
+				success: function(data){	
+				alert(data)	;		
 					var myElementToAppendTo = $("#tabelRuangan");
 					var i = 1;	
-			       	$.each($.parseJSON(data), function(idx, obj) {	
 			       		myElementToAppendTo.html('');
-			           	myElementToAppendTo.append("<li class='collection-item'><div class='row form-row'><div class='col s4 pilihan'><input type='radio' name='ruangandipilih' id='radio"+i+"' value='"+obj.hashRuang+"'/><label for='radio"+i+"'>"+obj.Nama+"</label></div><div class='col s3'>"+obj.NomorRuangan+"</div><div class='col s3'>"+obj.KapasitasRuangan+"</div><div class='col s2'><a class='waves-light waves-effect uncheck' id='"+i+"'><i class='material-icons red-text'>cancel</i></a></div></div></div></li>");
+			       	$.each($.parseJSON(data), function(idx, obj) {	
+			           	myElementToAppendTo.append("<li class='collection-item'><div class='row form-row'><div class='col s4 pilihan'><input type='radio' name='ruangandipilih' id='radio"+i+"' value='"+obj.hashRuang+"'/><label for='radio"+i+"'>"+obj.NamaGedung+"</label></div><div class='col s3'>"+obj.NomorRuangan+"</div><div class='col s3'>"+obj.KapasitasRuangan+"</div><div class='col s2'><a class='waves-light waves-effect uncheck' id='"+i+"'><i class='material-icons red-text'>cancel</i></a></div></div></div></li>");
 			           	i++;
 					});
 				},
@@ -212,8 +217,7 @@ $(document).ready(function() {
 					alert(status+' '+error);
 				}
 			})								
-		}
-
+		//}
 	});
 
 	$(document).on('change', 'input[type=radio][name=ruangandipilih]', function(){

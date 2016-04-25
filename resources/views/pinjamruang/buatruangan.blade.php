@@ -22,7 +22,7 @@
 			    <select id="gedungruangan" name="gedungruangan">
 			    	<option disabled selected>Pilih Gedung Ruangan</option>
 					@foreach ($data['allgedung'] as $gedung)				   
-				   	<option value="{{$gedung->hash}}">{{ $gedung->Nama }}</option>   	
+				   	<option value="{{$gedung->hash}}">{{ $gedung->NamaGedung }}</option>   	
 			    	@endforeach	
 			    </select>
 			</div>

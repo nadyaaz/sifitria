@@ -20,7 +20,7 @@ class JadwalController extends MasterController
     public function getJadwal()
     {
         // check if user permitted        
-        if (!($this->isPermitted('jadwal'))) return redirect('/');    
+        // if (!($this->isPermitted('jadwal'))) return redirect('/');    
 
         // get all gedung 
     	$allgedung = Gedung::all();
@@ -51,7 +51,7 @@ class JadwalController extends MasterController
     public function getCreateJadwal()
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatjadwal'))) return redirect('/');    
+        // if (!($this->isPermitted('buatjadwal'))) return redirect('/');    
 
         // return buatjadwal view
     	return $this->render('pinjamruang.buatjadwal',
