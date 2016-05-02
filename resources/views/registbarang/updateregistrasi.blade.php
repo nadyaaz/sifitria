@@ -8,7 +8,7 @@
     <div class="divider"></div><br>
 
     <div id="multiform" class="row">
-        <form action="{{ url('registrasibarang/ubah') }}" method="POST">
+        <form action="{{ url('registrasibarang/ubah/'.$data['registrasi'][0]['hashPermohonan']) }}" method="POST">
             <div class="row form-row">
                 <div class="col s6">
                     <b>Subjek</b><br>

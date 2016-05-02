@@ -34,7 +34,7 @@
 									UBAH
 									<i class="material-icons left">edit</i>
 								</a>
-								<button class="btn-flat grey-text">
+								<button class="btn-flat grey-text" onClick="return confirm('Anda yakin ingin menghapus?')">
 									HAPUS
 									<i class="material-icons left">delete</i>
 								</button>

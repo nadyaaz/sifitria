@@ -102,13 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="row form-row">   
-                        <div class="col s4 input-field">
-                            Kerusakan Barang <br>
-                            <span class="error red-text">{{ $errors->first('kerusakanbarang.'.$i) }}</span><br>                 
-                            <textarea name="kerusakanbarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ old('kerusakanbarang.'.$i) }}</textarea>
-                        </div>  
-
+                    <div class="row form-row">                      
                         <div class="col s4 input-field">
                             Spesifikasi Barang <br>
                             <span class="error red-text">{{ $errors->first('spesifikasibarang.'.$i) }}</span><br>                   

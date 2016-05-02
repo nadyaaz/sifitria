@@ -9,7 +9,6 @@ use App\KandidatBarang;
 use App\Barang;
 use App\catatan;
 use App\Master;
-use DB;
 use validator;
 
 
@@ -23,48 +22,26 @@ class RegistrasiController extends MasterController
     {   
         // check if user permitted        
         // if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
-
-        if (!$request->isMethod('POST')) {
-    		// get permohonan registrasi barang data
-            // check the user role
-            if (session('user_sess')->role != 'Manager Fasilitas & Infrastruktur' &&
-                session('user_sess')->role != 'Staf Fasilitas & Infrastruktur') 
-            {
-                $registrasi = Permohonan::getRegistrasi(session('user_sess')->npm);                
-            } else {
-                $registrasi = Permohonan::getRegistrasi();                
-            }
-
-    		// render registrasi barang dashboard
-    		return $this->render('registbarang.dashboard',
-    			[
-    				'title' => 'Dashboard Registrasi Barang',
-    				'allregistrasi' => $registrasi['allregistrasi'],
-                    'allkandidat' => $registrasi['allkandidat'],
-    				'allcatatan' => $registrasi['allcatatan'],
-    			]
-    		);            
+    
+		// get permohonan registrasi barang data
+        // check the user role
+        if (session('user_sess')->role != 'Manager Fasilitas & Infrastruktur' &&
+            session('user_sess')->role != 'Staf Fasilitas & Infrastruktur') 
+        {
+            $registrasi = Permohonan::getRegistrasi(session('user_sess')->npm);                
         } else {
-            $input = $request->all();
+            $registrasi = Permohonan::getRegistrasi();                
+        }
 
-            // get registrasi selected
-            $registrasi = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->get();
-            $allkandidat = KandidatBarang::where('IdPermohonan', $registrasi[0]['IdPermohonan'])->get();
-            $catatan = Catatan::where([
-                ['IdPermohonan', '=', $registrasi[0]['IdPermohonan']],
-                ['TahapCatatan', '=', 0]
-            ])->get();
-
-            // set registrasi and nform session
-            session([
-                'registrasi' => $registrasi,
-                'allkandidat' => $allkandidat,
-                'catatan' => $catatan,
-            ]);
-
-            // redirect to update registrasi page
-            return redirect('registrasibarang/ubah');
-        }        
+		// render registrasi barang dashboard
+		return $this->render('registbarang.dashboard',
+			[
+				'title' => 'Dashboard Registrasi Barang',
+				'allregistrasi' => $registrasi['allregistrasi'],
+                'allkandidat' => $registrasi['allkandidat'],
+				'allcatatan' => $registrasi['allcatatan'],
+			]
+		);                  
     }
 
     /**
@@ -180,89 +157,98 @@ class RegistrasiController extends MasterController
     }
 
     /**
-     * [getUpdateBarang description]
-     * @param  string $value [description]
-     * @return [type]        [description]
-     */
-    public function getUpdateRegistrasi(Request $request)
-    {
-        // if session registrasi not found, redirect to registrasi page
-        // if (!session()->has('registrasibarang')) return redirect('registrasibarang');
-
-        // get registrasi selected
-        $registrasi = session('registrasi');
-        $allkandidat = session('allkandidat');
-        $catatan = session('catatan');
-
-        // return update registrasi page
-        return $this->render('registbarang.updateregistrasi', 
-            [
-                'title' => 'Update Permohonan Regsitrasi Barang',
-                'registrasi' => $registrasi,
-                'allkandidat' => $allkandidat,
-                'catatan' => $catatan,
-            ]
-        );
-    }
-
-    /**
      * [updateBarang description]
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function updateRegistrasi(Request $request)
+    public function updateRegistrasi(Request $request, $hash = '')
     {
         // check if user permitted        
         // if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+        
+        // redirect to dashboard if hash is null
+        if ($hash == '') return redirect('registrasibarang');
 
-        // Memvalidasi isian form registrasi barang
-        $this->validate ($request, [
-            'subjek'=> 'required|max:100',
-            'catatanpemohon' => 'required',
-            'namabarang.*' => 'required|max:100',                
-            'tanggalbeli.*' => 'required',
-            'penanggungjawab.*' => 'required|max:100',
-            'kategoribarang.*' => 'required|max:100',
-            'jenisbarang.*' => 'required|max:100',
-            'kondisibarang.*' => 'required|max:100',
-            'spesifikasibarang.*' => 'required',
-            'keteranganbarang.*' => 'required',                                
-            'kerusakanbarang.*' => 'required',
-        ]);
+        if ($request->isMethod('POST')) {
+            // request method is post
+            
+            // Memvalidasi isian form registrasi barang
+            $this->validate ($request, [
+                'subjek'=> 'required|max:100',
+                'catatanpemohon' => 'required',
+                'namabarang.*' => 'required|max:100',                
+                'tanggalbeli.*' => 'required',
+                'penanggungjawab.*' => 'required|max:100',
+                'kategoribarang.*' => 'required|max:100',
+                'jenisbarang.*' => 'required|max:100',
+                'kondisibarang.*' => 'required|max:100',
+                'spesifikasibarang.*' => 'required',
+                'keteranganbarang.*' => 'required',                                
+                'kerusakanbarang.*' => 'required',
+            ]);
 
-        $input = $request->all();        
+            $input = $request->all();
 
-        // update data dari form registrasi barang ke table permohonan
-        Permohonan::updatePermohonan($input['hashPermohonan'], [
-            'SubjekPermohonan' => $input['subjek'],
-        ]);
+            // update data dari form registrasi barang ke table permohonan
+            Permohonan::updatePermohonan($input['hashPermohonan'], [
+                'SubjekPermohonan' => $input['subjek'],
+            ]);
 
-        // update kandidat barang
-        for ($i=1; $i <= count($input['namabarang']); $i++) { 
-            KandidatBarang::updateKandidatBarang($input['hashKandidat'][$i], [
-                'NamaBarang' => $input['namabarang'][$i],
-                'JenisBarang' => $input['jenisbarang'][$i],
-                'KategoriBarang' => $input['kategoribarang'][$i],
-                'KeteranganBarang' => $input['keteranganbarang'][$i],
-                'KondisiBarang' => $input['kondisibarang'][$i],
-                'Penanggungjawab' => $input['penanggungjawab'][$i],
-                'TanggalBeli' => date('Y-m-d H:i:s', strtotime($input['tanggalbeli'][$i])),
-                'SpesifikasiBarang' => $input['spesifikasibarang'][$i],
-            ]);            
-        }
+            // update kandidat barang
+            for ($i=1; $i <= count($input['namabarang']); $i++) { 
+                KandidatBarang::updateKandidatBarang($input['hashKandidat'][$i], [
+                    'NamaBarang' => $input['namabarang'][$i],
+                    'JenisBarang' => $input['jenisbarang'][$i],
+                    'KategoriBarang' => $input['kategoribarang'][$i],
+                    'KeteranganBarang' => $input['keteranganbarang'][$i],
+                    'KondisiBarang' => $input['kondisibarang'][$i],
+                    'Penanggungjawab' => $input['penanggungjawab'][$i],
+                    'TanggalBeli' => date('Y-m-d H:i:s', strtotime($input['tanggalbeli'][$i])),
+                    'SpesifikasiBarang' => $input['spesifikasibarang'][$i],
+                ]);            
+            }
 
-        // update catatan
-        Catatan::updateCatatan($input['hashCatatan'], $input['catatanpemohon']);
+            // update catatan
+            Catatan::updateCatatan($input['hashCatatan'], $input['catatanpemohon']);
 
-        // forget session        
-        session()->forget('registrasi');
-        session()->forget('allkandidat');
-        session()->forget('catatan');
+            // Mengembalikan ke halaman list daftar registrasi barang             
+            return redirect('registrasibarang');
 
-        // Mengembalikan ke halaman list daftar registrasi barang             
-        return redirect('registrasibarang');
+        } else {
+            // request method is get
+            
+            // get registrasi selected
+            $registrasi = Permohonan::where([
+                ['hashPermohonan', $hash],
+                ['deleted', 0]
+            ])->get();
+
+            $allkandidat = KandidatBarang::where([
+                ['IdPermohonan', $registrasi[0]['IdPermohonan']]
+            ])->get();
+
+            $catatan = Catatan::where([
+                ['IdPermohonan', '=', $registrasi[0]['IdPermohonan']],
+                ['TahapCatatan', '=', 0]
+            ])->get();
+
+            // return update registrasi page
+            return $this->render('registbarang.updateregistrasi', 
+                [
+                    'title' => 'Update Permohonan Regsitrasi Barang',
+                    'registrasi' => $registrasi,
+                    'allkandidat' => $allkandidat,
+                    'catatan' => $catatan,
+                ]
+            );
+        }            
     }
 
+    /**
+     * Update status permohonan registrasi barang
+     * @param  Request $request
+     * @return Redirect, Render
+     */
     public function updateStatusRegistrasi(Request $request)
     {
         // validate request
@@ -288,9 +274,8 @@ class RegistrasiController extends MasterController
             $newStatus = 1;
 
         // increment new tahap
-        if($lastTahap == 1 && $lastStatus == 2) {
-            $newTahap = 2;
-        }            
+        if($lastStatus == 2) 
+            $newTahap = $lastTahap + 1;        
 
         // update permohonan
         $updatePermohonanArray = [
@@ -300,7 +285,7 @@ class RegistrasiController extends MasterController
 
         // if tahap change, push TahapPermohonan to updatePermohonanArray
         if ($lastTahap != $newTahap) 
-            $updatePermohonanArray['TahapPermohonan'] = 2;
+            $updatePermohonanArray['TahapPermohonan'] = $newTahap;
 
         // update permohonan registrasi barang
         Permohonan::updatePermohonan($input['hashPermohonan'], $updatePermohonanArray);
@@ -314,6 +299,7 @@ class RegistrasiController extends MasterController
             // get all kandidat barang related to permohonan
             $allkandidat = KandidatBarang::where('IdPermohonan', $permohonan->IdPermohonan)->get();
             
+            // get last id barang
             $lastBarangId = Master::getLastId('barang', 'IdBarang');
             $IdBarang = $lastBarangId + 1;
 

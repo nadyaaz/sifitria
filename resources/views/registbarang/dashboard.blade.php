@@ -174,21 +174,15 @@
                     @endif
                 </div>
                 
-                @if ($data['user_sess']->role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur')
-                <div class="row">
-                    <div class="col s11">
-                        <form action="{{ url('registrasibarang') }}" method="POST" class="right">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
-                            <button class="btn waves-effect waves-light teal white-text">
-                                UBAH
-                                <i class="material-icons right">edit</i>
-                            </button>
-                        </form> 
-                    </div>
-                    <div class="col s1">                        
+                @if ($data['user_sess']->role != 'Manajer Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur')
+                <div class="row">                    
+                    <div class="col s12">                        
                         <form action="{{ url('registrasibarang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
+                            <a href="{{ url('registrasibarang/ubah/'.$data['allregistrasi'][$i]->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
+                                UBAH
+                                <i class="material-icons right">edit</i>
+                            </a>
                             <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
                             <button class="btn waves-effect waves-light red white-text">                                
                                 <i class="material-icons">delete</i>

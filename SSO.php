@@ -44,7 +44,7 @@ define('CAS_SERVER_HOST', 'sso.ui.ac.id');
 /**
  * CAS server uri
  */
-define('CAS_SERVER_URI', '/cas2');
+define('CAS_SERVER_URI', '/cas');
 
 /**
  * CAS server port
@@ -116,6 +116,7 @@ class SSO
    */
   public static function getUser() {
     $details = phpCAS::getAttributes();
+    dd($details);
     $nomorinduk = '';
 
     // Create new user object, initially empty.

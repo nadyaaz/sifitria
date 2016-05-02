@@ -9,7 +9,7 @@
 
     <div class="row">
     	<div class="col s12">
-    		<form action="{{ url('registrasibarang/barang/ubah') }}" method="POST">
+    		<form action="{{ url('registrasibarang/barang/ubah/'.$data['barang'][0]['hashBarang']) }}" method="POST">
     			<div class="row form-row">
     				<div class="col s12 input-field">
 			    		Nama Barang <br>

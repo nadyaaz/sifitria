@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Barang;
 use App\Master;
-use DB;
 use Validator;
 
 class BarangController extends MasterController
@@ -16,33 +15,21 @@ class BarangController extends MasterController
      * @param  Request $request Request object
      * @return View
      */
-    public function getBarang(Request $request)
+    public function getBarang()
     {	
         // check if user permitted        
         // if (!($this->isPermitted('barang'))) return redirect('/');
-
-        // check if request method is post
-        if(!$request->isMethod('POST')) {
-            // get all barang
-        	$allbarang = Barang::all();
-            
-            // return barang page
-        	return $this->render('registbarang.barang', 
-        		[
-        			'title' => 'Daftar Barang',
-        			'allbarang' => $allbarang,
-        		]
-        	);
-        } else {
-            // get barang selected
-            $barang = Barang::where('hashBarang', $request->input('hash'))->get();
-
-            // set barang session
-            session()->flash('barang', $barang);
-
-            // redirect with barang data
-            return redirect('registrasibarang/barang/ubah');
-        }
+    
+        // get all barang
+    	$allbarang = Barang::all();
+        
+        // return barang page
+    	return $this->render('registbarang.barang', 
+    		[
+    			'title' => 'Daftar Barang',
+    			'allbarang' => $allbarang,
+    		]
+    	);    
     }
 
     /**
@@ -107,11 +94,10 @@ class BarangController extends MasterController
         // insert barang for every barang submitted
         for ($i=1; $i <= $nform; $i++) { 
             // get last object Barang           
-            $lastObj = Master::getLast('barang', 'IdBarang');       
+            $lastId = Master::getLastId('barang', 'IdBarang');       
 
-            // check if lastObj is null
-            if($lastObj == null) $IdBarang = 1;
-            else $IdBarang = $lastObj->IdBarang + 1;
+            // increment id barang
+            $IdBarang = $lastId + 1;
 
             $namabarang = $input['namabarang'][$i];
             $jenisbarang = $input['jenisbarang'][$i];
@@ -143,43 +129,23 @@ class BarangController extends MasterController
     }  
 
     /**
-     * Get update barang view
-     * @param  Request $request Request object
-     * @return updatebarang.blade.php
-     */
-    public function getUpdateBarang(Request $request)
-    {
-        // check if user permitted        
-        // if (!($this->isPermitted('buatbarang'))) return redirect('/');
-
-        // if session barang not found, redirect to barang page
-        if (!session()->has('barang')) return redirect('registrasibarang/barang');
-
-        // get barang selected
-        $barang = session('barang');
-
-        // return update barang page
-        return $this->render('registbarang.updatebarang', 
-            [
-                'title' => 'Update Barang',
-                'barang' => $barang,
-            ]
-        );
-    }
-
-    /**
      * Update selected barang
      * @param  Request $request Request object
      * @return void
      */
-    public function updateBarang(Request $request)
+    public function updateBarang(Request $request, $hash = '')
     {
         // check if user permitted        
         // if (!($this->isPermitted('buatbarang'))) return redirect('/');
         
-        // form validation
-        $this->validate($request, 
-            [
+        // if hash null return to barang list
+        if ($hash == '') return redirect('registrasibarang/barang');
+
+        if ($request->isMethod('POST')) {
+            // request method is post
+        
+            // form validation
+            $this->validate($request, [
                 'namabarang' => 'required|max:100',                
                 'tanggalbeli' => 'required',
                 'penanggungjawab' => 'required|max:100',
@@ -189,23 +155,36 @@ class BarangController extends MasterController
                 'spesifikasibarang' => 'required',
                 'keteranganbarang' => 'required',                                
                 'kerusakanbarang' => 'required',
-            ]
-        );        
+            ]);        
 
-        // input data to database
-        Barang::updateBarang($request->input('hash'), [
-            'NamaBarang' => $request->input('namabarang'),
-            'TanggalBeli' => date('Y-m-d H:i:s', strtotime($request->input('tanggalbeli'))),
-            'Penanggungjawab' => $request->input('penanggungjawab'),
-            'KategoriBarang' => $request->input('kategoribarang'),
-            'JenisBarang' => $request->input('jenisbarang'),
-            'KondisiBarang' => $request->input('kondisibarang'),
-            'SpesifikasiBarang' => $request->input('spesifikasibarang'),
-            'KeteranganBarang' => $request->input('keteranganbarang'),
-            'KerusakanBarang' => $request->input('kerusakanbarang'),
-        ]);        
+            // input data to database
+            Barang::updateBarang($request->input('hash'), [
+                'NamaBarang' => $request->input('namabarang'),
+                'TanggalBeli' => date('Y-m-d H:i:s', strtotime($request->input('tanggalbeli'))),
+                'Penanggungjawab' => $request->input('penanggungjawab'),
+                'KategoriBarang' => $request->input('kategoribarang'),
+                'JenisBarang' => $request->input('jenisbarang'),
+                'KondisiBarang' => $request->input('kondisibarang'),
+                'SpesifikasiBarang' => $request->input('spesifikasibarang'),
+                'KeteranganBarang' => $request->input('keteranganbarang'),
+                'KerusakanBarang' => $request->input('kerusakanbarang'),
+            ]);        
 
-        // redirect to barang page
-        return redirect('registrasibarang/barang');        
+            // redirect to barang page
+            return redirect('registrasibarang/barang');
+        } else {
+            // request method get
+            
+            // get selected barang
+            $barang = Barang::where('hashBarang', $hash)->get();
+
+            // return update barang page
+            return $this->render('registbarang.updatebarang', 
+                [
+                    'title' => 'Update Barang',
+                    'barang' => $barang,
+                ]
+            );
+        }
     }
 }
