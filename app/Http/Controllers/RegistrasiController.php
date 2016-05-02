@@ -34,14 +34,12 @@ class RegistrasiController extends MasterController
         }
 
 		// render registrasi barang dashboard
-		return $this->render('registbarang.dashboard',
-			[
-				'title' => 'Dashboard Registrasi Barang',
-				'allregistrasi' => $registrasi['allregistrasi'],
-                'allkandidat' => $registrasi['allkandidat'],
-				'allcatatan' => $registrasi['allcatatan'],
-			]
-		);                  
+		return $this->render('registbarang.dashboard', [
+			'title' => 'Dashboard Registrasi Barang',
+			'allregistrasi' => $registrasi['allregistrasi'],
+            'allkandidat' => $registrasi['allkandidat'],
+			'allcatatan' => $registrasi['allcatatan'],
+		]);                  
     }
 
     /**
@@ -60,11 +58,9 @@ class RegistrasiController extends MasterController
         if ($request->isMethod('POST')) 
             session()->flash('jmlform', $request->input('jmlform'));
 
-    	return $this->render('registbarang.buatregistrasi',
-    		[
-    			'title' => 'Buat Permohonan Registrasi Barang',
-    		]
-    	);
+    	return $this->render('registbarang.buatregistrasi', [
+    		'title' => 'Buat Permohonan Registrasi Barang',
+    	]);
     }
 
     /**
@@ -277,7 +273,7 @@ class RegistrasiController extends MasterController
         if($lastStatus == 2) 
             $newTahap = $lastTahap + 1;        
 
-        // update permohonan
+        // update permohonan array
         $updatePermohonanArray = [
             'NomorSurat' => $input['nomorsurat'],
             'StatusPermohonan' => $newStatus,
@@ -289,6 +285,7 @@ class RegistrasiController extends MasterController
 
         // update permohonan registrasi barang
         Permohonan::updatePermohonan($input['hashPermohonan'], $updatePermohonanArray);
+        
         $permohonan;
 
         // if tahap 2 and status 2, insert kandidat_barang to barang
