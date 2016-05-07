@@ -26,7 +26,7 @@
             </a>
         </div>
         <div class="col s3">
-            <a href="">                    
+            <a href="{{ url('usulanpengadaan') }}">                    
                 <div class="card-panel white center hoverable">
                     <i class="medium material-icons teal-text">shopping_cart</i><br>
                     <h6 class="center-align">Pengadaan Barang</h6>
@@ -34,7 +34,7 @@
             </a>
         </div>
         <div class="col s3">
-            <a href="">                    
+            <a href="{{ url('maintenancebarang') }}">                    
                 <div class="card-panel white center hoverable">
                     <i class="medium material-icons teal-text">build</i><br>
                     <h6 class="center-align">Maintenance Barang</h6>

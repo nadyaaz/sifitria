@@ -6,29 +6,42 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Permohonan;
 use App\Master;
-use App\Catatan;
 use App\KandidatBarang;
+use App\Catatan;
+use DB;
 
 
 class PengadaanController extends MasterController
 {
-	/**
-	 * [getPengadaan description]
-	 * @return [type] [description]
-	 */
+    /**
+     * [getPengadaan description]
+     * @return [type] [description]
+     */
+     public function dashboard()
+    {
+        $pengadaan = DB::select(DB::raw('SELECT * FROM Permohonan p, Kandidat_barang k WHERE p.IdPermohonan = k.IdPermohonan AND JenisPermohonan = 3'));
+
+        return $pengadaan;
+    }
+
     public function getPengadaan()
     {
-    	$pengadaan = Permohonan::getPengadaan(session('user_sess')->role, session('user_sess')->npm);
+        # code...
+
+        $pengadaan = Permohonan::getPengadaan(session('user_sess')->role, session('user_sess')->npm);
+        //dd($pengadaan);
 
 
         return $this->render('usulanpengadaan.dashboard',
             [
                 'title' => 'Dashboard Usulan Pengadaan',
                 'allpermohonan' => $pengadaan['allpermohonan'],
-                'allcatatan' => $pengadaan['allcatatan'],
+                 'allcatatan' => $pengadaan['allcatatan'],
                 'allkandidat' => $pengadaan['allkandidat']
             ]
-        ); 
+        );  
+
+        // return $pengadaan['allpermohonan'];
     }
 
     /**
@@ -53,21 +66,16 @@ class PengadaanController extends MasterController
             ]
         );
     }
-
-    /**
-     * [createPengadaan description]
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function createPengadaan(Request $request)
+    
+    public function createPengadaan(Request $pengadaan)
     {
-    	$nform = count($request->input('namabarang')); 
+        $nform = count($pengadaan->input('namabarang')); 
 
         // set session for jmlform
         session()->flash('jmlform', $nform);
 
         // Memvalidasi isian form registrasi barang
-        $this->validate ($request, [
+        $this->validate ($pengadaan, [
             'subjek'=> 'required|max:100',
             'catatanpemohon' => 'required',
             'namabarang.*' => 'required|max:100',                
@@ -80,7 +88,7 @@ class PengadaanController extends MasterController
             //'kerusakanbarang.*' => 'required',
         ]);
 
-        $input = $request->all();
+        $input = $pengadaan->all();
 
         // Auto Increment IdPermohonan
         $lastId = Master::getLastId('permohonan', 'IdPermohonan');
@@ -136,17 +144,19 @@ class PengadaanController extends MasterController
         session()->forget('jmlform');
 
         // Mengembalikan ke halaman list daftar registrasi barang             
-        return redirect('usulanpengadaan');
-    }
+        return redirect('pengadaanbarang');
+    }    
 
     /**
-     * [updatePengadaan description]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     * Update pengadaan object in database
+     * or get update pengadaan UI
+     * @param  Request $request object
+     * @return redirect to pengadaan page
      */
-    public function updatePengadaan(Request $request)
+
+    public function updatePengadaan(Request $request, $hashPermohonan='')
     {
-    	// check if user permitted        
+        // check if user permitted        
         // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
         
         // check if hash parameter is empty
@@ -156,7 +166,7 @@ class PengadaanController extends MasterController
         if ($request->isMethod('POST')) {
             // request method is post
 
-            // form validation
+        // form validation
             $this->validate($request, [
                 'subjek' => 'required|max:100',
                 'catatanpemohon' => 'required',
@@ -213,7 +223,7 @@ class PengadaanController extends MasterController
         }
     }
 
-    /**
+     /**
      * [removePengadaan description]
      * @param  Request $request [description]
      * @return [type]           [description]

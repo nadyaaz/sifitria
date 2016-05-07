@@ -27,7 +27,7 @@ class MasterController extends Controller
 	 * @return View               Halaman yang di-render
 	 */
     public function render($view, $input_data = [])    
-    {	
+    {	        
 		// ambil input data dari controller yang memanggil method render
     	$data = $input_data;
 
@@ -41,7 +41,8 @@ class MasterController extends Controller
 	    	
 			// tambahkan passing data					
 			$data['isLoggedIn'] = SSO::check();		// isLoggedIn berisi boolean cek autentikasi
-			$data['user_sess'] = SSO::getUser();	// user_sess berisi detail data user
+			$data['user_sess'] = session('user_sess');	// user_sess berisi detail data user
+
     	}
     	
 		// kembalikan view yang sudah dirender kepada user

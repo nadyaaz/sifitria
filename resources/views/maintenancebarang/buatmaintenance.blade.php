@@ -6,8 +6,32 @@
 <div class="subsection">
 	<h5>Buat Permohonan Maintenance Barang</h5>
     <div class="divider"></div><br>
+
+    @if ( $data['barang'] == '' )
+    
+    Masukkan barcode barang yang ingin di registrasi, barcode tertera pada stiker yg tertempel pada barang<br><br>
+    <div class="row valign-wrapper">
+        <div class="col s12">           
+            <form action="{{ url('maintenancebarang/buat') }}" method="POST">         
+                <div class="col s3">
+                    <input type="text" name="barcode" required>
+                </div>
+
+                <div class="col s3">
+                    {!! csrf_field() !!}
+                    <button class="btn waves-light waves-effect valign buat-form">
+                        BUAT FORM
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div><hr>
+
+    @else
+
     <div id="multiform" class="row">
-    	<form>
+    	<form action="{{ url('maintenancebarang/insert') }}" method="POST">
     		<div class="row form-row">
                 <div class="col s6">
                     <b>Subjek</b><br>
@@ -23,40 +47,22 @@
             <div class="row form-row">
             	<div class="col s6">
             		Nama Barang :<br>
-            		<span class="error red-text"></span><br>
-                    <input type="text" name="namabarang" length="100" value="">
+            		{{ $data['barang'][0]->NamaBarang }}
             	</div>
 
             </div>
           			<div class="row form-row">
                     	<div class="col s4 input-field">
                     		Jenis Barang :<br>
-                    		<span class="error red-text"></span><br>
-                            <input type="text" name="namabarang" length="100" value="">
+                    		{{ $data['barang'][0]->JenisBarang }}
                     	</div>
                     	<div class="col s4 input-field">
                     		Kategori Barang : <br>
-                    		<span class="error red-text"></span><br>
-                    		 <select name="kategoribarang">
-
-                                <option disabled selected>Kategori Barang</option>
-                                <option value="Elektronik">Elektronik</option>
-                                <option value="Furnitur">Furnitur</option>
-                                <option value="Kategori A">Kategori A</option>
-                                <option value="Kategori B">Kategori B</option>
-                                <option value="Kategori C">Kategori C</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>      
+                    		{{ $data['barang'][0]->KategoriBarang }}    
                     	</div>
                     	<div class="col s4 input-field">
                     		Kondisi Barang :<br>
-                    		<span class="error red-text"></span><br>
-                    		<select name="kondisibarang">
-                                <option disabled selected>Kondisi Barang</option>
-                                <option value="Baru">Baru</option>
-                                <option value="Bekas">Bekas</option>
-                                <option value="Rusak">Rusak</option>                                
-                            </select>
+                    		{{ $data['barang'][0]->KondisiBarang }}
                     	</div>
                     </div>
             <div class="row form-row">
@@ -69,18 +75,18 @@
             <div class="row">
                 <div class="col s4 offset-s4 valign-wrapper">
                     <div class="valign">    
-                        <form action="" method="POST"> 
-                            {!! csrf_field() !!}                    
-                            <button class="btn waves-light waves-effect teal">
-                                Submit Permohonan
-                                <i class="material-icons right">send</i>
-                            </button>&nbsp;&nbsp;               
-                        </form>             
+                        {!! csrf_field() !!}                    
+                        <button class="btn waves-light waves-effect teal">
+                            Submit Permohonan
+                            <i class="material-icons right">send</i>
+                        </button>&nbsp;&nbsp;               
                     </div>
                 </div>        
             </div>
     	</form>
     </div>
+    
+    @endif
 
 </div>
 @stop

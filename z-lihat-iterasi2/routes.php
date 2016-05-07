@@ -8,7 +8,7 @@
 | Here is where you can register all of the routes for an application.
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
-|  
+|
 */
 
 Route::group(['middlewareGroups' => 'web'], function() {
@@ -56,24 +56,22 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	Route::match(['get', 'post'], 'registrasibarang', 'RegistrasiController@dashboard');
 	Route::match(['get', 'post'], 'registrasibarang/buat', 'RegistrasiController@getCreateRegistrasi');	
 	Route::post('registrasibarang/insert', 'RegistrasiController@createRegistrasi');
-	Route::match(['get', 'post'], 'registrasibarang/ubah/{hash?}', 'RegistrasiController@updateRegistrasi');
+	Route::get('registrasibarang/ubah', 'RegistrasiController@getUpdateRegistrasi');
+	Route::post('registrasibarang/ubah', 'RegistrasiController@updateRegistrasi');
 	Route::post('registrasibarang/ubahstatus', 'RegistrasiController@updateStatusRegistrasi');
 	Route::post('registrasibarang/batal', 'RegistrasiController@removeRegistrasi');	
 	
 	Route::match(['get', 'post'], 'registrasibarang/barang', 'BarangController@getBarang');
 	Route::match(['get', 'post'], 'registrasibarang/barang/buat', 'BarangController@getCreateBarang');
-	Route::post('registrasibarang/barang/insert', 'BarangController@createBarang');	
-	Route::match(['get', 'post'], 'registrasibarang/barang/ubah/{hash?}', 'BarangController@updateBarang');
+	Route::post('registrasibarang/barang/insert', 'BarangController@createBarang');
+	Route::get('registrasibarang/barang/ubah', 'BarangController@getUpdateBarang');
+	Route::post('registrasibarang/barang/ubah', 'BarangController@updateBarang');
 
 	//usulan pengadaan
-	Route::get('usulanpengadaan', 'PengadaanController@getPengadaan');
-	Route::match(['get', 'post'], 'usulanpengadaan/buat', 'PengadaanController@getCreatePengadaan');	
-	Route::post('usulanpengadaan/insert', 'PengadaanController@createPengadaan');
-	Route::post('usulanpengadaan/batal', 'PengadaanController@removePengadaan');	
+	Route::get( 'usulanpengadaan', 'PengadaanController@getPengadaan');
+	Route::get('usulanpengadaan/buat', 'PengadaanController@getCreateUsulan');
 
 	//maintenance  barang
 	Route::get('maintenancebarang', 'MaintenanceController@getMaintenance');
-	Route::match(['get', 'post'], 'maintenancebarang/buat', 'MaintenanceController@getCreateMaintenance');
-	Route::post('maintenancebarang/insert', 'MaintenanceController@createMaintenance');
-	Route::post('maintenancebarang/ubahstatus', 'MaintenanceController@updateStatusMaintenance');
+	Route::get('maintenancebarang/buat','MaintenanceController@getCreateMaintenance');
 });

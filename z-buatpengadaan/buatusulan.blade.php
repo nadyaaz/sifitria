@@ -4,7 +4,7 @@
 
 @section('konten')
 <div class="subsection">
-    <h5>Buat Permohonan Usulan Pengadaan</h5>
+	<h5>Buat Permohonan Usulan Pengadaan</h5>
     <div class="divider"></div><br>
 
     @if (!(session()->has('jmlform')))
@@ -12,7 +12,7 @@
     Tentukan jumlah barang yang ingin diadakan, contoh: 3 (minimal 1 barang, maksimal 5 barang)<br><br>
     <div class="row valign-wrapper">
         <div class="col s12">           
-            <form action="{{ url('usulanpengadaan/buat') }}" method="POST">         
+            <form action="{{ url('pengadaanbarang/buat') }}" method="POST">         
                 <div class="col s3">
                     <input type="number" name="jmlform" min="1" max="5" step="1" value="1">           
                 </div>
@@ -30,7 +30,7 @@
     @else
 
     <div id="multiform" class="row">
-        <form action="{{ url('usulanpengadaan/insert') }}" method="POST">
+    	<form action="{{ url('pengadaanbarang/insert') }}" method="POST">
             <div class="row form-row">
                 <div class="col s6">
                     <b>Subjek</b><br>
@@ -49,11 +49,11 @@
                 </div>
             </div><br><hr>
 
-            <div id="barang-multiform">
+           	<div id="barang-multiform">
                 @for($i=1; $i <= session('jmlform'); $i++)
 
-                <div id="barang-form">
-                      <div class="valign-wrapper">                    
+           		<div id="barang-form">
+           			  <div class="valign-wrapper">                    
                         <span class="valign judul-add-barang">Barang ke-{{ $i }}</span>&nbsp;&nbsp;
                     </div>
                     <div class="row form-row">
@@ -70,15 +70,15 @@
                         </div>      
                     </div>  
                     <div class="row form-row">
-                        <div class="col s4 input-field">
-                            Jenis Barang :<br>
-                            <span class="error red-text"></span><br>
+                    	<div class="col s4 input-field">
+                    		Jenis Barang :<br>
+                    		<span class="error red-text"></span><br>
                             <input type="text" name="jenisbarang[{{$i}}]" length="100" value="">
-                        </div>
-                        <div class="col s4 input-field">
-                            Kategori Barang : <br>
-                            <span class="error red-text"></span><br>
-                             <select name="kategoribarang[{{$i}}]">
+                    	</div>
+                    	<div class="col s4 input-field">
+                    		Kategori Barang : <br>
+                    		<span class="error red-text"></span><br>
+                    		 <select name="kategoribarang[{{$i}}]">
 
                                 <option disabled selected>Kategori Barang</option>
                                 <option value="Elektronik">Elektronik</option>
@@ -88,42 +88,44 @@
                                 <option value="Kategori C">Kategori C</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>      
-                        </div>
-                        <div class="col s4 input-field">
-                            Kondisi Barang :<br>
-                            <span class="error red-text"></span><br>
-                            <select name="kondisibarang[{{$i}}]">
+                    	</div>
+                    	<div class="col s4 input-field">
+                    		Kondisi Barang :<br>
+                    		<span class="error red-text"></span><br>
+                    		<select name="kondisibarang[{{$i}}]">
                                 <option disabled selected>Kondisi Barang</option>
                                 <option value="Baru">Baru</option>
                                 <option value="Bekas">Bekas</option>
                                 <option value="Rusak">Rusak</option>                                
                             </select>
-                        </div>
+                    	</div>
                     </div>
                     <div class="row form-row">
-                        <div class="col s6 input-field">
-                            Spesifikasi Barang :<br>
-                            <span class="error red-text"></span><br>                 
+                    	<div class="col s6 input-field">
+                    		Spesifikasi Barang :<br>
+                    		<span class="error red-text"></span><br>                 
                             <textarea name="spesifikasibarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10"></textarea>
-                        </div>
-                        <div class="col s6 input-field">
-                            Keterangan Barang :<br>
-                            <span class="error red-text"></span><br>                 
+                    	</div>
+                    	<div class="col s6 input-field">
+                    		Keterangan Barang :<br>
+                    		<span class="error red-text"></span><br>                 
                             <textarea name="keteranganbarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10"></textarea>
-                        </div>
+                    	</div>
                     </div>
-                </div>
+           		</div>
                 @endfor
-            </div>
-            <br>
-            <div class="row">
+	        </div>
+	        <br>
+    		<div class="row">
                 <div class="col s4 offset-s4 valign-wrapper">
                     <div class="valign">    
-                        {!! csrf_field() !!}                    
-                        <button class="btn waves-light waves-effect teal">
-                            REGISTRASI SEMUA BARANG
-                            <i class="material-icons right">send</i>
-                        </button>&nbsp;&nbsp;               
+                        <form action="" method="POST"> 
+                            {!! csrf_field() !!}                    
+                            <button class="btn waves-light waves-effect teal">
+                                REGISTRASI SEMUA BARANG
+                                <i class="material-icons right">send</i>
+                            </button>&nbsp;&nbsp;               
+                        </form>             
                     </div>
                 </div>        
             </div>

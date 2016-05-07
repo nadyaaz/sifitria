@@ -32,6 +32,82 @@ class Permohonan extends Model
         DB::table('permohonan')->where('hashPermohonan', $hash)->update($data);
     }
 
+    public static function getPengadaan($role, $nomorinduk='')
+    {
+        $query =
+           'SELECT * FROM permohonan p, users u WHERE p.JenisPermohonan = 3 AND p.IdPemohon = u.NomorInduk';
+
+         //seems not working :( and ended up doing the same in blade
+
+
+        if ($role == 'Staf Fasilitas & Infrastruktur') {
+            // staf PPAA only see jenis ruangan Kelas
+           
+            $query .=  ' AND StatusPermohonan = 0';
+            
+        } else if ($role == 'Manajer Fasilitas & Infrastruktur') {
+            // staf sekertariat can see all ruangan except Kelas
+           
+            $query .= ' AND StatusPermohonan>=1' ;  
+        } else {
+            // if user != manajer peminjaman get only his/her permohonan
+            if($nomorinduk != '') $query .= ' AND IdPemohon = "'.$nomorinduk.'"';  
+                    
+        }
+        
+        $allkandidat = KandidatBarang::all();
+        $allpermohonan = DB::select(DB::raw($query));
+
+        $allcatatan = DB::select(DB::raw(
+            'SELECT * 
+            FROM permohonan p, catatan c, users u 
+            WHERE  
+                p.IdPermohonan = c.IdPermohonan AND 
+                c.NomorIndukPenulis = u.NomorInduk'
+        ));
+
+
+        // get list catatan
+        $allcatatan = DB ::select(DB::raw(
+            'SELECT *
+            FROM catatan c, users u 
+            WHERE c.NomorIndukPenulis = u.NomorInduk'
+        ));
+
+        return array(
+            'allpermohonan' => $allpermohonan,
+            'allcatatan' => $allcatatan,
+            'allkandidat' => $allkandidat
+        );
+    }
+
+    public static function getMaintenance($role, $nomorinduk='')
+    {
+        $query='SELECT * FROM permohonan p, users u WHERE p.JenisPermohonan = 4  AND p.IdPemohon = u.NomorInduk AND p.deleted= 0';
+
+        $allpermohonan = DB::select(DB::raw($query));
+        $allcatatanpermohonan = DB::select(DB::raw(
+            'SELECT * 
+            FROM permohonan p, catatan c, users u 
+            WHERE  
+                p.IdPermohonan = c.IdPermohonan AND 
+                c.NomorIndukPenulis = u.NomorInduk'
+        ));
+
+
+        // get list catatan
+        $allcatatan = DB ::select(DB::raw(
+            'SELECT *
+            FROM catatan c, users u 
+            WHERE c.NomorIndukPenulis = u.NomorInduk'
+        ));
+        return array(
+                'allpermohonan' => $allpermohonan,
+                'allcatatanpermohonan' => $allcatatanpermohonan,
+                'allcatatan' => $allcatatan
+        );
+    }
+    
     /**
      * Get Permohonan peminjaman ruangan, jadwal, ruangan, 
      * user, and catatan record
@@ -129,120 +205,7 @@ class Permohonan extends Model
 		);
     }
 
-    /**
-     * [getPengadaan description]
-     * @param  [type] $role       [description]
-     * @param  string $nomorinduk [description]
-     * @return [type]             [description]
-     */
-    public static function getPengadaan($role, $nomorinduk='')
-    {
-        $query =
-           'SELECT DISTINCT * 
-           FROM  permohonan p, users u 
-           WHERE 
-                p.JenisPermohonan = 3 AND 
-                p.IdPemohon = u.NomorInduk';
 
-         //seems not working :( and ended up doing the same in blade
-
-
-        if ($role == 'Staf Fasilitas & Infrastruktur') {
-            // staf PPAA only see jenis ruangan Kelas
-            $query .=  ' AND p.TahapPermohonan=1 AND p.StatusPermohonan>=0' ;
-        } else if ($role == 'Manajer Fasilitas & Infrastruktur') {
-            // staf sekertariat can see all ruangan except Kelas
-            $query .= ' AND ((p.TahapPermohonan=1 AND p.StatusPermohonan=2) OR p.TahapPermohonan=2)' ;  
-        } else if ($role == 'Wakil Dekan'){
-            // Staf Pengadaan
-            $query .= ' AND ((p.TahapPermohonan=2 AND p.StatusPermohonan=2) OR p.TahapPermohonan=3)';
-        } else if($role =='Staf Pengadaan'){
-            $query .= ' AND ((p.TahapPermohonan=3 AND p.StatusPermohonan=2) OR p.TahapPermohonan=4)';
-        } else {
-            // if user != manajer peminjaman get only his/her permohonan
-            if($nomorinduk != '') $query .= ' AND IdPemohon = "'.$nomorinduk.'"';  
-        }
-        
-        $allkandidat = KandidatBarang::all();
-        $allpermohonan = DB::select(DB::raw($query));
-    
-        $allcatatan = DB::select(DB::raw(
-            'SELECT * 
-            FROM permohonan p, catatan c, users u 
-            WHERE  
-                p.IdPermohonan = c.IdPermohonan AND 
-                p.JenisPermohonan = 3 AND
-                c.NomorIndukPenulis = u.NomorInduk'
-        ));        
-
-        return array(
-            'allpermohonan' => $allpermohonan,
-            'allcatatan' => $allcatatan,
-            'allkandidat' => $allkandidat
-        );
-    }
-
-    /**
-     * [updatePengadaan description]
-     * @param  [type] $hashPermohonan [description]
-     * @param  [type] $data           [description]
-     * @return [type]                 [description]
-     */
-    public static function updatePengadaan($hashPermohonan, $data)
-    { 
-        DB::table('permohonan')->where('hashPermohonan', $hashPermohonan)->update($data);
-    }
-
-    /**
-     * [getMaintenance description]
-     * @param  [type] $role       [description]
-     * @param  string $nomorinduk [description]
-     * @return [type]             [description]
-     */
-    public static function getMaintenance($role, $nomorinduk='')
-    {
-        $query =
-            'SELECT DISTINCT * 
-            FROM permohonan p, users u 
-            WHERE 
-                p.JenisPermohonan = 4 AND 
-                p.IdPemohon = u.NomorInduk AND 
-                p.deleted= 0';
-
-        if ($role == 'Staf Fasilitas & Infrastruktur') {
-            // staf PPAA only see jenis ruangan Kelas
-            $query .=  ' AND p.TahapPermohonan=1 AND p.StatusPermohonan>=0' ;
-        } else if ($role == 'Manajer Fasilitas & Infrastruktur') {
-            // staf sekertariat can see all ruangan except Kelas
-            $query .= ' AND ((p.TahapPermohonan=1 AND p.StatusPermohonan=2) OR p.TahapPermohonan=2)' ;  
-        } else if ($role == 'Wakil Dekan'){
-            // Staf Pengadaan
-            $query .= ' AND ((p.TahapPermohonan=2 AND p.StatusPermohonan=2) OR p.TahapPermohonan=3)';        
-        } else {
-            // if user != manajer peminjaman get only his/her permohonan
-            if($nomorinduk != '') $query .= ' AND IdPemohon = "'.$nomorinduk.'"';  
-        }
-
-        $allpermohonan = DB::select(DB::raw($query));
-
-        $allbarang = Barang::all();
-
-        // get list catatan
-        $allcatatan = DB ::select(DB::raw(
-            'SELECT *
-            FROM permohonan p, catatan c, users u 
-            WHERE 
-                c.NomorIndukPenulis = u.NomorInduk AND
-                p.IdPermohonan = c.IdPermohonan AND
-                p.JenisPermohonan = 4'
-        ));
-
-        return array(
-            'allpermohonan' => $allpermohonan,
-            'allcatatan' => $allcatatan,
-            'allbarang' => $allbarang
-        );
-    }
 
     /**
      * Update status permohonan on database

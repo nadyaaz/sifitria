@@ -43,7 +43,7 @@
 		     				<ul id="nav-mobile" class="right">
 	    						<br>
 	    						<li>
-		     						<span class="black-text">{{ $data['user_sess']->name.' ('.$data['user_sess']->role.')' }}</span>&nbsp;&nbsp;&nbsp;
+		     						<span class="black-text">{{ session('user_sess')->name.' ('.session('user_sess')->role.')' }}</span>&nbsp;&nbsp;&nbsp;
 		     					</li>
 		     					
 				     				<form class="btn-out right" action="{{ url('logout') }}" method="POST">

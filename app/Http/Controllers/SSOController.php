@@ -21,7 +21,7 @@ class SSOController extends Controller
 
         // get SSO user data and store user data if it's not exist
     	$user_sess = SSO::getUser();
-        session(['user_sess' => $user_sess]);
+        $request->session()->put('user_sess', $user_sess);
 
         // redirect to home portal
     	return redirect('/');
@@ -35,7 +35,7 @@ class SSOController extends Controller
     public function out(Request $request)    
     {	          	
         // destroy session
-        session()->forget('user_sess');
+        $request->session()->forget('user_sess');
         
         // logout, then redirect to home portal
     	SSO::logout();    	    	
