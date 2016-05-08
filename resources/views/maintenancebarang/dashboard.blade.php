@@ -186,21 +186,15 @@
                 @endif
                             
                 @if ($data['user_sess']->role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Wakil Dekan')
-                <div class="row">
-                    <div class="col s11">
+                <div class="row">                    
+                    <div class="col s12">
                         <form action="" method="POST" class="right">
                             {!! csrf_field() !!}
                             <input type="hidden" name="hashPermohonan" value="{{ $data['allpermohonan'][$i]->hashPermohonan }}"/>                            
-                            <button class="btn waves-effect waves-light teal white-text">
+                            <a href="{{ url('maintenancebarang/ubah/'.$data['allpermohonan'][$i]->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
                                 UBAH
                                 <i class="material-icons right">edit</i>
-                            </button>
-                        </form> 
-                    </div>
-                    <div class="col s1">                        
-                        <form action="" method="POST" class="right">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $data['allpermohonan'][$i]->hashPermohonan }}"/>                            
+                            </a>
                             <button class="btn waves-effect waves-light red white-text">                                
                                 <i class="material-icons">delete</i>
                             </button>

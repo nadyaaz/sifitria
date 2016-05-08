@@ -225,7 +225,7 @@ class Permohonan extends Model
 
         $allpermohonan = DB::select(DB::raw($query));
 
-        $allbarang = Barang::all();
+        $allbarang = Barang::whereNotNull('IdPermohonan')->get();
 
         // get list catatan
         $allcatatan = DB ::select(DB::raw(

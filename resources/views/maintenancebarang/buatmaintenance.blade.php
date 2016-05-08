@@ -75,7 +75,8 @@
             <div class="row">
                 <div class="col s4 offset-s4 valign-wrapper">
                     <div class="valign">    
-                        {!! csrf_field() !!}                    
+                        {!! csrf_field() !!}
+                        <input type="hidden" name="hashBarang" value="{{ $data['barang']['0']->hashBarang}}">
                         <button class="btn waves-light waves-effect teal">
                             Submit Permohonan
                             <i class="material-icons right">send</i>

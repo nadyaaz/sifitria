@@ -74,6 +74,7 @@ Route::group(['middlewareGroups' => 'web'], function() {
 	//maintenance  barang
 	Route::get('maintenancebarang', 'MaintenanceController@getMaintenance');
 	Route::match(['get', 'post'], 'maintenancebarang/buat', 'MaintenanceController@getCreateMaintenance');
+	Route::match(['get', 'post'], 'maintenancebarang/ubah/{hash?}', 'MaintenanceController@updateMaintenance');
 	Route::post('maintenancebarang/insert', 'MaintenanceController@createMaintenance');
 	Route::post('maintenancebarang/ubahstatus', 'MaintenanceController@updateStatusMaintenance');
 });

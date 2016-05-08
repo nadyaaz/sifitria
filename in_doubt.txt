@@ -1,0 +1,2 @@
+- Kuantitas berpengaruh di maintenance?
+- semua method update perlu disecure kalo misalkan ada yg nge get page update suatu permohonan/gedung/ruangan, dll ternyata permohonan/gedung/ruangan, dll tersebut sudah dihapus
