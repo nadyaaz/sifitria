@@ -85,11 +85,11 @@
                         {{$data['allpermohonan'][$i]->LinkAnggaran}}
                     </div>
                 </div>
-                <a id="#kandidat-barang{{$i}}" href=".modal" class="modal-trigger btn waves-light waves-effect">
+                <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
                     LIHAT SEMUA USULAN BARANG
                 </a>
 
-                <div  id="kandidat-barang{{$i}}"class="modal">
+                <div id="kandidat-barang{{$i}}" class="modal">
                     <div class="modal-content"> 
                         @foreach($data['allkandidat'] as $kandidat)
 
@@ -126,7 +126,7 @@
                         <div class="row">
                             <div class="col s4">
                                 <b>Kuantitas :</b><br>
-                                {{$kandidat->Kuantitas}}
+                                {{$kandidat->Quantity}}
                             </div>
                             <div class="col s4">
                                 <b>Keterangan :</b><br>

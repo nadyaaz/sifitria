@@ -144,7 +144,7 @@ class PengadaanController extends MasterController
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function updatePengadaan(Request $request)
+    public function updatePengadaan(Request $request, $hashPermohonan = '')
     {
     	// check if user permitted        
         // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
@@ -169,6 +169,7 @@ class PengadaanController extends MasterController
             ]);     
             
             $input = $request->all(); 
+            
             // input data to database
             Permohonan::updatePengadaan($hashPermohonan, [         
                 'SubjekPermohonan' => $request->input('subjek'),
@@ -211,6 +212,72 @@ class PengadaanController extends MasterController
                 'allkandidat' =>$allkandidat,
             ]);
         }
+    }
+
+    public function updateStatusPengadaan(Request $request)
+    {
+        // validate request
+        $this->validate($request, [
+            'nomorsurat' => 'required',
+            'catatan_txtarea' => 'required',
+        ]);
+
+        $input = $request->all();
+        $newStatus = 0;        
+        $newTahap = 1;
+
+        $lastTahap = Master::getLastId('permohonan', 'TahapPermohonan', [
+            ['hashPermohonan', '=', $input['hashPermohonan']]
+        ]);    
+
+        $lastStatus = Master::getLastId('permohonan', 'StatusPermohonan', [
+            ['hashPermohonan', '=', $input['hashPermohonan']]
+        ]);
+
+        // check update, TOLAK / SETUJU
+        if (array_key_exists('setuju', $input))
+            $newStatus = 2;
+        else if (array_key_exists('tolak', $input))          
+            $newStatus = 1;
+
+        // increment new tahap
+        if($lastStatus == 2) 
+            $newTahap = $lastTahap + 1;  
+
+        // update permohonan
+        $updatePermohonanArray = [
+            'NomorSurat' => $input['nomorsurat'],
+            'StatusPermohonan' => $newStatus,
+        ];
+
+        // if tahap change, push TahapPermohonan to updatePermohonanArray
+        if ($lastTahap != $newTahap) 
+            $updatePermohonanArray['TahapPermohonan'] = $newTahap;
+
+        // update permohonan registrasi barang
+        Permohonan::updatePermohonan($input['hashPermohonan'], $updatePermohonanArray);
+      
+        $permohonan = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->first();
+        
+        // last tahap catatan 
+        $lastTahapCatatan = Master::getLastId('catatan', 'TahapCatatan', [
+            ['IdPermohonan', '=', $permohonan->IdPermohonan],
+        ]);
+
+        // new tahap catatan
+        $tahapCatatan = $lastTahapCatatan + 1;
+
+        // create catatan     
+        Catatan::createCatatan(
+            $permohonan->IdPermohonan, 
+            $tahapCatatan,
+            $input['catatan_txtarea'],
+            session('user_sess')->npm,
+            md5($permohonan->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+        );
+
+        // redirect to usulan pengadaan page
+        return redirect('usulanpengadaan');
     }
 
     /**

@@ -19,5 +19,7 @@ $(document).ready(
 	 	// initialize material select
 	 	$('select').material_select();
 
+	 	// initialize modal
+	 	$('.modal-trigger').leanModal();
 	}
 );

@@ -231,7 +231,7 @@ class MaintenanceController extends MasterController
         // update permohonan registrasi barang
         Permohonan::updatePermohonan($input['hashPermohonan'], $updatePermohonanArray);            
 
-        $permohonan = Permohonan::where([['hashPermohonan', $input['hashPermohonan']]])->first();
+        $permohonan = Permohonan::where('hashPermohonan', $input['hashPermohonan'])->first();
 
         // last tahap catatan 
         $lastTahapCatatan = Master::getLastId('catatan', 'TahapCatatan', [

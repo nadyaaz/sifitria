@@ -67,8 +67,10 @@ Route::group(['middlewareGroups' => 'web'], function() {
 
 	//usulan pengadaan
 	Route::get('usulanpengadaan', 'PengadaanController@getPengadaan');
-	Route::match(['get', 'post'], 'usulanpengadaan/buat', 'PengadaanController@getCreatePengadaan');	
+	Route::match(['get', 'post'], 'usulanpengadaan/buat', 'PengadaanController@getCreatePengadaan');
+	Route::match(['get', 'post'], 'usulanpengadaan/ubah/{hashPermohonan?}', 'PengadaanController@updatePengadaan');
 	Route::post('usulanpengadaan/insert', 'PengadaanController@createPengadaan');
+	Route::post('usulanpengadaan/ubahstatus', 'PengadaanController@updateStatusPengadaan');
 	Route::post('usulanpengadaan/batal', 'PengadaanController@removePengadaan');	
 
 	//maintenance  barang

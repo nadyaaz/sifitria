@@ -1,2 +1,16 @@
 - Kuantitas berpengaruh di maintenance?
+
 - semua method update perlu disecure kalo misalkan ada yg nge get page update suatu permohonan/gedung/ruangan, dll ternyata permohonan/gedung/ruangan, dll tersebut sudah dihapus
+
+- Barang punya atribut IdPermohonan, so ketika create permohonan maintenance barang harus update Barang.
+
+- Ketika nge cek barang lewat barcode pas mau bikin permohonan maintenance, selain di cek apakah barcode nya ada juga harus di cek apakah barang tersebut sudah ada yg melaporkan (sudah ada yg bikin permohonan maintenance nya) dengan cara nge cek apakah IdPermohonan nya null atau nggak. Barang cuma bisa nyimpen satu IdPermohonan aja.
+
+- Ketika permohonan nya di hapus (deleted = 0) brrti atribut IdPermohonan pada barang juga harus diubah jadi null karena permohonan yg melekat ke dia udh dihapus, orang lain bisa bikin permohonan maintenance atas barang tersebut.
+
+- catatan ketika diupdate cuma deskripsicatatan nya saja
+
+- nomor barcode diasumsikan sudah ada untuk proses membuat permohonan maintenance barang
+
+- 
+
