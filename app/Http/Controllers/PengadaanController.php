@@ -20,7 +20,6 @@ class PengadaanController extends MasterController
     {
     	$pengadaan = Permohonan::getPengadaan(session('user_sess')->role, session('user_sess')->npm);
 
-
         return $this->render('usulanpengadaan.dashboard',
             [
                 'title' => 'Dashboard Usulan Pengadaan',

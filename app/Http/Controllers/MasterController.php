@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\User;
 use SSO\SSO;
 use DB;
 
@@ -32,17 +33,18 @@ class MasterController extends Controller
     	$data = $input_data;
 
 		// cek apakah view yang ingin di render adalah home dan user belum terautentikasi
-    	if ($view == 'home' && !(SSO::check())) {
+    	// if ($view == 'home' && !(SSO::check())) {
+        if (($view == 'home' || $view == 'login') && !(session()->has('user_sess'))) {
 			// user belum terautentikasi, 			
     		$data['isLoggedIn'] = false;	// set passing data 'isLoggedIn' false			    		
     	} else {
 			// cek autentikasi user dengan SSO Check, 			
-	    	if (!SSO::check() && !(session()->has('user_sess'))) SSO::authenticate();
+	    	// if (!SSO::check() && !(session()->has('user_sess'))) SSO::authenticate();
+            if (!session()->has('user_sess')) return redirect('login');
 	    	
 			// tambahkan passing data					
-			$data['isLoggedIn'] = SSO::check();		// isLoggedIn berisi boolean cek autentikasi
-			$data['user_sess'] = session('user_sess');	// user_sess berisi detail data user
-
+			$data['isLoggedIn'] = User::isLoggedIn();		// isLoggedIn berisi boolean cek autentikasi
+			$data['user_sess'] = session()->get('user_sess');	// user_sess berisi detail data user
     	}
     	
 		// kembalikan view yang sudah dirender kepada user
@@ -57,28 +59,37 @@ class MasterController extends Controller
     public function isPermitted($page)
     {
     	// check user authentication
-    	if(!SSO::check()) SSO::authenticate();
+    	if(!session()->has('user_sess')) return redirect('login');
 
     	// permitted user rules
     	$userrule = [
-    		'Manager Fasilitas & Infrastruktur' =>
-                ['registrasibarang', 'barang', 'buatbarang'],
+    		'Manajer Fasilitas & Infrastruktur' =>
+                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang'],
+
     		'Staf Fasilitas & Infrastruktur' =>
-                ['registrasibarang', 'barang', 'buatbarang'],
+                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang'],
+
     		'Staf PPAA' =>
                 ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+
     		'Staf Sekretariat' =>
                 ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+
+            'Wakil Dekan 2' =>
+                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+
     		'Staf' =>
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+
     		'HM' =>
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
-    		'mahasiswa' =>
+
+    		'Mahasiswa' =>
                 ['pinjamruang', 'buatpeminjaman'],
     	];
 
     	// get user type
-    	$usertype = SSO::getUser()->role;
+    	$usertype = session()->get('user_sess')->Role;
 
     	// check if user permittes
     	if (array_key_exists($usertype, $userrule)) {

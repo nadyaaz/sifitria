@@ -17,6 +17,9 @@ class MaintenanceController extends MasterController
 	 */
     public function getMaintenance()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('maintenancebarang'))) return redirect('/');
+
     	$maintenance = Permohonan::getMaintenance(session('user_sess')->role, session('user_sess')->npm);
 
         return $this->render('maintenancebarang.dashboard',
@@ -37,8 +40,8 @@ class MaintenanceController extends MasterController
     public function getCreateMaintenance(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');    
-        // 
+        // if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');
+        
         $data = [
             'title' => 'Buat Permohonan Maintenance Barang',
             'barang' => '',

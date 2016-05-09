@@ -43,7 +43,7 @@
 		     				<ul id="nav-mobile" class="right">
 	    						<br>
 	    						<li>
-		     						<span class="black-text">{{ session('user_sess')->name.' ('.session('user_sess')->role.')' }}</span>&nbsp;&nbsp;&nbsp;
+		     						<span class="black-text">{{ $data['user_sess']->Username.' ('.$data['user_sess']->Role.')' }}</span>&nbsp;&nbsp;&nbsp;
 		     					</li>
 		     					
 				     				<form class="btn-out right" action="{{ url('logout') }}" method="POST">
@@ -72,7 +72,7 @@
 						<div class="col s12 center">
 							<h5 class="center">SSO UI Login</h5>
 							<h6 class="center">Login terlebih dahulu dengan akun juita</h6><br>
-							<a href="{{ url('SSO') }}" class="btn btn-primary">LOGIN</a>						
+							<a href="{{ url('login') }}" class="btn btn-primary">LOGIN</a>						
 						</div>
 					</div>
 

@@ -23,8 +23,10 @@ Route::group(['middlewareGroups' => 'web'], function() {
 
 	// general
 	Route::get('/', 'HomeController@index');
-	Route::get('SSO', 'SSOController@index');
-	Route::post('logout', 'SSOController@out');	
+	// Route::get('SSO', 'SSOController@index');
+	Route::match(['get', 'post'], 'login', 'LoginController@index');
+	// Route::post('logout', 'SSOController@out');
+	Route::post('logout', 'LoginController@logout');	
 
 	// pinjam ruang	
 	Route::get('pinjamruang', 'PeminjamanController@dashboard');
