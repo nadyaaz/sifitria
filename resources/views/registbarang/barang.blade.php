@@ -1,5 +1,7 @@
 @extends('sidebar')
 
+@section('sidebar_barang', 'active white-text')
+
 @section('table_head')
 	<div id="tableHead" class="row">
 		<div class="col s1">Id</div>

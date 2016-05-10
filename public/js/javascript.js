@@ -1,7 +1,9 @@
 $(document).ready(
 	function() { 	
 	 	// side bar
-	 	$('#sidebar-content').pushpin({ top: $('#sidebar-content').offset().top });
+	 	$('#sidebar-content').pushpin({ 
+	 		top: $('#sidebar-content').offset().top 
+	 	});
 
 		// initialize datepicker
 	 	$('.tanggalbeli').pickadate({	

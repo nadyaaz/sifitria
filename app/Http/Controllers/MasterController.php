@@ -45,6 +45,9 @@ class MasterController extends Controller
 			// tambahkan passing data					
 			$data['isLoggedIn'] = User::isLoggedIn();		// isLoggedIn berisi boolean cek autentikasi
 			$data['user_sess'] = session()->get('user_sess');	// user_sess berisi detail data user
+
+            $view_folder = explode('.', $view);
+            $data['sidebar'] = $view_folder[0];
     	}
     	
 		// kembalikan view yang sudah dirender kepada user

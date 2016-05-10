@@ -1,4 +1,47 @@
+/* Customizing Materialize theme color */
+/* don't delete this piece of code */
+
+.collection .collection-item.active {
+	background-color: #4a148c !important;
+}
+
+.btn {
+	background-color: #4a148c;
+}
+
+.tabs .tab a {
+	color: #4a148c !important;	
+}
+
+.tabs .tab a:hover {
+	color: #ba68c8 !important;	
+}
+
+.tabs .indicator {
+	background-color: #4a148c !important;
+}
+
+/* End of overriding materialize theme customizing */
+
+/* Side nav */
+
+.pin-top {
+	position: relative;
+}
+
+.pin-bottom {
+	position: relative;
+}
+
+.pinned {
+	position: fixed !important;
+	width: 160px;
+}
+
+/* End of side nav */
+
 nav{
+
 	height: 150px;
 	background-color: #f5f5f5;
 }
@@ -194,14 +237,15 @@ textarea {
 }
 
 #sidebar{
-	margin-top:10px;
+	/*margin-top:10px;*/
 	height:100vw;
   	background-color: #f5f5f5;
 }
 
 #sidebar-content{
 	background-color: white;
-	margin-top:10px;
+	margin-top:10px;	
+	width: 204px;
 }
 
 #logout-icon{
@@ -209,13 +253,11 @@ textarea {
 }
 
 
-#logout-button{
-	
+#logout-button{	
 	background-color:  #f5f5f5;
 	height:64px;
 	border-style: none;
 	margin-bottom: 1px;
-
 }
 
 .form.btn-out.right{
@@ -223,5 +265,5 @@ textarea {
 }
 
 #logout-button:hover{
-	 background-color: #ddd;
+	background-color: #ddd;
 }

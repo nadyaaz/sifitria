@@ -1,6 +1,6 @@
 @extends('sidebar')
 
-@section('sidebar_dashboard', 'active')
+@section('sidebar_dashboard', 'active white-text')
 
 @section('konten')
 <div class="subsection">
@@ -161,7 +161,7 @@
                 @endforeach
                 <hr>
                 <div class="row"> 
-                    @if ($data['user_sess']->role === 'Manajer Fasilitas & Infrastruktur' || $data['user_sess']->role === 'Staf Fasilitas & Infrastruktur' || $data['user_sess']->role === 'Staf Pengadaan' || $data['user_sess']->role === 'Wakil Dekan')
+                    @if ($data['user_sess']->Role === 'Manajer Fasilitas & Infrastruktur' || $data['user_sess']->Role === 'Staf Fasilitas & Infrastruktur' || $data['user_sess']->Role === 'Staf Pengadaan' || $data['user_sess']->Role === 'Wakil Dekan')
                     
                     @if (
                     ($data['allpermohonan'][$i]->TahapPermohonan == 1 && $data['allpermohonan'][$i] -> StatusPermohonan== 0) ||
@@ -184,8 +184,8 @@
                             <input type="hidden" name="hashPermohonan" value="{{ $data['allpermohonan'][$i]->hashPermohonan }}"><br>
                             Catatan: <br>
                             <textarea class="materialize-textarea" class="validate" name="catatan_txtarea" cols="30" rows="30" required>Jika tidak ada catatan tulis "Tidak ada"</textarea>
-                            <input type="submit" value="TOLAK" name="tolak" class="waves-effect waves-red btn red right"/>
-                            <input type="submit" value="SETUJU" name="setuju" class="btn waves-effect waves-light teal white-text right"/>
+                            <input type="submit" value="TOLAK" name="tolak" class="btn waves-effect waves-red red right"/>
+                            <input type="submit" value="SETUJU" name="setuju" class="btn waves-effect waves-light teal right"/>
                         </div>
                     </form>
                     @endif
@@ -193,7 +193,7 @@
                     @endif
                 </div>
                
-                @if ($data['user_sess']->role != 'Manajer Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Pengadaan' && $data['user_sess']->role != 'Wakil Dekan')
+                @if ($data['user_sess']->Role != 'Manajer Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Pengadaan' && $data['user_sess']->Role != 'Wakil Dekan')
 
                 @if($data['allpermohonan'][$i]-> StatusPermohonan===0)
                  

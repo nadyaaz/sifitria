@@ -1,6 +1,6 @@
 @extends('sidebar')
 
-@section('sidebar_dashboard', 'active')
+@section('sidebar_dashboard', 'active white-text')
 
 @section('konten')
 <div class="subsection">
@@ -154,7 +154,7 @@
 
                 @endforeach
              
-                @if ($data['user_sess']->role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->role == 'Staf Fasilitas & Infrastruktur' || $data['user_sess']->role == 'Wakil Dekan')
+                @if ($data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Staf Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Wakil Dekan')
                 <div class="row"> 
 
                     @if (
@@ -185,7 +185,7 @@
                 </div>
                 @endif
                             
-                @if ($data['user_sess']->role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Wakil Dekan')
+                @if ($data['user_sess']->Role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Wakil Dekan')
                 <div class="row">                    
                     <div class="col s12">
                         <form action="" method="POST" class="right">

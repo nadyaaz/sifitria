@@ -1,6 +1,6 @@
 @extends('sidebar')
 
-@section('sidebar_dashboard', 'active')
+@section('sidebar_dashboard', 'active white-text')
 
 @section('konten')
 <div class="subsection">
@@ -44,7 +44,7 @@
             <div class="collapsible-body">                                        
                 <div class="row">
                     <div class="col s4">
-                        @if ($data['user_sess']->role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->role == 'Staf Fasilitas & Infrastruktur')
+                        @if ($data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Staf Fasilitas & Infrastruktur')
 
                             @if ($data['allregistrasi'][$i]->NomorSurat != null)                            
                             <b>Nomor Surat:</b><br>
@@ -146,11 +146,11 @@
                 
                 <hr>
                 <div class="row"> 
-                    @if ($data['user_sess']->role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->role == 'Staf Fasilitas & Infrastruktur')
+                    @if ($data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Staf Fasilitas & Infrastruktur')
                     
                     @if (
                         ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 0) ||
-                        ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 2 && $data['user_sess']->role == 'Manager Fasilitas & Infrastruktur') 
+                        ($data['allregistrasi'][$i]->TahapPermohonan == 1 && $data['allregistrasi'][$i]->StatusPermohonan == 2 && $data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur') 
                     )
                     <form action="{{ url('registrasibarang/ubahstatus') }}" method="POST">
                         <div class="col s6">
@@ -174,7 +174,7 @@
                     @endif
                 </div>
                 
-                @if ($data['user_sess']->role != 'Manajer Fasilitas & Infrastruktur' && $data['user_sess']->role != 'Staf Fasilitas & Infrastruktur')
+                @if ($data['user_sess']->Role != 'Manajer Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur')
                 <div class="row">                    
                     <div class="col s12">                        
                         <form action="{{ url('registrasibarang/batal') }}" method="POST" class="right">

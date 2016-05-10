@@ -21,12 +21,12 @@ class RegistrasiController extends MasterController
     public function dashboard(Request $request)
     {   
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
+        if (!($this->isPermitted('registrasibarang'))) return redirect('/');    
     
 		// get permohonan registrasi barang data
         // check the user role
-        if (session('user_sess')->role != 'Manager Fasilitas & Infrastruktur' &&
-            session('user_sess')->role != 'Staf Fasilitas & Infrastruktur') 
+        if (session('user_sess')->Role != 'Manager Fasilitas & Infrastruktur' &&
+            session('user_sess')->Role != 'Staf Fasilitas & Infrastruktur') 
         {
             $registrasi = Permohonan::getRegistrasi(session('user_sess')->npm);                
         } else {
@@ -50,7 +50,7 @@ class RegistrasiController extends MasterController
     public function getCreateRegistrasi(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');    
+        if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');    
 
         // reset the session
         session()->forget('jmlform');
@@ -71,7 +71,7 @@ class RegistrasiController extends MasterController
     public function createRegistrasi(Request $regbarang)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+        if (!($this->isPermitted('registrasibarang'))) return redirect('/');
 
         // get number of form submitted
         $nform = count($regbarang->input('namabarang')); 
@@ -160,7 +160,7 @@ class RegistrasiController extends MasterController
     public function updateRegistrasi(Request $request, $hash = '')
     {
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+        if (!($this->isPermitted('registrasibarang'))) return redirect('/');
         
         // redirect to dashboard if hash is null
         if ($hash == '') return redirect('registrasibarang');

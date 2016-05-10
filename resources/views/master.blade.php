@@ -30,39 +30,38 @@
 		<div id="header" class = 'collapsible-header'>
 	  		<nav>	  			
 	    		<div class="nav-wrapper">
-			     		<a  href="{{ url('/') }}"><img id="logo"class="brand-logo"  src="{{ url('images/logo FIA.png') }}" alt="logo FIA"/>
+			     		<a  href="{{ url('/') }}"><img id="logo"class="brand-logo "  src="{{ url('images/logo FIA.png') }}" alt="logo FIA"/>
 			     				</a>
 
-			     			<a id="title" href="{{ url('/') }}">	
-			     				<h5 id="judultitle"style="color:black;" class="center-align">
-			     					Portal Aplikasi Internal - Sistem Informasi Fasilitas & Infrastruktur FIA
-			     				</h5>
-			     			</a>
-	    					@if ($data['isLoggedIn'])	
+		     			<a id="title" href="{{ url('/') }}">	
+		     				<h5 id="judultitle"style="color:black;" class="left-align">
+		     					Sistem Informasi Fasilitas & Infrastruktur FIA
+		     				</h5>
+		     			</a>
+    					@if ($data['isLoggedIn'])	
 
-		     				<ul id="nav-mobile" class="right">
-	    						<br>
-	    						<li>
-		     						&nbsp;&nbsp;&nbsp;<span class="black-text">{{ $data['user_sess']->Username.' ('.$data['user_sess']->Role.')' }}</span>&nbsp;&nbsp;&nbsp;
-		     					</li>
-		     					
-				     				<form class="btn-out right" action="{{ url('logout') }}" method="POST">
-		       			 				{!! csrf_field() !!}
-		       			 				
-		       			 			 	<button id="logout-button"><i class="tiny material-icons tooltipped teal-text" data-position="left" data-delay="10" data-tooltip="Logout" style="margin-right: 10px; margin-left: 10px;">exit_to_app</i></button>
-		       			 			 	
-		       			 			</form>
-	       			 			
-	       			 		</ul>	
+	     				<ul id="nav-mobile" class="right">
+    						<br>
+    						<li>
+	     						<span class="black-text">{{ $data['user_sess']->Username.' ('.$data['user_sess']->Role.')' }}</span>&nbsp;&nbsp;&nbsp;
+	     					</li>	     					
+		     				<form class="btn-out right" action="{{ url('logout') }}" method="POST">
+       			 				{!! csrf_field() !!}
+       			 				
+       			 			 	<button id="logout-button">
+       			 			 		<i class="tiny material-icons tooltipped teal-text" data-position="left" data-delay="10" data-tooltip="Logout" style="margin-right: 10px; margin-left: 10px;">exit_to_app</i>
+       			 			 	</button>	       			 			 	
+       			 			</form>	       			 			
+       			 		</ul>	
 
-		     				@endif	     				
+	     				@endif	     				
 	    		</div>
 	  		</nav>
 		</div>
 
 	    <!-- Page Layout here -->
 	    <div class="row">	    
-	      	<div id="sidebar"class="col s3"> 
+	      	<div id="sidebar"class="col s2"> 
 		        <div id="sidebar-content" class="collection">	           	
 		         	@if ($data['isLoggedIn'])	 
 		         		@yield('sidebar_menu')	       	    		       	    	
@@ -72,7 +71,7 @@
 						<div class="col s12 center">
 							<h5 class="center">SSO UI Login</h5>
 							<h6 class="center">Login terlebih dahulu dengan akun juita</h6><br>
-							<a href="{{ url('login') }}" class="btn btn-primary">LOGIN</a>						
+							<a href="{{ url('SSO') }}" class="btn btn-primary">LOGIN</a>						
 						</div>
 					</div>
 
@@ -80,7 +79,7 @@
 		        </div>
 		    </div>
 
-	      	<div id="content" class="col s9"> 	
+	      	<div id="content" class="col s10"> 	
 		      	<div class="row">			   		      	
 		          	<div class="section">		    					    				    		
 		    			@yield('konten')

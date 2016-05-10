@@ -18,7 +18,7 @@ class PengadaanController extends MasterController
 	 */
     public function getPengadaan()
     {
-    	$pengadaan = Permohonan::getPengadaan(session('user_sess')->role, session('user_sess')->npm);
+    	$pengadaan = Permohonan::getPengadaan(session('user_sess')->Role, session('user_sess')->NomorInduk);
 
         return $this->render('usulanpengadaan.dashboard',
             [
@@ -90,7 +90,7 @@ class PengadaanController extends MasterController
             'IdPermohonan' => $IdPermohonan,             
             'SubjekPermohonan' => $input['subjek'], 
             'JenisPermohonan' => 3, 
-            'IdPemohon' => session('user_sess')->npm,
+            'IdPemohon' => session('user_sess')->NomorInduk,
             'LinkAnggaran' => $input['linkanggaran'],
             'hashPermohonan' => md5($IdPermohonan.$input['subjek']),
         ]);           
@@ -127,8 +127,8 @@ class PengadaanController extends MasterController
             $IdPermohonan, // Id Permohonan terkait 
             0, // tahap catatan
             $input['catatanpemohon'], // deskripsi catatan dari pemohon
-            session('user_sess')->npm, // nomor induk pemohon
-            md5($IdPermohonan.'0'.session('user_sess')->npm) // hash catatan
+            session('user_sess')->NomorInduk, // nomor induk pemohon
+            md5($IdPermohonan.'0'.session('user_sess')->NomorInduk) // hash catatan
         );
 
         // destroy jmlform session
@@ -271,8 +271,8 @@ class PengadaanController extends MasterController
             $permohonan->IdPermohonan, 
             $tahapCatatan,
             $input['catatan_txtarea'],
-            session('user_sess')->npm,
-            md5($permohonan->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+            session('user_sess')->NomorInduk,
+            md5($permohonan->IdPermohonan.$tahapCatatan.session('user_sess')->NomorInduk)
         );
 
         // redirect to usulan pengadaan page
