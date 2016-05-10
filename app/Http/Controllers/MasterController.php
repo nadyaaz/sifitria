@@ -64,10 +64,10 @@ class MasterController extends Controller
     	// permitted user rules
     	$userrule = [
     		'Manajer Fasilitas & Infrastruktur' =>
-                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'usulanpengadaan'],
+                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'updatemaintenance', 'usulanpengadaan'],
 
     		'Staf Fasilitas & Infrastruktur' =>
-                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'usulanpengadaan'],
+                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'updatemaintenance', 'usulanpengadaan'],
 
     		'Staf PPAA' =>
                 ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
@@ -79,10 +79,13 @@ class MasterController extends Controller
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'usulanpengadaan'],
 
     		'Staf' =>
-                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'updatemaintenance', 'hapusmaintenance'],
+
+            'Staf Pengadaan' =>
+                ['usulanpengadaan', 'updateusulan'],
 
     		'HM' =>
-                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman'],
+                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'updatemaintenance', 'hapusmaintenance'],
 
     		'Mahasiswa' =>
                 ['pinjamruang', 'buatpeminjaman'],

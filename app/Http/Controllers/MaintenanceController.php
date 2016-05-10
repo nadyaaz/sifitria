@@ -12,7 +12,8 @@ use App\Catatan;
 class MaintenanceController extends MasterController
 {
 	/**
-	 * [getMaintenance description]
+	 * GET
+     * Lihat dashboard permohonan maintenance barang
 	 * @return [type] [description]
 	 */
     public function getMaintenance()
@@ -20,7 +21,7 @@ class MaintenanceController extends MasterController
         // check if user permitted        
         if (!($this->isPermitted('maintenancebarang'))) return redirect('/');
 
-    	$maintenance = Permohonan::getMaintenance(session('user_sess')->role, session('user_sess')->npm);
+    	$maintenance = Permohonan::getMaintenance(session('user_sess')->Role, session('user_sess')->NomorInduk);
 
         return $this->render('maintenancebarang.dashboard',
             [
@@ -33,6 +34,7 @@ class MaintenanceController extends MasterController
     }
 
     /**
+     * GET
      * Get buat registrasi page
      * @param  Request $request Request object
      * @return buatregistrasi.blade.php
@@ -40,7 +42,7 @@ class MaintenanceController extends MasterController
     public function getCreateMaintenance(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');
+        if (!($this->isPermitted('buatmaintenance'))) return redirect('maintenancebarang');
         
         $data = [
             'title' => 'Buat Permohonan Maintenance Barang',
@@ -69,12 +71,16 @@ class MaintenanceController extends MasterController
     }
 
     /**
-     * [createMaintenance description]
+     * POST
+     * Buat permohonan maintenance barang
      * @param  Request $request [description]
      * @return [type]           [description]
      */
     public function createMaintenance(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatmaintenance'))) return redirect('maintenancebarang');
+
     	// Memvalidasi isian form registrasi barang
         $this->validate ($request, [
             'subjek'=> 'required|max:100',
@@ -117,14 +123,15 @@ class MaintenanceController extends MasterController
     }
 
     /**
-     * [updateMaintenance description]
+     * GET, POST
+     * Update permohonan maintenance barang
      * @param  Request $request [description]
      * @return [type]           [description]
      */
     public function updateMaintenance(Request $request, $hash = '')
-    {
+    {        
     	// check if user permitted        
-        // if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+        if (!($this->isPermitted('updatemaintenance'))) return redirect('maintenancebarang');
         
         // redirect to dashboard if hash is null
         if ($hash == '') return redirect('maintenancebarang');
@@ -186,8 +193,17 @@ class MaintenanceController extends MasterController
         }   
     }
 
+    /**
+     * POST
+     * Update status permohonan maintenance barang
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function updateStatusMaintenance(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('updatemaintenance'))) return redirect('maintenancebarang');
+
         // validate request
         $this->validate($request, [
             'nomorsurat' => 'required',
@@ -205,7 +221,6 @@ class MaintenanceController extends MasterController
         $lastStatus = Master::getLastId('permohonan', 'StatusPermohonan', [
             ['hashPermohonan', '=', $input['hashPermohonan']]
         ]);
-
 
         // check update, TOLAK / SETUJU
         if (array_key_exists('setuju', $input))
@@ -258,12 +273,16 @@ class MaintenanceController extends MasterController
     }
 
     /**
-     * [removeMaintenance description]
+     * POST
+     * Remove permohonan maintenance barang
      * @param  Request $request [description]
      * @return [type]           [description]
      */
     public function removeMaintenance(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('hapusmaintenance'))) return redirect('maintenancebarang');
+
     	// ganti status peminjaman pada database        
         Permohonan::deletePermohonan($request->input('hashPermohonan'));
         
