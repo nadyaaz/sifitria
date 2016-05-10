@@ -10,7 +10,10 @@
 	    <link rel="stylesheet" href="{{ url('css/materialize.min.css') }}" />
 	    <link rel="stylesheet" href="{{ url('css/fullcalendar.min.css') }}" media="screen,projection"/>	    
 	    <link rel="stylesheet" href="{{ url('css/master-css.css') }}" media="screen,projection"/>	    
-	    <link rel="stylesheet" href="{{ url('css/materialdesign-fc.css') }}" media="screen,projection"/>	    
+	    <link rel="stylesheet" href="{{ url('css/materialdesign-fc.css') }}" media="screen,projection"/>
+
+	    <!-- Favicon -->
+	    <link rel="shortcut icon" type="image/png" href="{{ url('favicon.ico') }}"/>
 	
 		<!-- implement csrf token for AJAX calling -->		
 		<meta name="_token" content="{!! csrf_token() !!}"/>
