@@ -33,22 +33,26 @@
                         @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
                             {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}    
                         @endif
+
                     @elseif($data['allpermohonan'][$i] -> TahapPermohonan === 2)
                        
                         @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
                             {{'Ditolak oleh Manajer Fasilitas & Infrastruktur'}}
                         @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
-                            {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}
+                            {{'Disetujui oleh Manajer Fasilitas & Infrastruktur'}}
                         @endif
+
                     @elseif($data['allpermohonan'][$i] -> TahapPermohonan ===3)
                         
                         
                         @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
-                            {{'Ditolak oleh Wakil Dekan'}} 
+                            {{'Ditolak oleh Wakil Dekan 2'}} 
                         @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
-                            {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}    
+                            {{'Disetujui oleh Wakil Dekan 2'}}    
                         @endif
+
                     @elseif($data['allpermohonan'][$i] -> TahapPermohonan === 4)
+
                         @if($data['allpermohonan'][$i]->StatusPermohonan === 1)
                             {{'Dalam Proses Seleksi Vendor'}}
                         @elseif ($data['allpermohonan'][$i]->StatusPermohonan === 2 )
@@ -58,6 +62,7 @@
                         @elseif($data['allpermohonan'][$i]->StatusPermohonan === 4 )
                             {{'Pengadaan Selesai'}}
                         @endif
+
                     @endif
                     
                 </div>

@@ -23,6 +23,7 @@
                 <div class="col s5" style="word-wrap: normal">{{ $data['allregistrasi'][$i]->SubjekPermohonan }}</div>                                          			
                 <div class="col s3">
                 	@if($data['allregistrasi'][$i]->TahapPermohonan == 1)
+
                 		@if($data['allregistrasi'][$i]->StatusPermohonan == 0 )
                 			{{'Ditinjau ke Lapangan'}}
                 		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 1 )
@@ -30,12 +31,15 @@
                 		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
             				{{'Sudah diverifikasi Staf'}}
             			@endif
+
             		@elseif($data['allregistrasi'][$i]->TahapPermohonan == 2)
+
             			@if($data['allregistrasi'][$i]->StatusPermohonan == 1 )
                 			{{'Ditolak'}}
                 		@elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
                 			{{'Diterima'}}
             			@endif
+
             		@endif
                 </div>
                 <div class="col s3">{{ $data['allregistrasi'][$i]->Nama }}</div>                   
@@ -199,15 +203,5 @@
     </ul>
 </div>
 
-<script>
-    $(document).ready(function(){
-        $('.modal-trigger').leanModal({
-            dismissible: true, 
-            opacity: .3, 
-            in_duration: 148, 
-            out_duration: 148,
-        });
-    });
-</script>
 @stop
 <!-- stop section konten -->

@@ -50,8 +50,8 @@ class MaintenanceController extends MasterController
         ];
 
         if ($request->isMethod('POST')) {
-            $barang = Barang::where([['NomorBarcode', $request->input('barcode')]])->get();
-
+            $barang = Barang::where([['NomorBarcode', $request->input('barcode')]])->first();
+            
             // jika barang tidak ada, barcode barang salah
             if (count($barang) == 0) {
                 $request->session()->flash('error_get_barang', 'Barang dengan barcode'.$request->input('barcode').' tidak ditemukan');
@@ -59,7 +59,7 @@ class MaintenanceController extends MasterController
             }
 
             // jika barang sudah dimohonkan maintenance nya, tidak bisa dimohonkan lagi
-            if ($barang->IdPermohonan != null) {
+            if ($barang->IdPermohonan == null) {
                 $request->session()->flash('error_get_barang', 'Barang dengan barcode'.$request->input('barcode').' sudah dimohonkan untuk maintenance');
                 return redirect('maintenancebarang/buat');
             }
@@ -284,7 +284,7 @@ class MaintenanceController extends MasterController
         if (!($this->isPermitted('hapusmaintenance'))) return redirect('maintenancebarang');
 
     	// ganti status peminjaman pada database        
-        Permohonan::deletePermohonan($request->input('hashPermohonan'));
+        Permohonan::removePermohonan($request->input('hashPermohonan'));
         
         // redirect to registrasi barang dashboard
         return redirect('maintenancebarang');

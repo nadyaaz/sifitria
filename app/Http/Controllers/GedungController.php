@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Gedung;
+use App\Permohonan;
+use App\Jadwal;
+use App\Ruangan;
 use App\Master;
 use Validator;
 use DB;
@@ -20,7 +23,7 @@ class GedungController extends MasterController
     public function getGedung()
     {
         // check if user permitted        
-        // if (!($this->isPermitted('gedung'))) return redirect('/');        
+        if (!($this->isPermitted('gedung'))) return redirect('/');        
 		
 		// get gedung object from database
 		$allgedung = Gedung::getAllGedung();
@@ -43,7 +46,7 @@ class GedungController extends MasterController
     public function createGedung(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+        if (!($this->isPermitted('buatgedung'))) return redirect('pinjamruang/gedung');  
 
         if ($request->isMethod('POST')) {
             // request method is post
@@ -91,7 +94,7 @@ class GedungController extends MasterController
     public function updateGedung(Request $request, $hash = '')
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+        if (!($this->isPermitted('buatgedung'))) return redirect('pinjamruang/gedung');  
         
         // check if hash parameter is empty
         if($hash == '') return redirect('pinjamruang/gedung');
@@ -135,10 +138,30 @@ class GedungController extends MasterController
     public function removeGedung(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('gedung'))) return redirect('/');  
+        if (!($this->isPermitted('updategedung'))) return redirect('pinjamruang/gedung');  
 
     	// set gedung to deleted
     	Gedung::removeGedung($request->input('hash'));
+
+        $gedung = Gedung::where('hash', $request->input('hash'))->first();
+        $IdGedung = $gedung->IdGedung;
+
+        // delete all permohonan, ruangan, and jadwal associated with removed gedung
+        $permohonan_associated = Permohonan::where('IdGedung', $IdGedung)->get();
+        $jadwal_associated = Jadwal::where('IdGedung', $IdGedung)->get();
+        $ruangan_associated = Ruangan::where('IdGed', $IdGedung)->get();
+
+        foreach($permohonan_associated as $permohonan) {
+            Permohonan::removePermohonan($permohonan->hashPermohonan);
+        }
+
+        foreach ($jadwal_associated  as $jadwal) {
+            Jadwal::removeJadwal($jadwal->hashJadwal);
+        }
+
+        foreach($ruangan_associated as $ruangan) {
+            Ruangan::removeRuangan($ruangan->hashRuang);
+        }
 
     	// return to gedung list
     	return redirect('pinjamruang/gedung');

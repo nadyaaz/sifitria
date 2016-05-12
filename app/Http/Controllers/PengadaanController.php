@@ -287,7 +287,7 @@ class PengadaanController extends MasterController
     public function removePengadaan(Request $request)
     {
         // ganti status peminjaman pada database        
-         Permohonan::deletePermohonan($request->input('hashPermohonan'));
+         Permohonan::removePermohonan($request->input('hashPermohonan'));
         
         // redirect to registrasi barang dashboard
         return redirect('usulanpengadaan');

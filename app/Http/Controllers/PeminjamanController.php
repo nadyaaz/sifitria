@@ -25,12 +25,12 @@ class PeminjamanController extends MasterController
 
 		// get permohonan peminjaman ruangan data
         // check the user role
-        if (session('user_sess')->role == 'Staf PPAA' ||
-            session('user_sess')->role == 'Staf Sekretariat') 
+        if (session('user_sess')->Role == 'Staf PPAA' ||
+            session('user_sess')->Role == 'Staf Sekretariat') 
         {
-            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role);
+            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->Role);
         } else {
-            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->role, session('user_sess')->npm);
+            $peminjaman = Permohonan::getPeminjaman(session('user_sess')->Role, session('user_sess')->NomorInduk);
         }
 
 		// render peminjaman ruangan dashboard
@@ -321,7 +321,7 @@ class PeminjamanController extends MasterController
     public function removePeminjaman(Request $request)
     {
         // ganti value delete peminjaman pada database
-        Permohonan::deletePermohonan($request->input('hashPermohonan'));
+        Permohonan::removePermohonan($request->input('hashPermohonan'));
         
         // redirect back to peminjaman dashboard
         return redirect('pinjamruang');

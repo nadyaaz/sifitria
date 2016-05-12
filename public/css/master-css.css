@@ -9,6 +9,10 @@
 	background-color: #4a148c;
 }
 
+.btn:hover {
+	background-color: #9c27b0;
+}
+
 .tabs .tab a {
 	color: #4a148c !important;	
 }

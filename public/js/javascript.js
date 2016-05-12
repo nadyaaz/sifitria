@@ -15,6 +15,7 @@ $(document).ready(
 	 	$('.pilihtanggalpinjam').pickadate({	
 			min:6,
 			editable:false,
+			formatSubmit: 'yyyy-mm-dd',
 			today: ''
 		});
 
@@ -22,6 +23,11 @@ $(document).ready(
 	 	$('select').material_select();
 
 	 	// initialize modal
-	 	$('.modal-trigger').leanModal();
+	 	$('.modal-trigger').leanModal({
+            dismissible: true, 
+            opacity: .3, 
+            in_duration: 148, 
+            out_duration: 148,
+        });
 	}
 );

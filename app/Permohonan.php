@@ -138,27 +138,31 @@ class Permohonan extends Model
     public static function getPengadaan($role, $nomorinduk='')
     {
         $query =
-           'SELECT DISTINCT * 
-           FROM  permohonan p, users u 
-           WHERE 
+            'SELECT DISTINCT * 
+            FROM  permohonan p, users u 
+            WHERE 
                 p.JenisPermohonan = 3 AND 
-                p.IdPemohon = u.NomorInduk';
+                p.IdPemohon = u.NomorInduk AND
+                p.deleted = 0';
 
-         //seems not working :( and ended up doing the same in blade
-
-
-        if ($role == 'Staf Fasilitas & Infrastruktur') {
-            // staf PPAA only see jenis ruangan Kelas
+        if ($role == 'Staf Fasilitas & Infrastruktur') 
+        {        
             $query .=  ' AND p.TahapPermohonan=1 AND p.StatusPermohonan>=0' ;
-        } else if ($role == 'Manajer Fasilitas & Infrastruktur') {
-            // staf sekertariat can see all ruangan except Kelas
+        } 
+        else if ($role == 'Manajer Fasilitas & Infrastruktur') 
+        {
             $query .= ' AND ((p.TahapPermohonan=1 AND p.StatusPermohonan=2) OR p.TahapPermohonan=2)' ;  
-        } else if ($role == 'Wakil Dekan'){
-            // Staf Pengadaan
+        } 
+        else if ($role == 'Wakil Dekan 2')
+        {
             $query .= ' AND ((p.TahapPermohonan=2 AND p.StatusPermohonan=2) OR p.TahapPermohonan=3)';
-        } else if($role =='Staf Pengadaan'){
+        } 
+        else if($role =='Staf Pengadaan')
+        {
             $query .= ' AND ((p.TahapPermohonan=3 AND p.StatusPermohonan=2) OR p.TahapPermohonan=4)';
-        } else {
+        } 
+        else 
+        {
             // if user != manajer peminjaman get only his/her permohonan
             if($nomorinduk != '') $query .= ' AND IdPemohon = "'.$nomorinduk.'"';  
         }
@@ -272,7 +276,7 @@ class Permohonan extends Model
      * @param  String $hash Hash value of permohonan
      * @return void
      */
-	public static function deletePermohonan($hash) 
+	public static function removePermohonan($hash) 
     {
 		// set deleted status permohonan given the hash    
         DB::table('permohonan')->where('hashPermohonan', $hash)->update(['deleted' => 1]);

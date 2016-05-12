@@ -74,7 +74,7 @@
 						<div class="col s12 center">
 							<h5 class="center">SSO UI Login</h5>
 							<h6 class="center">Login terlebih dahulu dengan akun juita</h6><br>
-							<a href="{{ url('SSO') }}" class="btn btn-primary">LOGIN</a>						
+							<a href="{{ url('login') }}" class="btn btn-primary">LOGIN</a>						
 						</div>
 					</div>
 

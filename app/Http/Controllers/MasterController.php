@@ -73,10 +73,10 @@ class MasterController extends Controller
                 ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'updatemaintenance', 'usulanpengadaan'],
 
     		'Staf PPAA' =>
-                ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+                ['pinjamruang', 'buatpinjam', 'updatepinjam', 'ruangan', 'buatruangan', 'updateruangan', 'jadwal', 'buatjadwal', 'hapusjadwal', 'gedung', 'buatgedung', 'updategedung'],
 
     		'Staf Sekretariat' =>
-                ['pinjamruang', 'buatpinjam', 'ruangan', 'buatruangan', 'jadwal', 'buatjadwal', 'gedung', 'buatgedung'],
+                ['pinjamruang', 'buatpinjam', 'updatepinjam', 'ruangan', 'buatruangan', 'updateruangan', 'jadwal', 'buatjadwal', 'hapusjadwal', 'gedung', 'buatgedung', 'updategedung'],
 
             'Wakil Dekan 2' =>
                 ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'usulanpengadaan'],
@@ -88,10 +88,10 @@ class MasterController extends Controller
                 ['usulanpengadaan', 'updateusulan'],
 
     		'HM' =>
-                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'updatemaintenance', 'hapusmaintenance'],
+                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'buatmaintenance', 'updatemaintenance', 'hapusmaintenance'],
 
     		'Mahasiswa' =>
-                ['pinjamruang', 'buatpeminjaman'],
+                ['pinjamruang', 'buatpeminjaman', 'updatepinjam'],
     	];
 
     	// get user type

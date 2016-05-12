@@ -38,15 +38,15 @@
                         @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
                             {{'Ditolak oleh Manajer Fasilitas & Infrastruktur'}}
                         @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
-                            {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}
+                            {{'Disetujui oleh Manajer Fasilitas & Infrastruktur'}}
                         @endif
 
                     @elseif($data['allpermohonan'][$i] -> TahapPermohonan ===3)
                                     
                         @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
-                            {{'Ditolak oleh Wakil Dekan'}} 
+                            {{'Ditolak oleh Wakil Dekan 2'}} 
                         @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
-                            {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}    
+                            {{'Disetujui oleh Wakil Dekan 2'}}    
                         @endif
 
                     @endif
@@ -61,7 +61,7 @@
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-title">
-                                    Detail Surat
+                                    Detail Permohonan
                                 </div>
 
                                 <div class="row">
@@ -83,7 +83,54 @@
                                         <b>Waktu Permohonan:</b><br>
                                         {{ date('j F Y, H:i', strtotime($data['allpermohonan'][$i]->created_at)) }}
                                     </div>
-                                </div>                        
+
+                                    <div class="col s4">
+                                        <b>Pemohon:</b><br>
+                                        {{ $data['allpermohonan'][$i]->Nama }}
+                                    </div>
+                                </div>   
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <b>Subjek Permohonan</b><br>                                        
+                                        {{ $data['allpermohonan'][$i]->SubjekPermohonan }}
+                                    </div>                                    
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <b>Status Permohonan</b><br>                                        
+                                        
+                                        @if($data['allpermohonan'][$i] -> TahapPermohonan === 1)
+                                    
+                                            @if($data['allpermohonan'][$i] -> StatusPermohonan === 0)
+                                                {{ 'Ditinjau ke lapangan' }}
+                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                                                {{'Ditolak oleh Staf Fasilitas & Infrastruktur'}} 
+                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                                                {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}    
+                                            @endif
+
+                                        @elseif($data['allpermohonan'][$i] -> TahapPermohonan === 2)
+                                                       
+                                            @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                                                {{'Ditolak oleh Manajer Fasilitas & Infrastruktur'}}
+                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                                                {{'Disetujui oleh Manajer Fasilitas & Infrastruktur'}}
+                                            @endif
+
+                                        @elseif($data['allpermohonan'][$i] -> TahapPermohonan ===3)
+                                                        
+                                            @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                                                {{'Ditolak oleh Wakil Dekan 2'}} 
+                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                                                {{'Disetujui oleh Wakil Dekan 2'}}    
+                                            @endif
+
+                                        @endif
+
+                                    </div>
+                                </div>
                             </div>
                         </div>                        
                     </div>
@@ -152,15 +199,15 @@
 
                                 <div class="row">
                                     <div class="col s4">
-                                        <b>Kuantitas :</b><br>
-                                        {{$barang->Kuantitas}}
-
-                                    </div>
-                                    <div class="col s4">
                                         <b>Keterangan :</b><br>
                                         <span class="wrap-text">
                                             {{$barang->KeteranganBarang}}
                                         </span>
+                                    </div>
+                                    <div class="col s4">
+                                        <b>Kerusakan Barang :</b><br>
+                                        {{$barang->KerusakanBarang}}
+
                                     </div>
                                 </div>
 

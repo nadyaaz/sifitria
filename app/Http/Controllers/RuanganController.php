@@ -16,7 +16,7 @@ class RuanganController extends MasterController
     {
         if(!$request->isMethod('POST')) {
             // check if user permitted        
-            // if (!($this->isPermitted('ruangan'))) return redirect('/');
+            if (!($this->isPermitted('ruangan'))) return redirect('/');
 
             // get list gedung dan ruangan pada database
             $allgedung = Gedung::getAllGedung();
@@ -32,7 +32,7 @@ class RuanganController extends MasterController
         	);
         } else {
             // check if user permitted        
-            // if (!($this->isPermitted('ruarngan'))) return redirect('/');
+            if (!($this->isPermitted('ruangan'))) return redirect('/');
 
             // get ruangan selected
             $ruangan = Ruangan::where('hashRuang', $request->input('hash'))->get();
@@ -48,7 +48,7 @@ class RuanganController extends MasterController
     public function getCreateRuangan()
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        if (!($this->isPermitted('buatruangan'))) return redirect('pinjamruang/ruangan');
 
         // get all gedung object
         $allgedung = Gedung::getAllGedung();
@@ -65,7 +65,7 @@ class RuanganController extends MasterController
     public function updateRuangan(Request $request, $hashRuang ='')
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        if (!($this->isPermitted('updateruangan'))) return redirect('pinjamruang/ruangan');
 
         if ($hashRuang == '') return redirect('pinjamruang/ruangan');
 
@@ -118,7 +118,7 @@ class RuanganController extends MasterController
     public function createRuangan(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        if (!($this->isPermitted('buatruangan'))) return redirect('/');
 
         $this->validate($request,
             [
@@ -160,7 +160,7 @@ class RuanganController extends MasterController
     public function removeRuangan(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        if (!($this->isPermitted('updateruangan'))) return redirect('/');
 
         // set ruangan to deleted
         Ruangan::removeRuangan($request->input('hash'));

@@ -41,7 +41,7 @@
                 <div class = "row">
                     <div class="col s6">
                         
-                        @if ($data['user_sess']->role == 'Staf PPAA' || $data['user_sess']->role == 'Staf Sekretariat')
+                        @if ($data['user_sess']->Role == 'Staf PPAA' || $data['user_sess']->Role == 'Staf Sekretariat')
 
                             @if ($peminjaman->NomorSurat != null)                            
                             <b>Nomor Surat:</b><br>
@@ -107,7 +107,7 @@
                 @endforeach
                 <hr>
                 <div class="row"> 
-                    @if ($data['user_sess']->role == 'Staf PPAA' || $data['user_sess']->role == 'Staf Sekretariat')
+                    @if ($data['user_sess']->Role == 'Staf PPAA' || $data['user_sess']->Role == 'Staf Sekretariat')
                     
                     @if ($peminjaman->StatusPermohonan == 0)
                     <form action="{{ url('pinjamruang/ubah') }}" method="POST">
@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="row">
-                    @if (!($data['user_sess']->role == 'Staf PPAA') && !($data['user_sess']->role == 'Staf Sekretariat'))
+                    @if (!($data['user_sess']->Role == 'Staf PPAA') && !($data['user_sess']->Role == 'Staf Sekretariat'))
 
                     @if($peminjaman->StatusPermohonan == 0)
                     <div class="col s1 right">                        
