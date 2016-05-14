@@ -47,22 +47,22 @@
             <div class="row form-row">
             	<div class="col s6">
             		Nama Barang :<br>
-            		{{ $data['barang'][0]->NamaBarang }}
+            		{{ $data['barang']->NamaBarang }}
             	</div>
 
             </div>
           			<div class="row form-row">
                     	<div class="col s4 input-field">
                     		Jenis Barang :<br>
-                    		{{ $data['barang'][0]->JenisBarang }}
+                    		{{ $data['barang']->JenisBarang }}
                     	</div>
                     	<div class="col s4 input-field">
                     		Kategori Barang : <br>
-                    		{{ $data['barang'][0]->KategoriBarang }}    
+                    		{{ $data['barang']->KategoriBarang }}    
                     	</div>
                     	<div class="col s4 input-field">
                     		Kondisi Barang :<br>
-                    		{{ $data['barang'][0]->KondisiBarang }}
+                    		{{ $data['barang']->KondisiBarang }}
                     	</div>
                     </div>
             <div class="row form-row">
@@ -76,7 +76,7 @@
                 <div class="col s4 offset-s4 valign-wrapper">
                     <div class="valign">    
                         {!! csrf_field() !!}
-                        <input type="hidden" name="hashBarang" value="{{ $data['barang']['0']->hashBarang}}">
+                        <input type="hidden" name="hashBarang" value="{{ $data['barang']->hashBarang}}">
                         <button class="btn waves-light waves-effect teal">
                             Submit Permohonan
                             <i class="material-icons right">send</i>

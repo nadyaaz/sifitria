@@ -47,18 +47,7 @@
                         <tr>
                             <td>{{$ruangan->NomorRuangan}}</td>
                             <td>{{$ruangan->JenisRuangan}}</td>
-                            <td>{{$ruangan->KapasitasRuangan}}</td>
-                            <td></td>
-                            <td>
-                                <!-- <form action="{{ url('pinjamruang/ruangan') }}" method="POST">                                   
-                                    {!! csrf_field() !!}
-                                    <input type="hidden" name="hash" value="{{$ruangan->hashRuang}}">
-                                    <button class="btn teal waves-light waves-effect tooltipped" data-position="top" data-delay="10" data-tooltip="UBAH">
-                                        UBAH
-                                        <i class="material-icons right">edit</i>
-                                    </button>
-                                </form>      -->
-                            </td>
+                            <td>{{$ruangan->KapasitasRuangan}}</td>                                                    
                             <td>
                                 <form action="{{ url('pinjamruang/ruangan/hapus') }}" method="POST">                                 
                                     {!! csrf_field() !!}
@@ -67,7 +56,7 @@
                                         UBAH
                                         <i class="material-icons left">edit</i>
                                     </a>
-                                    <button class="btn-flat waves-light waves-effect grey-text tooltipped" data-position="right" data-delay="10" data-tooltip="HAPUS">
+                                    <button class="btn-flat waves-light waves-effect grey-text tooltipped" data-position="right" data-delay="10" data-tooltip="HAPUS" onclick="return confirm('Anda yakin ingin menghapus ruangan ini? Jadwal dan permohonan yang berasosiasi dengan ruangan ini juga akan dihapus.')">
                                         HAPUS
                                         <i class="material-icons grey-text left">delete</i>
                                     </button>

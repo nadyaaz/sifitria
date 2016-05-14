@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\KandidatBarang;
+use App\Barang;
 
 class Permohonan extends Model
 {   
@@ -228,8 +230,7 @@ class Permohonan extends Model
         }
 
         $allpermohonan = DB::select(DB::raw($query));
-
-        $allbarang = Barang::whereNotNull('IdPermohonan')->get();
+        $allbarang = Barang::all();
 
         // get list catatan
         $allcatatan = DB ::select(DB::raw(

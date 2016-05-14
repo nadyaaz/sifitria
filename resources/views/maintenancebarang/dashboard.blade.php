@@ -15,37 +15,37 @@
 
     <ul class="collapsible" data-collapsible="accordion">
         
-        @for($i=0; $i < count($data['allpermohonan']); $i++)
+        @foreach($data['allpermohonan'] as $permohonan)
         <li>
             <div class="collapsible-header active">
 
-                <div class="col s1">{{ $data['allpermohonan'][$i] ->IdPermohonan}}</div>
-                <div class="col s5">{{ $data['allpermohonan'][$i] ->SubjekPermohonan }}</div>            
+                <div class="col s1">{{ $permohonan ->IdPermohonan}}</div>
+                <div class="col s5">{{ $permohonan ->SubjekPermohonan }}</div>            
                 <div class="col s6">
 
-                    @if($data['allpermohonan'][$i] -> TahapPermohonan === 1)
+                    @if($permohonan -> TahapPermohonan === 1)
                                     
-                        @if($data['allpermohonan'][$i] -> StatusPermohonan === 0)
+                        @if($permohonan -> StatusPermohonan === 0)
                             {{ 'Ditinjau ke lapangan' }}
-                        @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                        @elseif($permohonan -> StatusPermohonan === 1)
                             {{'Ditolak oleh Staf Fasilitas & Infrastruktur'}} 
-                        @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                        @elseif($permohonan -> StatusPermohonan === 2)
                             {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}    
                         @endif
 
-                    @elseif($data['allpermohonan'][$i] -> TahapPermohonan === 2)
+                    @elseif($permohonan -> TahapPermohonan === 2)
                                    
-                        @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                        @if($permohonan -> StatusPermohonan === 1)
                             {{'Ditolak oleh Manajer Fasilitas & Infrastruktur'}}
-                        @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                        @elseif($permohonan -> StatusPermohonan === 2)
                             {{'Disetujui oleh Manajer Fasilitas & Infrastruktur'}}
                         @endif
 
-                    @elseif($data['allpermohonan'][$i] -> TahapPermohonan ===3)
+                    @elseif($permohonan -> TahapPermohonan ===3)
                                     
-                        @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                        @if($permohonan -> StatusPermohonan === 1)
                             {{'Ditolak oleh Wakil Dekan 2'}} 
-                        @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                        @elseif($permohonan -> StatusPermohonan === 2)
                             {{'Disetujui oleh Wakil Dekan 2'}}    
                         @endif
 
@@ -66,10 +66,10 @@
 
                                 <div class="row">
                                     <div class="col s4">
-                                        @if ($data['allpermohonan'][$i]->NomorSurat != null)
+                                        @if ($permohonan->NomorSurat != null)
 
                                         <b>Nomor Surat:</b><br>
-                                        {{ $data['allpermohonan'][$i]->NomorSurat }}
+                                        {{ $permohonan->NomorSurat }}
 
                                         @else
 
@@ -81,19 +81,19 @@
 
                                     <div class="col s4">
                                         <b>Waktu Permohonan:</b><br>
-                                        {{ date('j F Y, H:i', strtotime($data['allpermohonan'][$i]->created_at)) }}
+                                        {{ date('j F Y, H:i', strtotime($permohonan->created_at)) }}
                                     </div>
 
                                     <div class="col s4">
                                         <b>Pemohon:</b><br>
-                                        {{ $data['allpermohonan'][$i]->Nama }}
+                                        {{ $permohonan->Nama }}
                                     </div>
                                 </div>   
 
                                 <div class="row">
                                     <div class="col s12">
                                         <b>Subjek Permohonan</b><br>                                        
-                                        {{ $data['allpermohonan'][$i]->SubjekPermohonan }}
+                                        {{ $permohonan->SubjekPermohonan }}
                                     </div>                                    
                                 </div>
 
@@ -101,29 +101,29 @@
                                     <div class="col s12">
                                         <b>Status Permohonan</b><br>                                        
                                         
-                                        @if($data['allpermohonan'][$i] -> TahapPermohonan === 1)
+                                        @if($permohonan -> TahapPermohonan === 1)
                                     
-                                            @if($data['allpermohonan'][$i] -> StatusPermohonan === 0)
+                                            @if($permohonan -> StatusPermohonan === 0)
                                                 {{ 'Ditinjau ke lapangan' }}
-                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                                            @elseif($permohonan -> StatusPermohonan === 1)
                                                 {{'Ditolak oleh Staf Fasilitas & Infrastruktur'}} 
-                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                                            @elseif($permohonan -> StatusPermohonan === 2)
                                                 {{'Disetujui oleh Staf Fasilitas & Infrastruktur'}}    
                                             @endif
 
-                                        @elseif($data['allpermohonan'][$i] -> TahapPermohonan === 2)
+                                        @elseif($permohonan -> TahapPermohonan === 2)
                                                        
-                                            @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                                            @if($permohonan -> StatusPermohonan === 1)
                                                 {{'Ditolak oleh Manajer Fasilitas & Infrastruktur'}}
-                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                                            @elseif($permohonan -> StatusPermohonan === 2)
                                                 {{'Disetujui oleh Manajer Fasilitas & Infrastruktur'}}
                                             @endif
 
-                                        @elseif($data['allpermohonan'][$i] -> TahapPermohonan ===3)
+                                        @elseif($permohonan -> TahapPermohonan ===3)
                                                         
-                                            @if($data['allpermohonan'][$i] -> StatusPermohonan === 1)
+                                            @if($permohonan -> StatusPermohonan === 1)
                                                 {{'Ditolak oleh Wakil Dekan 2'}} 
-                                            @elseif($data['allpermohonan'][$i] -> StatusPermohonan === 2)
+                                            @elseif($permohonan -> StatusPermohonan === 2)
                                                 {{'Disetujui oleh Wakil Dekan 2'}}    
                                             @endif
 
@@ -140,7 +140,7 @@
                 <div class="row">
                     @foreach($data['allbarang'] as $barang)
 
-                    @if($barang->IdPermohonan == $data['allpermohonan'][$i]->IdPermohonan)
+                    @if($permohonan->IdBarang == $barang->IdBarang)
                     
                     <div class="col s12">
                         <div class="card">                            
@@ -233,7 +233,7 @@
                                     <li class="collection-item">
                                         @foreach($data['allcatatan'] as $catatan)
                                             
-                                        @if($catatan->IdPermohonan == $data['allpermohonan'][$i]->IdPermohonan)
+                                        @if($catatan->IdPermohonan == $permohonan->IdPermohonan)
 
                                         <b>Catatan {{ $catatan->Role }}:</b><br>
                                         <i>Oleh {{ $catatan->Nama }}</i><br>
@@ -256,7 +256,7 @@
                         <div class="card">
                             <form action="{{ url('maintenancebarang/ubahstatus') }}" method="POST">
                                 {!! csrf_field() !!}
-                                <input type="hidden" name="hashPermohonan" value="{{ $data['allpermohonan'][$i]->hashPermohonan }}">
+                                <input type="hidden" name="hashPermohonan" value="{{ $permohonan->hashPermohonan }}">
 
                                 <div class="card-content">
                                     <div class="card-title">
@@ -266,12 +266,12 @@
                                     <div class="row">
                                         <div class="col s12">
                                             @if (
-                                                ($data['allpermohonan'][$i]->TahapPermohonan == 1 && $data['allpermohonan'][$i] -> StatusPermohonan== 0) ||
-                                                ($data['allpermohonan'][$i]->TahapPermohonan == 1 && $data['allpermohonan'][$i] -> StatusPermohonan== 2) ||
-                                                ($data['allpermohonan'][$i]->TahapPermohonan == 2 && $data['allpermohonan'][$i] -> StatusPermohonan== 2) 
+                                                ($permohonan->TahapPermohonan == 1 && $permohonan -> StatusPermohonan== 0) ||
+                                                ($permohonan->TahapPermohonan == 1 && $permohonan -> StatusPermohonan== 2) ||
+                                                ($permohonan->TahapPermohonan == 2 && $permohonan -> StatusPermohonan== 2) 
                                             )
                                             
-                                            @if ($data['allpermohonan'][$i]->NomorSurat == null)
+                                            @if ($permohonan->NomorSurat == null)
 
                                             Nomor Surat <br>
                                             <input type="text" name="nomorsurat" required/><br>
@@ -303,14 +303,14 @@
                 @if ($data['user_sess']->Role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Wakil Dekan')
                 <div class="row">                    
                     <div class="col s12">
-                        <form action="" method="POST" class="right">
+                        <form action="{{ url('maintenancebarang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $data['allpermohonan'][$i]->hashPermohonan }}"/>                            
-                            <a href="{{ url('maintenancebarang/ubah/'.$data['allpermohonan'][$i]->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
+                            <input type="hidden" name="hashPermohonan" value="{{ $permohonan->hashPermohonan }}"/>                            
+                            <a href="{{ url('maintenancebarang/ubah/'.$permohonan->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
                                 UBAH
                                 <i class="material-icons right">edit</i>
                             </a>
-                            <button class="btn waves-effect waves-light red white-text">                                
+                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan maintenance barang ini?')">
                                 <i class="material-icons">delete</i>
                             </button>
                         </form> 
@@ -319,7 +319,7 @@
                 @endif
             </div>
         </li>
-        @endfor
+        @endforeach
     </ul>
 </div>
 @stop

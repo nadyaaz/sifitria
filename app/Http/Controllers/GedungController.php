@@ -23,7 +23,7 @@ class GedungController extends MasterController
     public function getGedung()
     {
         // check if user permitted        
-        if (!($this->isPermitted('gedung'))) return redirect('/');        
+        if (!($this->isPermitted('gedung'))) return redirect('pinjamruang');        
 		
 		// get gedung object from database
 		$allgedung = Gedung::getAllGedung();
@@ -56,6 +56,16 @@ class GedungController extends MasterController
                 'namagedung' => 'required|max:25'
             ]);
 
+            $allgedung = Gedung::getAllGedung();
+
+            // check if NamaGedung is exist
+            foreach($allgedung as $gedung) {
+                if (strtolower($gedung->NamaGedung) == strtolower($request->input('namagedung'))) {
+                    $request->session()->flash('error_gedung', 'Nama gedung sudah ada. Silakan ganti dengan nama lain.');
+                    return back();
+                }
+            }
+
             // get last ID Gedung           
             $lastId = Master::getLastId('gedung', 'IdGedung');       
             $IdGedung = $lastId + 1;
@@ -75,6 +85,9 @@ class GedungController extends MasterController
         } else {
             // request method is get
             
+            // check if user permitted        
+            if (!($this->isPermitted('buatgedung'))) return redirect('pinjamruang/gedung');
+
             // render buatgedung page
             return $this->render('pinjamruang.buatgedung',
                 [
@@ -106,7 +119,17 @@ class GedungController extends MasterController
             // form validation
             $this->validate($request, [
                 'namagedung' => 'required|max:25'
-            ]);     
+            ]);  
+
+            $allgedung = Gedung::getAllGedung();
+
+            // check if NamaGedung is exist
+            foreach($allgedung as $gedung) {
+                if (strtolower($gedung->NamaGedung) == strtolower($request->input('namagedung'))) {
+                    $request->session()->flash('error_gedung', 'Nama gedung sudah ada. Silakan ganti dengan nama lain.');
+                    return back();
+                }
+            }   
 
             // input data to database
             Gedung::updateGedung($hash, [         
@@ -118,6 +141,12 @@ class GedungController extends MasterController
 
         } else {                        
             // request method is get
+            
+            // check if user permitted        
+            if (!($this->isPermitted('updategedung'))) return redirect('pinjamruang/gedung');
+
+            if ($request->session()->get('user_sess')->Role != 'Staf PPAA' && $request->session()->get('user_sess')->Role != 'Staf Sekretariat' )
+                return redirect('pinjamruang/gedung');
             
             // get gedung object
             $gedung = Gedung::where('hash', $hash)->get();

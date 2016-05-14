@@ -14,7 +14,7 @@
 
 				<div class="input-field">
 					<b>Nama Gedung</b><br>
-					<span class="error red-text">{{ $errors->first('namagedung') }}</span><br>
+					<span class="error red-text">{{ (session()->get('error_gedung') == '') ? $errors->first('namagedung') : session()->get('error_gedung') }}</span><br>
 					<input type="text" name="namagedung" value="{{ (isset($data['gedung'])) ? ($data['gedung'][0]['NamaGedung']) : old('namagedung') }}" placeholder="contoh: Gedung C, Gedung Seminar"></input>
 					<input type="hidden" name="hash" value="{{$data['gedung'][0]['hash']}}">
 				</div><br>

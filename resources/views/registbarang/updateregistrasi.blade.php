@@ -8,12 +8,12 @@
     <div class="divider"></div><br>
 
     <div id="multiform" class="row">
-        <form action="{{ url('registrasibarang/ubah/'.$data['registrasi'][0]['hashPermohonan']) }}" method="POST">
+        <form action="{{ url('registrasibarang/ubah/'.$data['registrasi']['hashPermohonan']) }}" method="POST">
             <div class="row form-row">
                 <div class="col s6">
                     <b>Subjek</b><br>
-                    <input type="hidden" name="hashPermohonan" value="{{ $data['registrasi'][0]['hashPermohonan'] }}">
-                    <input name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate" value="{{ (isset($data['registrasi'])) ? ($data['registrasi'][0]['SubjekPermohonan']) : old('subjek') }}">
+                    <input type="hidden" name="hashPermohonan" value="{{ $data['registrasi']['hashPermohonan'] }}">
+                    <input name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate" value="{{ (isset($data['registrasi'])) ? ($data['registrasi']['SubjekPermohonan']) : old('subjek') }}">
                 </div><br>
 
                 <div class="col s12">

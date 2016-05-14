@@ -67,31 +67,75 @@ class MasterController extends Controller
     	// permitted user rules
     	$userrule = [
     		'Manajer Fasilitas & Infrastruktur' =>
-                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'updatemaintenance', 'usulanpengadaan'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'registrasibarang', 'updateregistrasi',
+                    'barang', 'buatbarang', 
+                    'maintenancebarang', 'updatemaintenance', 
+                    'usulanpengadaan', 'updatepengadaan'
+                ],
 
     		'Staf Fasilitas & Infrastruktur' =>
-                ['registrasibarang', 'barang', 'buatbarang', 'maintenancebarang', 'updatemaintenance', 'usulanpengadaan'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'registrasibarang', 'updateregistrasi',
+                    'barang', 'buatbarang', 
+                    'maintenancebarang', 'updatemaintenance', 
+                    'usulanpengadaan', 'updatepengadaan'
+                ],
 
     		'Staf PPAA' =>
-                ['pinjamruang', 'buatpinjam', 'updatepinjam', 'ruangan', 'buatruangan', 'updateruangan', 'jadwal', 'buatjadwal', 'hapusjadwal', 'gedung', 'buatgedung', 'updategedung'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'ruangan', 'buatruangan', 'updateruangan', 
+                    'jadwal', 'buatjadwal', 'hapusjadwal', 
+                    'gedung', 'buatgedung', 'updategedung'
+                ],
 
     		'Staf Sekretariat' =>
-                ['pinjamruang', 'buatpinjam', 'updatepinjam', 'ruangan', 'buatruangan', 'updateruangan', 'jadwal', 'buatjadwal', 'hapusjadwal', 'gedung', 'buatgedung', 'updategedung'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'ruangan', 'buatruangan', 'updateruangan', 
+                    'jadwal', 'buatjadwal', 'hapusjadwal', 
+                    'gedung', 'buatgedung', 'updategedung'
+                ],
 
             'Wakil Dekan 2' =>
-                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'usulanpengadaan'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'registrasibarang', 'updateregistrasi', 
+                    'maintenancebarang', 'updatemaintenance',
+                    'usulanpengadaan', 'updatepengadaan'
+                ],
 
     		'Staf' =>
-                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'updatemaintenance', 'hapusmaintenance'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'registrasibarang', 'buatregistrasi', 'updateregistrasi',
+                    'maintenancebarang', 'updatemaintenance',
+                    'usulanpengadaan', 'updatepengadaan'
+                ],
 
             'Staf Pengadaan' =>
-                ['usulanpengadaan', 'updateusulan'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'usulanpengadaan', 
+                    'updateusulan'
+                ],
 
     		'HM' =>
-                ['registrasibarang', 'buatregistrasi', 'pinjamruang', 'buatpeminjaman', 'maintenancebarang', 'buatmaintenance', 'updatemaintenance', 'hapusmaintenance'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'registrasibarang', 'buatregistrasi', 'updateregistrasi' ,
+                    'maintenancebarang', 'buatmaintenance', 'updatemaintenance',
+                    'usulanpengadaan', 'updatepengadaan'
+                ],
 
     		'Mahasiswa' =>
-                ['pinjamruang', 'buatpeminjaman', 'updatepinjam'],
+                [
+                    'pinjamruang', 'buatpinjam', 'updatepinjam', 
+                    'buatpeminjaman', 'updatepinjam'
+                ],
     	];
 
     	// get user type

@@ -28,7 +28,7 @@ class RegistrasiController extends MasterController
         if (session('user_sess')->Role != 'Manager Fasilitas & Infrastruktur' &&
             session('user_sess')->Role != 'Staf Fasilitas & Infrastruktur') 
         {
-            $registrasi = Permohonan::getRegistrasi(session('user_sess')->npm);                
+            $registrasi = Permohonan::getRegistrasi($request->session()->get('user_sess')->NomorInduk);                
         } else {
             $registrasi = Permohonan::getRegistrasi();                
         }
@@ -50,7 +50,7 @@ class RegistrasiController extends MasterController
     public function getCreateRegistrasi(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('registrasibarang'))) return redirect('registrasibarang');    
+        if (!($this->isPermitted('buatregistrasi'))) return redirect('registrasibarang');    
 
         // reset the session
         session()->forget('jmlform');
@@ -71,7 +71,7 @@ class RegistrasiController extends MasterController
     public function createRegistrasi(Request $regbarang)
     {
         // check if user permitted        
-        if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+        if (!($this->isPermitted('buatregistrasi'))) return redirect('/');
 
         // get number of form submitted
         $nform = count($regbarang->input('namabarang')); 
@@ -105,7 +105,7 @@ class RegistrasiController extends MasterController
             'IdPermohonan' => $IdPermohonan,             
             'SubjekPermohonan' => $input['subjek'], 
             'JenisPermohonan' => 2, 
-            'IdPemohon' => session('user_sess')->npm,
+            'IdPemohon' => $request->session()->get('user_sess')->NomorInduk,
             'hashPermohonan' => md5($IdPermohonan.$input['subjek']),
         ]);           
         
@@ -141,8 +141,8 @@ class RegistrasiController extends MasterController
             $IdPermohonan, // Id Permohonan terkait 
             0, // tahap catatan
             $input['catatanpemohon'], // deskripsi catatan dari pemohon
-            session('user_sess')->npm, // nomor induk pemohon
-            md5($IdPermohonan.'0'.session('user_sess')->npm) // hash catatan
+            $request->session()->get('user_sess')->NomorInduk, // nomor induk pemohon
+            md5($IdPermohonan.'0'.$request->session()->get('user_sess')->NomorInduk) // hash catatan
         );
 
         // destroy jmlform session
@@ -160,7 +160,7 @@ class RegistrasiController extends MasterController
     public function updateRegistrasi(Request $request, $hash = '')
     {
         // check if user permitted        
-        if (!($this->isPermitted('registrasibarang'))) return redirect('/');
+        if (!($this->isPermitted('updateregistrasi'))) return redirect('registrasibarang');
         
         // redirect to dashboard if hash is null
         if ($hash == '') return redirect('registrasibarang');
@@ -213,20 +213,27 @@ class RegistrasiController extends MasterController
         } else {
             // request method is get
             
+            // check if user permitted        
+            if (!($this->isPermitted('updateregistrasi'))) return redirect('registrasibarang');
+
             // get registrasi selected
             $registrasi = Permohonan::where([
                 ['hashPermohonan', $hash],
                 ['deleted', 0]
-            ])->get();
+            ])->first();
+
+            // check if user permitted to change 
+            if( $request->session()->get('user_sess')->NomorInduk != $registrasi->IdPemohon || $registrasi->StatusPermohonan != 0 )
+                return redirect('registrasibarang');
 
             $allkandidat = KandidatBarang::where([
-                ['IdPermohonan', $registrasi[0]['IdPermohonan']]
+                ['IdPermohonan', $registrasi->IdPermohonan]
             ])->get();
 
             $catatan = Catatan::where([
-                ['IdPermohonan', '=', $registrasi[0]['IdPermohonan']],
+                ['IdPermohonan', '=', $registrasi->IdPermohonan],
                 ['TahapCatatan', '=', 0]
-            ])->get();
+            ])->first();
 
             // return update registrasi page
             return $this->render('registbarang.updateregistrasi', 
@@ -247,6 +254,9 @@ class RegistrasiController extends MasterController
      */
     public function updateStatusRegistrasi(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('updateregistrasi'))) return redirect('registrasibarang');
+
         // validate request
         $this->validate($request, [
             'nomorsurat' => 'required',
@@ -338,8 +348,8 @@ class RegistrasiController extends MasterController
             $permohonan[0]->IdPermohonan, 
             $tahapCatatan,
             $input['catatan_txtarea'],
-            session('user_sess')->npm,
-            md5($permohonan[0]->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+            $request->session()->get('user_sess')->NomorInduk,
+            md5($permohonan[0]->IdPermohonan.$tahapCatatan.$request->session()->get('user_sess')->NomorInduk)
         );
 
         // redirect to registrasi barang page
@@ -352,7 +362,10 @@ class RegistrasiController extends MasterController
      * @return redirect to dashboard.blade.php
      */
     public function removeRegistrasi(Request $request)
-    {       
+    {
+        // check if user permitted        
+        if (!($this->isPermitted('updateregistrasi'))) return redirect('registrasibarang');
+        
         // ganti status peminjaman pada database        
         Permohonan::removePermohonan($request->input('hashPermohonan'));
         

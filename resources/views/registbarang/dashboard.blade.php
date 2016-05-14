@@ -188,7 +188,7 @@
                                 <i class="material-icons right">edit</i>
                             </a>
                             <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
-                            <button class="btn waves-effect waves-light red white-text">                                
+                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan registrasi barang ini?')">
                                 <i class="material-icons">delete</i>
                             </button>
                         </form> 

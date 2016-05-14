@@ -21,7 +21,7 @@ class PeminjamanController extends MasterController
     public function dashboard()
     {
         // check if user permitted        
-        // if (!($this->isPermitted('pinjamruang'))) return redirect('/');    
+        if (!($this->isPermitted('pinjamruang'))) return redirect('/');    
 
 		// get permohonan peminjaman ruangan data
         // check the user role
@@ -50,7 +50,7 @@ class PeminjamanController extends MasterController
     public function getCreatePeminjaman()
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');    
+        if (!($this->isPermitted('buatpinjam'))) return redirect('pinjamruang');    
 
         return $this->render('pinjamruang.buatpeminjaman',
             [
@@ -67,7 +67,7 @@ class PeminjamanController extends MasterController
     public function createPeminjaman(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');
+        if (!($this->isPermitted('buatpinjam'))) return redirect('pinjamruang');
 
         // get al input
         $input = $request->all();        
@@ -230,34 +230,6 @@ class PeminjamanController extends MasterController
     }
 
     /**
-     * [setuju description]
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function setuju(Request $request)
-    {
-        // get session peminjaman yang mau dibatalkan
-        $input = $request->all();
-
-        // get all data
-        $id = $input['Id'];
-        $catatan = $input['catatan_txtarea'];
-        $user_id = $input['UserId'];
-        $persetujuan = $input['persetujuan'];
-
-        // incrementing Id
-        $tahap_catatan = Catatan::getIncrementedTahapCatatan();
-
-        // insert new record to database
-        Catatan::createCatatan($id, $tahap_catatan, $catatan, $user_id);
-
-        // update record's status
-        Permohonan::updateStatus($id, $persetujuan);
-        
-        return back();
-    }
-
-    /**
      * Update status peminjaman selected
      * @param  Request $request Request object
      * @return void
@@ -265,7 +237,7 @@ class PeminjamanController extends MasterController
     public function updateStatusPeminjaman(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatpinjam'))) return redirect('/');
+        if (!($this->isPermitted('updatepinjam'))) return redirect('pinjamruang');
         
         // validate request
         $this->validate($request, [
@@ -305,7 +277,7 @@ class PeminjamanController extends MasterController
             $tahapCatatan,
             $input['catatan_txtarea'],
             session('user_sess')->npm,
-            md5($permohonan[0]->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+            md5($permohonan[0]->IdPermohonan.$tahapCatatan.$request->session()->get('user_sess')->NomorInduk)
         );
 
         // return to pinjamruang dashboard
@@ -320,6 +292,9 @@ class PeminjamanController extends MasterController
      */
     public function removePeminjaman(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('updatepinjam'))) return redirect('pinjamruang');
+
         // ganti value delete peminjaman pada database
         Permohonan::removePermohonan($request->input('hashPermohonan'));
         

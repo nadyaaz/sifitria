@@ -34,7 +34,7 @@
 									UBAH
 									<i class="material-icons left">edit</i>
 								</a>
-								<button class="btn-flat grey-text" onClick="return confirm('Anda yakin ingin menghapus?')">
+								<button class="btn-flat grey-text" onClick="return confirm('Anda yakin ingin menghapus gedung ini? Ruangan, jadwal, dan permohonan yang berasosiasi dengan gedung ini juga akan dihapus.')">
 									HAPUS
 									<i class="material-icons left">delete</i>
 								</button>

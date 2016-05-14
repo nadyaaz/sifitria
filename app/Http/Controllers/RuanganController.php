@@ -14,35 +14,21 @@ class RuanganController extends MasterController
 {
     public function getRuangan(Request $request)
     {
-        if(!$request->isMethod('POST')) {
-            // check if user permitted        
-            if (!($this->isPermitted('ruangan'))) return redirect('/');
+        // check if user permitted        
+        if (!($this->isPermitted('ruangan'))) return redirect('pinjamruang');
 
-            // get list gedung dan ruangan pada database
-            $allgedung = Gedung::getAllGedung();
-        	$allruangan = Ruangan::getAllRuangan();        
+        // get list gedung dan ruangan pada database
+        $allgedung = Gedung::getAllGedung();
+    	$allruangan = Ruangan::getAllRuangan();        
 
-    		// render ruangan view
-        	return $this->render('pinjamruang.ruangan',
-        		[
-        			'title' => 'Daftar Ruangan',
-        			'allruangan' => $allruangan,
-        			'allgedung' => $allgedung
-        		]
-        	);
-        } else {
-            // check if user permitted        
-            if (!($this->isPermitted('ruangan'))) return redirect('/');
-
-            // get ruangan selected
-            $ruangan = Ruangan::where('hashRuang', $request->input('hash'))->get();
-
-            //set session
-            session(['ruangan' => $ruangan]);
-
-            // redirect with data
-            return redirect('pinjamruang/ruangan/ubah');
-        }
+		// render ruangan view
+    	return $this->render('pinjamruang.ruangan',
+    		[
+    			'title' => 'Daftar Ruangan',
+    			'allruangan' => $allruangan,
+    			'allgedung' => $allgedung
+    		]
+    	);    
     }
 
     public function getCreateRuangan()
@@ -79,12 +65,17 @@ class RuanganController extends MasterController
                 ]
             );
 
-            // // get gedung object selected
-            // $gedung = Gedung::where('hash', '=', $request->input('gedungruangan'))->first();
-            
-            // // get ruangan last object
-            // $lastObjId = Master::getLastId('ruangan', 'IdRuangan', [['IdGed', '=', $gedung->IdGedung]]);
-            // $IdRuangan = $lastObjId + 1;            
+            $ruangan = Ruangan::where('hashRuang', $hashRuang)->first();
+            $gedungruangan = Gedung::where('IdGedung', $ruangan->IdGed)->first();
+            $allruangan = Ruangan::where('IdGed', $gedungruangan->IdGedung)->get();
+
+            // check if NamaGedung is exist in selected gedung
+            foreach($allruangan as $ruangan) {                
+                if (strtolower($ruangan->NomorRuangan) == strtolower($request->input('nomorruangan'))) {
+                    $request->session()->flash('error_ruangan', 'Nama ruangan sudah ada pada gedung yang sama. Silakan ganti dengan nama lain.');
+                    return back();
+                }
+            }            
 
             // insert data to table
             Ruangan::updateRuangan($request->input('hash'),
@@ -97,7 +88,8 @@ class RuanganController extends MasterController
 
             // redirect to ruangan view
             return redirect('pinjamruang/ruangan');            
-        } else {
+        } else {            
+
             // get all gedung object
             $allgedung = Gedung::getAllGedung();
 
@@ -118,7 +110,7 @@ class RuanganController extends MasterController
     public function createRuangan(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatruangan'))) return redirect('/');
+        if (!($this->isPermitted('buatruangan'))) return redirect('pinjamruang/ruangan');
 
         $this->validate($request,
             [
@@ -127,13 +119,27 @@ class RuanganController extends MasterController
                 'jenisruangan' => 'required',
                 'kapasitasruangan' => 'required|numeric'
             ]
-        );
+        );        
 
         // get all request
         $input = $request->all();        
 
+
         // get gedung object selected
-        $gedung = Gedung::where('hash', '=', $input['gedungruangan'])->first();
+        $gedung = Gedung::where([
+            ['hash', $input['gedungruangan']],
+            ['deleted', 0],
+        ])->first();
+
+        $allruangan = Ruangan::where('IdGed', $gedung->IdGedung)->get();
+        
+        // check if NamaGedung is exist
+        foreach($allruangan as $ruangan) {
+            if (strtolower($ruangan->NomorRuangan) == strtolower($request->input('nomorruangan'))) {
+                $request->session()->flash('error_ruangan', 'Nomor ruangan sudah ada. Silakan ganti dengan nama lain.');
+                return back();
+            }
+        }
         
         // get ruangan last object
         $lastObjId = Master::getLastId('ruangan', 'IdRuangan', [['IdGed', '=', $gedung->IdGedung]]);
@@ -160,7 +166,7 @@ class RuanganController extends MasterController
     public function removeRuangan(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('updateruangan'))) return redirect('/');
+        if (!($this->isPermitted('updateruangan'))) return redirect('pinjamruang/ruangan');
 
         // set ruangan to deleted
         Ruangan::removeRuangan($request->input('hash'));

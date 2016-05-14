@@ -18,6 +18,9 @@ class PengadaanController extends MasterController
 	 */
     public function getPengadaan()
     {
+        // check if user permitted        
+        if (!($this->isPermitted('usulanpengadaan'))) return redirect('usulanpengadaan');
+
     	$pengadaan = Permohonan::getPengadaan(session('user_sess')->Role, session('user_sess')->NomorInduk);
 
         return $this->render('usulanpengadaan.dashboard',
@@ -38,7 +41,7 @@ class PengadaanController extends MasterController
     public function getCreatePengadaan(Request $request)
     {
         // check if user permitted        
-        //if (!($this->isPermitted('pengadaan'))) return redirect('registrasibarang');    
+        if (!($this->isPermitted('buatpengadaan'))) return redirect('usulanpengadaan');
 
         // reset the session
         session()->forget('jmlform');
@@ -60,6 +63,9 @@ class PengadaanController extends MasterController
      */
     public function createPengadaan(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('buatpengadaan'))) return redirect('usulanpengadaan');
+
     	$nform = count($request->input('namabarang')); 
 
         // set session for jmlform
@@ -146,7 +152,7 @@ class PengadaanController extends MasterController
     public function updatePengadaan(Request $request, $hashPermohonan = '')
     {
     	// check if user permitted        
-        // if (!($this->isPermitted('buatgedung'))) return redirect('/');  
+        if (!($this->isPermitted('updatepengadaan'))) return redirect('usulanpengadaan');  
         
         // check if hash parameter is empty
         if($hashPermohonan == '') return redirect('usulanpengadaan');
@@ -190,18 +196,24 @@ class PengadaanController extends MasterController
             // redirect to daftar gedung
             return redirect('usulanpengadaan');
 
-        } else {   
-                     
-            // request method is get                        
+        } else {
+            // request method is get  
+            
+            // check if user permitted to access
+            if (!($this->isPermitted('updatepengadaan'))) return redirect('usulanpengadaan');                                                     
 
-            $pengadaan = Permohonan::where('hashPermohonan', $hashPermohonan)->get();
-            $allkandidat = KandidatBarang::where('IdPermohonan', $pengadaan[0]['IdPermohonan'])->get();
+            $pengadaan = Permohonan::where('hashPermohonan', $hashPermohonan)->first();
+
+            // check if user permitted to change 
+            if($request->session()->get('user_sess')->NomorInduk != $pengadaan->IdPemohon || $pengadaan->StatusPermohonan != 0 )
+                return redirect('usulanpengadaan');
+
+            $allkandidat = KandidatBarang::where('IdPermohonan', $pengadaan['IdPermohonan'])->get();
+
             $catatan = Catatan::where([
-                ['IdPermohonan', '=', $pengadaan[0]['IdPermohonan']],
+                ['IdPermohonan', '=', $pengadaan['IdPermohonan']],
                 ['TahapCatatan', '=', 0]
             ])->get();
-
-            // dd($allkandidat);
             
             // render the update page form
             return $this->render('usulanpengadaan.updatepengadaan', [
@@ -215,15 +227,28 @@ class PengadaanController extends MasterController
 
     public function updateStatusPengadaan(Request $request)
     {
-        // validate request
-        $this->validate($request, [
-            'nomorsurat' => 'required',
-            'catatan_txtarea' => 'required',
-        ]);
+        // check if user permitted        
+        if (!($this->isPermitted('updatepengadaan'))) return redirect('usulanpengadaan'); 
 
-        $input = $request->all();
+        // validate request
         $newStatus = 0;        
         $newTahap = 1;
+
+        $validation_array = [
+            'catatan_txtarea' => 'required',
+        ];
+
+        // update permohonan
+        $updatePermohonanArray = [];
+
+        $input = $request->all();
+
+        if(session('user_sess')->Role == 'Staf Fasilitas & Infrastruktur'){
+            $validation_array['nomorsurat'] = 'required';
+            $updatePermohonanArray['nomorsurat'] = $input['nomorsurat'];
+        }
+
+        $this->validate($request, $validation_array);
 
         $lastTahap = Master::getLastId('permohonan', 'TahapPermohonan', [
             ['hashPermohonan', '=', $input['hashPermohonan']]
@@ -286,6 +311,9 @@ class PengadaanController extends MasterController
      */
     public function removePengadaan(Request $request)
     {
+        // check if user permitted        
+        if (!($this->isPermitted('updatepengadaan'))) return redirect('usulanpengadaan'); 
+
         // ganti status peminjaman pada database        
          Permohonan::removePermohonan($request->input('hashPermohonan'));
         

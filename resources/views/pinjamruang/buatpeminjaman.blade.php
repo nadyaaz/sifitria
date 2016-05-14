@@ -162,7 +162,7 @@
 			<div class="row" id="xyz">
 				<div class="col s12">
 					{!! csrf_field() !!}
-					<input type="hidden" name="pemohon" value="{{$data['user_sess']->npm}}">
+					<input type="hidden" name="pemohon" value="{{$data['user_sess']->NomorInduk}}">
 					<button class="btn waves-effect waves-light" id="formruangan" name="Next Page">	
 						Simpan Permohonan			    	
 	  				</button>

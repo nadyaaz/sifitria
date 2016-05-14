@@ -21,7 +21,7 @@ class MaintenanceController extends MasterController
         // check if user permitted        
         if (!($this->isPermitted('maintenancebarang'))) return redirect('/');
 
-    	$maintenance = Permohonan::getMaintenance(session('user_sess')->Role, session('user_sess')->NomorInduk);
+    	$maintenance = Permohonan::getMaintenance(session()->get('user_sess')->Role, session()->get('user_sess')->NomorInduk);
 
         return $this->render('maintenancebarang.dashboard',
             [
@@ -56,13 +56,7 @@ class MaintenanceController extends MasterController
             if (count($barang) == 0) {
                 $request->session()->flash('error_get_barang', 'Barang dengan barcode'.$request->input('barcode').' tidak ditemukan');
                 return redirect('maintenancebarang/buat');
-            }
-
-            // jika barang sudah dimohonkan maintenance nya, tidak bisa dimohonkan lagi
-            if ($barang->IdPermohonan == null) {
-                $request->session()->flash('error_get_barang', 'Barang dengan barcode'.$request->input('barcode').' sudah dimohonkan untuk maintenance');
-                return redirect('maintenancebarang/buat');
-            }
+            }            
             
             $data['barang'] = $barang;
         }
@@ -94,18 +88,20 @@ class MaintenanceController extends MasterController
         $lastId = Master::getLastId('permohonan', 'IdPermohonan');
         $IdPermohonan = $lastId + 1;        
 
+        $barang = Barang::where('hashBarang', $input['hashBarang'])->first();
+
         // Memasukkan data dari form registrasi barang ke table permohonan
         Permohonan::createPermohonan([
             'IdPermohonan' => $IdPermohonan,             
             'SubjekPermohonan' => $input['subjek'], 
             'JenisPermohonan' => 4, 
-            'IdPemohon' => session('user_sess')->npm,
+            'IdPemohon' => $request->session()->get('user_sess')->NomorInduk,
+            'IdBarang' => $barang->IdBarang,
             'hashPermohonan' => md5($IdPermohonan.$input['subjek']),
         ]);
 
         // update IdPermohonan pada barang
         Barang::updateBarang($input['hashBarang'], [
-            'IdPermohonan' => $IdPermohonan,
             'KerusakanBarang' => $input['kerusakanbarang'],
         ]);
 
@@ -114,8 +110,8 @@ class MaintenanceController extends MasterController
             $IdPermohonan, // Id Permohonan terkait 
             0, // tahap catatan
             $input['catatanpemohon'], // deskripsi catatan dari pemohon
-            session('user_sess')->npm, // nomor induk pemohon
-            md5($IdPermohonan.'0'.session('user_sess')->npm) // hash catatan
+            $request->session()->get('user_sess')->NomorInduk, // nomor induk pemohon
+            md5($IdPermohonan.'0'.$request->session()->get('user_sess')->NomorInduk) // hash catatan
         );
 
         // Mengembalikan ke halaman list daftar maintenance barang             
@@ -168,18 +164,24 @@ class MaintenanceController extends MasterController
         } else {
             // request method is get
             
+            // check if user permitted        
+            if (!($this->isPermitted('updatemaintenance'))) return redirect('maintenancebarang');
+
             // get maintenance selected
             $maintenance = Permohonan::where('hashPermohonan', $hash)->first();
 
+            // check if user permitted to change 
+            if($request->session()->get('user_sess')->NomorInduk != $maintenance->IdPemohon || $maintenance->StatusPermohonan != 0 )
+                return redirect('maintenancebarang');
+
             if (count($maintenance) == 0) return redirect('maintenancebarang');
             
-            $barang = Barang::where('IdPermohonan', $maintenance['IdPermohonan'])->first();
+            $barang = Barang::where('IdBarang', $maintenance->IdBarang)->first();
 
             $catatan = Catatan::where([
                 ['IdPermohonan', '=', $maintenance['IdPermohonan']],
                 ['TahapCatatan', '=', 0]
             ])->first();
-
 
             // return update maintenance page
             return $this->render('maintenancebarang.updateMaintenance', 
@@ -264,8 +266,8 @@ class MaintenanceController extends MasterController
             $permohonan->IdPermohonan, 
             $tahapCatatan,
             $input['catatan_txtarea'],
-            session('user_sess')->npm,
-            md5($permohonan->IdPermohonan.$tahapCatatan.session('user_sess')->npm)
+            $request->session()->get('user_sess')->NomorInduk,
+            md5($permohonan->IdPermohonan.$tahapCatatan.$request->session()->get('user_sess')->NomorInduk)
         );
 
         // redirect to registrasi barang page
@@ -281,8 +283,7 @@ class MaintenanceController extends MasterController
     public function removeMaintenance(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('hapusmaintenance'))) return redirect('maintenancebarang');
-
+        if (!($this->isPermitted('updatemaintenance'))) return redirect('maintenancebarang');
     	// ganti status peminjaman pada database        
         Permohonan::removePermohonan($request->input('hashPermohonan'));
         

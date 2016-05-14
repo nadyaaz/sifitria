@@ -211,7 +211,7 @@
                                 UBAH
                                 <i class="material-icons right">edit</i>
                             </a>
-                            <button class="btn waves-effect waves-light red white-text">                
+                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan usulan pengadaan barang ini?')">
                                 <i class="material-icons">delete</i>
                             </button>
                         </form> 

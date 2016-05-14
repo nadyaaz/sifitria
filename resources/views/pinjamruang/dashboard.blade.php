@@ -140,7 +140,7 @@
                         <form name="userbatal" action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
                             {!! csrf_field() !!}
                             <input type="hidden" name="hashPermohonan" value="{{ $peminjaman->hashPermohonan }}"/>                            
-                            <button class="btn waves-effect waves-light red white-text">                                
+                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan peminjaman ruangan ini?')">
                                 <i class="material-icons">delete</i>
                             </button>
                         </form> 

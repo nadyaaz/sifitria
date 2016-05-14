@@ -23,6 +23,8 @@ class LoginController extends MasterController
 
     public function login(Request $request)
     {
+        if (session()->has('user_sess')) return redirect('/');
+
     	$input = $request->all();
 
         $this->validate($request, [
@@ -47,6 +49,8 @@ class LoginController extends MasterController
 
     public function logout(Request $request)
     {
+        if (!$request->session()->has('user_sess')) return redirect('/');
+
     	$request->session()->forget('user_sess');
 
     	return redirect('/');

@@ -11,7 +11,7 @@
 		<div class="row form-row">
 			<div class="input-field col s6">
 				<b>Nomor Ruangan </b><br>
-				<span class="error red-text">{{ $errors->first('nomorruangan') }}</span><br>
+				<span class="error red-text">{{ (session()->get('error_ruangan') == '') ? $errors->first('nomorruangan') : session()->get('error_ruangan') }}</span><br>
 				<input placeholder="Harus 4 karakter, contoh: 1102" length="4" id="subject" name="nomorruangan" type="text" class="validate">
 			</div>
 		</div>

@@ -11,28 +11,11 @@
 		<div class="row form-row">
 			<div class="input-field col s6">
 				<b>Nomor Ruangan </b><br>
-				<span class="error red-text">{{ $errors->first('nomorruangan') }}</span><br>
+				<span class="error red-text">{{ (session()->get('error_ruangan') == '') ? $errors->first('nomorruangan') : session()->get('error_ruangan') }}</span><br>
 				<input placeholder="Harus 4 karakter, contoh: 1102" value="{{ (isset($data['ruangan'])) ? ($data['ruangan'][0]['NomorRuangan']) : old('nomorruangan') }}" length="4" id="subject" name="nomorruangan" type="text" class="validate">
 			</div>
 		</div>
-		<!-- <div class="row form-row">
-			<div class="input-field col s6">
-				<b>Gedung</b><br>
-				<span class="error red-text">{{ $errors->first('gedungruangan') }}</span><br>
-			    <select id="gedungruangan" name="gedungruangan">
-			    	<option disabled>Pilih Gedung Ruangan</option>
-					@foreach ($data['allgedung'] as $gedung)
-
-					@if($data['ruangan'][0]['IdGed'] == $gedung->IdGedung)
-				   	<option value="{{$gedung->hash}}" selected>{{ $gedung->NamaGedung }}</option>
-					@else
-					<option value="{{$gedung->hash}}">{{ $gedung->NamaGedung }}</option>
-				   	@endif
-
-			    	@endforeach	
-			    </select>
-			</div>
-		</div> -->
+		
 		<div class="row form-row">
 			<div class="input-field col s3">
 				<b>Jenis Ruangan</b><br>
@@ -51,6 +34,7 @@
 				<input placeholder="contoh : 50" name="kapasitasruangan" value="{{ (isset($data['ruangan'])) ? ($data['ruangan'][0]['KapasitasRuangan']) : old('kapasitasruangan') }}" id="subject" type="number" min="1" class="validate">
 			</div>
 		</div>
+		
 		<div class="row form-row">
 			<div class="col s6">
 		 		{!! csrf_field() !!}

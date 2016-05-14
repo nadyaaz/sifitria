@@ -40,12 +40,12 @@
 			    		<span class="error red-text">{{ $errors->first('kategoribarang') }}</span><br>    				
 						<select name="kategoribarang">
 							<option disabled selected>Kategori Barang</option>
-							<option value="Elektronik">Elektronik</option>
-							<option value="Furnitur">Furnitur</option>
-							<option value="Kategori A">Kategori A</option>
-							<option value="Kategori B">Kategori B</option>
-							<option value="Kategori C">Kategori C</option>
-							<option value="Lainnya">Lainnya</option>
+							<option value="Elektronik" {{ ($data['barang'][0]['KategoriBarang'] == 'Elektronik') ? 'selected' : '' }}>Elektronik</option>
+							<option value="Furnitur" {{ ($data['barang'][0]['KategoriBarang'] == 'Furnitur') ? 'selected' : '' }}>Furnitur</option>
+							<option value="Kategori A" {{ ($data['barang'][0]['KategoriBarang'] == 'Kategori A') ? 'selected' : '' }}>Kategori A</option>
+							<option value="Kategori B" {{ ($data['barang'][0]['KategoriBarang'] == 'Kategori B') ? 'selected' : '' }}>Kategori B</option>
+							<option value="Kategori C" {{ ($data['barang'][0]['KategoriBarang'] == 'Kategori C') ? 'selected' : '' }}>Kategori C</option>
+							<option value="Lainnya" {{ ($data['barang'][0]['KategoriBarang'] == 'Lainnya') ? 'selected' : '' }}>Lainnya</option>
 						</select>			
 			    	</div>
 
@@ -59,10 +59,10 @@
 			    		Kondisi Barang <br>
 			    		<span class="error red-text">{{ $errors->first('kondisibarang') }}</span><br>    				
 						<select name="kondisibarang">
-							<option disabled selected>Kondisi Barang</option>
-							<option value="Baru">Baru</option>
-							<option value="Bekas">Bekas</option>
-							<option value="Rusak">Rusak</option>								
+							<option disabled>Kondisi Barang</option>
+							<option value="Baru" {{ ($data['barang'][0]['KondisiBarang'] == 'Baru') ? 'selected' : '' }}>Baru</option>
+							<option value="Bekas" {{ ($data['barang'][0]['KondisiBarang'] == 'Bekas') ? 'selected' : '' }}>Bekas</option>
+							<option value="Rusak" {{ ($data['barang'][0]['KondisiBarang'] == 'Rusak') ? 'selected' : '' }}>Rusak</option>								
 						</select>
 			    	</div>
     			</div>

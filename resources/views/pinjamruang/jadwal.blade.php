@@ -103,7 +103,7 @@
 					<form action="{{ url('pinjamruang/jadwal/hapus') }}" method="POST" class="left">
 						{!! csrf_field() !!}
 						<input type="hidden" name="hashJadwal" value="">
-						<button class="btn waves-light waves-effect red">
+						<button class="btn waves-light waves-effect red" onclick="return confirm('Anda yakin ingin menghapus jadwal ini?')">
 							HAPUS
 						</button>
 					</form>					

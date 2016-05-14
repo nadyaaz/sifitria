@@ -26,7 +26,6 @@
             		Nama Barang :<br>
             		{{ $data['barang']->NamaBarang }}
             	</div>
-
             </div>
 
   			<div class="row form-row">
