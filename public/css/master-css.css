@@ -25,9 +25,34 @@
 	background-color: #4a148c !important;
 }
 
+input[type=text]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=email]:focus:not([readonly]),
+input[type=url]:focus:not([readonly]),
+input[type=time]:focus:not([readonly]),
+input[type=date]:focus:not([readonly]),
+input[type=datetime-local]:focus:not([readonly]),
+input[type=tel]:focus:not([readonly]),
+input[type=number]:focus:not([readonly]),
+input[type=search]:focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]) {
+	border-bottom:1px solid #4a148c;
+	box-shadow:0 1px 0 0 #4a148c;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {	
+	color: #4a148c;	
+}
+
 /* End of overriding materialize theme customizing */
 
 /* Side nav */
+
+hr.styled {
+	border: 0;
+	height: 4px;
+	background-color: #4a148c;
+}
 
 .pin-top {
 	position: relative;

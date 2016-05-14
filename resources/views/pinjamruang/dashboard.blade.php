@@ -9,11 +9,8 @@
     
     <div id="tableHead" class="row">
         <div class="col s1">Id</div>
-        <div class="col s2">Ruangan</div>
-        <div class="col s2">Tanggal Pinjam</div>
-        <div class="col s2">Waktu Pinjam</div>
-        <div class="col s2">Pemohon</div>
-        <div class="col s2">Status</div>        
+        <div class="col s5">Keperluan Peminjaman</div>        
+        <div class="col s6">Status</div>        
     </div>
 
     <ul class="collapsible" data-collapsible="accordion">        
@@ -21,92 +18,146 @@
         <li>            
             <div class="collapsible-header active">                              
                 <div class="col s1"> {{ $peminjaman->IdPermohonan }} </div>
-                <div class="col s2"> {{ $peminjaman->JenisRuangan }} </div>
-                <div class="col s2"> {{ date('j F Y', strtotime($peminjaman->WaktuMulai)) }} </div>
-                <div class="col s2"> {{ date('H:i', strtotime($peminjaman->WaktuMulai)) }} - {{ date('H:i', strtotime($peminjaman->WaktuSelesai)) }} </div>
-                <div class="col s2"> {{ $peminjaman->Nama }} </div>
-                <div class="col s2">                         
+                <div class="col s5"> {{ $peminjaman->KeperluanPeminjaman }} </div>
+                <div class="col s6">                         
                     @if($peminjaman->StatusPermohonan === 0)
-                        {{ 'Sedang Menunggu Persetujuan' }}                   
+                        {{ 'Sedang Menunggu Persetujuan Staf' }}
                     @elseif($peminjaman->StatusPermohonan === 1)
-                        {{ 'Ditolak' }}                    
+                        {{ 'Ditolak Staf' }}                    
                     @elseif($peminjaman->StatusPermohonan === 2)
-                        {{ 'Disetujui' }}                    
+                        {{ 'Disetujui Staf' }}                    
                     @endif
                 </div>            
             </div>
 
             <div class="collapsible-body">
                 
-                <div class = "row">
-                    <div class="col s6">
-                        
-                        @if ($data['user_sess']->Role == 'Staf PPAA' || $data['user_sess']->Role == 'Staf Sekretariat')
+                <div class = "row no-row">
+                    <div class="col s12">                        
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Detail Permohonan
+                                </div>
 
-                            @if ($peminjaman->NomorSurat != null)                            
-                            <b>Nomor Surat:</b><br>
-                            {{ $peminjaman->NomorSurat }}
-                            @else
-                            <b>Nomor Surat:</b><br>
-                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
-                            @endif
+                                <div class="row">
+                                    <div class="col s6">
+                                        
+                                        @if ($data['user_sess']->Role == 'Staf PPAA' || $data['user_sess']->Role == 'Staf Sekretariat')
 
-                        @else
+                                            @if ($peminjaman->NomorSurat != null)                            
+                                            <b>Nomor Surat:</b><br>
+                                            {{ $peminjaman->NomorSurat }}
+                                            @else
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                                            @endif
 
-                            @if ($peminjaman->NomorSurat != null)
-                            <b>Nomor Surat:</b><br>
-                            {{ $peminjaman->NomorSurat }}
-                            @else
-                            <b>Nomor Surat:</b><br>
-                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
-                            @endif
+                                        @else
 
-                        @endif
+                                            @if ($peminjaman->NomorSurat != null)
+                                            <b>Nomor Surat:</b><br>
+                                            {{ $peminjaman->NomorSurat }}
+                                            @else
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                                            @endif
+
+                                        @endif
+                                    </div>
+                                    <div class="col s6">
+                                        <b>Waktu Permohonan:</b><br>
+                                        {{ date('j F Y, H:i', strtotime($peminjaman->created_at)) }}
+                                    </div>                                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col s6">
+                                        <b>Subjek Permohonan:</b><br>
+                                        {{ $peminjaman->SubjekPermohonan }}
+                                    </div>
+
+                                    <div class="col s6">
+                                        <b>Keperluan Peminjaman:</b><br>
+                                        {{ $peminjaman->KeperluanPeminjaman }}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col s6">
-                        <b>Waktu Permohonan:</b><br>
-                        {{ date('j F Y, H:i', strtotime($peminjaman->created_at)) }}
-                    </div>                    
                 </div>
                 
-                <div class="row">
-                    <div class="col s6">
-                        <b>Subjek Permohonan:</b><br>
-                        {{ $peminjaman->SubjekPermohonan }}
-                    </div>
-                    <div class="col s6">
-                        <b>Keperluan Peminjaman:</b><br>
-                        {{ $peminjaman->KeperluanPeminjaman }}
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col s6">
-                        <b>Gedung:</b><br>
-                        {{ $peminjaman->NamaGedung }}
-                    </div>
-                    <div class="col s6">
-                        <b>Ruangan:</b><br>
-                        {{ $peminjaman->NomorRuangan }}
-                    </div>
-                </div>
-                
-                @foreach($data['allcatatan'] as $catatan)
-
-                @if($catatan->IdPermohonan == $peminjaman->IdPermohonan)
-                <hr>
-                <div class="row">
+                <div class="row no-row">
                     <div class="col s12">
-                        <b>Catatan {{ $catatan->Role }}:</b><br>
-                        <i>Oleh {{ $catatan->Nama }}</i><br>
-                        <p>{{ $catatan->DeskripsiCatatan }}</p>
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Detail Jadwal
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s6">
+                                        <b>Tanggal Pinjam:</b><br>
+                                        {{ date('j F Y', strtotime($peminjaman->WaktuMulai)) }}
+                                    </div>
+                                    <div class="col s6">
+                                        <b>Waktu Pinjam:</b><br>
+                                        {{ date('H:i', strtotime($peminjaman->WaktuMulai)) }} - {{ date('H:i', strtotime($peminjaman->WaktuSelesai)) }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s6">
+                                        <b>Gedung:</b><br>
+                                        {{ $peminjaman->NamaGedung }}
+                                    </div>
+                                    <div class="col s6">
+                                        <b>Ruangan:</b><br>
+                                        {{ $peminjaman->NomorRuangan }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s6">
+                                        <b>Jenis Ruangan:</b><br>
+                                        {{ $peminjaman->JenisRuangan }}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row no-row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Catatan
+                                </div>
+
+                                <ul class="collection">
+                                    @foreach($data['allcatatan'] as $catatan)
+
+                                    @if($catatan->IdPermohonan == $peminjaman->IdPermohonan)
+
+                                    <li class="collection-item">
+                                        <b>Catatan {{ $catatan->Role }}:</b><br>
+                                        <i>Oleh {{ $catatan->Nama }}</i><br>
+                                        <p>{{ $catatan->DeskripsiCatatan }}</p>                                        
+                                    </li>
+
+                                    @endif
+
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>     
-                @endif
-
-                @endforeach
-                <hr>
-                <div class="row"> 
+                
+                <div class="row no-row"> 
                     @if ($data['user_sess']->Role == 'Staf PPAA' || $data['user_sess']->Role == 'Staf Sekretariat')
                     
                     @if ($peminjaman->StatusPermohonan == 0)
@@ -132,22 +183,53 @@
                     @endif
                 </div>
 
-                <div class="row">
-                    @if (!($data['user_sess']->Role == 'Staf PPAA') && !($data['user_sess']->Role == 'Staf Sekretariat'))
+                <div class="row no-row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Informasi
+                                </div>
+                                <div class="row no-row">
+                                    <div class="col s12">
 
-                    @if($peminjaman->StatusPermohonan == 0)
-                    <div class="col s1 right">                        
-                        <form name="userbatal" action="{{ url('pinjamruang/batal') }}" method="POST" class="right">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $peminjaman->hashPermohonan }}"/>                            
-                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan peminjaman ruangan ini?')">
-                                <i class="material-icons">delete</i>
-                            </button>
-                        </form> 
+                                        <span class="grey-text wrap-text">
+                                            Anda hanya bisa menghapus permohonan Anda sebelum permohonan ditetapkan statusnya oleh Staf. <br>
+                                            Anda tidak bisa mengubah permohonan peminjaman ruangan. <br>
+                                            Jika ada kesalahan dalam pembuatan permohonan, silakan menghapus dan buat kembali permohonan Anda.
+                                        </span>
+                                    </div>                                    
+                                </div>
+                            </div>
+
+                            <div class="card-action">
+                                <div class="row no-row">                                    
+                                    <div class="col s12">
+                                        @if (!($data['user_sess']->Role == 'Staf PPAA') && !($data['user_sess']->Role == 'Staf Sekretariat'))
+
+                                        @if($peminjaman->StatusPermohonan == 0)
+                                        
+                                        <form name="userbatal" action="{{ url('pinjamruang/batal') }}" method="POST" class="">
+                                            {!! csrf_field() !!}
+                                            <input type="hidden" name="hashPermohonan" value="{{ $peminjaman->hashPermohonan }}"/>                            
+                                            <button class="btn waves-effect waves-light right red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan peminjaman ruangan ini?')">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </form> 
+                                        @else
+
+                                        <button class="btn right disabled">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+
+                                        @endif
+
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    @endif
-
-                    @endif
                 </div>
             </div>         
         </li>        

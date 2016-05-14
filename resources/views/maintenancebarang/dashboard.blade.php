@@ -137,7 +137,7 @@
                 </div>
                 <!-- <hr> -->
 
-                <div class="row">
+                <div class="row no-row">
                     @foreach($data['allbarang'] as $barang)
 
                     @if($permohonan->IdBarang == $barang->IdBarang)
@@ -228,21 +228,21 @@
                             <div class="card-content">
                                 <div class="card-title">
                                     Catatan
-                                </div><br>
+                                </div>
                                 <ul class="collection">
-                                    <li class="collection-item">
-                                        @foreach($data['allcatatan'] as $catatan)
-                                            
-                                        @if($catatan->IdPermohonan == $permohonan->IdPermohonan)
+                                    @foreach($data['allcatatan'] as $catatan)
+                                        
+                                    @if($catatan->IdPermohonan == $permohonan->IdPermohonan)
 
+                                    <li class="collection-item">
                                         <b>Catatan {{ $catatan->Role }}:</b><br>
                                         <i>Oleh {{ $catatan->Nama }}</i><br>
                                         <p>{{ $catatan->DeskripsiCatatan }}</p>                            
-
-                                        @endif
-
-                                        @endforeach
                                     </li>
+
+                                    @endif
+
+                                    @endforeach                                    
                                 </ul>                                
                             </div>
                         </div>
@@ -298,24 +298,71 @@
                         </div>
                     </div>
                 </div>
-                @endif
+
+                @else
                             
-                @if ($data['user_sess']->Role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Wakil Dekan')
-                <div class="row">                    
+                <div class="row">                                        
                     <div class="col s12">
-                        <form action="{{ url('maintenancebarang/batal') }}" method="POST" class="right">
-                            {!! csrf_field() !!}
-                            <input type="hidden" name="hashPermohonan" value="{{ $permohonan->hashPermohonan }}"/>                            
-                            <a href="{{ url('maintenancebarang/ubah/'.$permohonan->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
-                                UBAH
-                                <i class="material-icons right">edit</i>
-                            </a>
-                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan maintenance barang ini?')">
-                                <i class="material-icons">delete</i>
-                            </button>
-                        </form> 
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Informasi
+                                </div>
+
+                                <div class="row no-row ">
+                                    <div class="col s12">
+
+                                        <span class="grey-text wrap-text">
+                                            Anda hanya bisa mengubah atau menghapus permohonan Anda sebelum permohonan ditetapkan statusnya oleh Staf. <br>
+                                        </span>
+                                    </div>                                    
+                                </div>
+                            </div>
+
+                            <div class="card-action">
+                                <div class="row no-row">
+                                    <div class="col s12">
+                                        
+                                        @if ($data['user_sess']->Role != 'Manager Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Wakil Dekan')
+                                        
+                                        @if($permohonan->StatusPermohonan == 0)
+
+                                        <form action="{{ url('maintenancebarang/batal') }}" method="POST" class="right">
+                                            {!! csrf_field() !!}
+                                            <input type="hidden" name="hashPermohonan" value="{{ $permohonan->hashPermohonan }}"/>                            
+                                            <a href="{{ url('maintenancebarang/ubah/'.$permohonan->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
+                                                UBAH
+                                                <i class="material-icons right">edit</i>
+                                            </a>
+                                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan maintenance barang ini?')">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </form> 
+
+                                        @else
+                                        
+                                        <div class="right">
+                                            <a class="btn disabled">
+                                                UBAH
+                                                <i class="material-icons right">edit</i>
+                                            </a>
+
+                                            <button class="btn disabled">
+                                                <i class="material-icons">delete</i>
+                                            </button>                                            
+                                        </div>
+
+                                        @endif
+
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
                 @endif
             </div>
         </li>

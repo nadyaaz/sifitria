@@ -284,6 +284,7 @@ class MaintenanceController extends MasterController
     {
         // check if user permitted        
         if (!($this->isPermitted('updatemaintenance'))) return redirect('maintenancebarang');
+        
     	// ganti status peminjaman pada database        
         Permohonan::removePermohonan($request->input('hashPermohonan'));
         

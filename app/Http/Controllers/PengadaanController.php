@@ -46,8 +46,14 @@ class PengadaanController extends MasterController
         // reset the session
         session()->forget('jmlform');
 
-        if ($request->isMethod('POST')) 
+        if ($request->isMethod('POST')) {
+
+            $this->validate($request, [
+                'jmlform' => 'required|numeric|max:5|min:1',
+            ]);
+            
             session()->flash('jmlform', $request->input('jmlform'));
+        }
 
         return $this->render('usulanpengadaan.buatusulan',
             [
@@ -79,7 +85,6 @@ class PengadaanController extends MasterController
             'penanggungjawab.*' => 'required|max:100',
             'kategoribarang.*' => 'required|max:100',
             'jenisbarang.*' => 'required|max:100',
-            'kondisibarang.*' => 'required|max:100',
             'spesifikasibarang.*' => 'required',
             'keteranganbarang.*' => 'required',                                
             //'kerusakanbarang.*' => 'required',
@@ -119,7 +124,6 @@ class PengadaanController extends MasterController
                 'JenisBarang' => $jenisbarang,
                 'KategoriBarang' => $kategoribarang,
                 'KeteranganBarang' => $input['keteranganbarang'][$i],
-                'KondisiBarang' => $input['kondisibarang'][$i],
                 'PenanggungJawab' => $input['penanggungjawab'][$i],
                 //'TanggalBeli' => date('Y-m-d H:i:s', strtotime($input['tanggalbeli']//[$i])),
                 'SpesifikasiBarang' => $input['spesifikasibarang'][$i],

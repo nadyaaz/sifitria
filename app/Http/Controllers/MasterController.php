@@ -128,7 +128,7 @@ class MasterController extends Controller
                     'pinjamruang', 'buatpinjam', 'updatepinjam', 
                     'registrasibarang', 'buatregistrasi', 'updateregistrasi' ,
                     'maintenancebarang', 'buatmaintenance', 'updatemaintenance',
-                    'usulanpengadaan', 'updatepengadaan'
+                    'usulanpengadaan', 'buatpengadaan', 'updatepengadaan'
                 ],
 
     		'Mahasiswa' =>

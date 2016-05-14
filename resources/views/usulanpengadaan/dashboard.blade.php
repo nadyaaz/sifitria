@@ -71,28 +71,50 @@
             </div>
 
             <div class="collapsible-body">
-                <div class="row">
-                    <div class="col s4">
-                        @if ($data['allpermohonan'][$i]->NomorSurat != null)
-                            <b>Nomor Surat:</b><br>
-                            {{ $data['allpermohonan'][$i]->NomorSurat }}
-                            @else
-                            <b>Nomor Surat:</b><br>
-                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
-                        @endif
+                <div class="row no-row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Detail Permohonan
+                                </div>
+
+                                <div class="row">                                        
+                                    <div class="col s4">
+                                        @if ($data['allpermohonan'][$i]->NomorSurat != null)
+                                            <b>Nomor Surat:</b><br>
+                                            {{ $data['allpermohonan'][$i]->NomorSurat }}
+                                            @else
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                                        @endif
+                                    </div>
+
+                                    <div class="col s4">
+                                        <b>Waktu Permohonan:</b><br>
+                                         {{ date('j F Y, H:i', strtotime($data['allpermohonan'][$i]->created_at)) }}
+                                    </div>
+
+                                    <div class="col s4">
+                                        <b>Link Anggaran:</b><br>
+                                        {{$data['allpermohonan'][$i]->LinkAnggaran}}
+                                    </div>
+                                </div>
+                                
+                                <div class="row no-row">
+                                    <div class="col s12">
+                                        <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
+                                            LIHAT SEMUA USULAN BARANG
+                                        </a>                                        
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="col s4">
-                        <b>Waktu Permohonan:</b><br>
-                         {{ date('j F Y, H:i', strtotime($data['allpermohonan'][$i]->created_at)) }}
-                    </div>
-                    <div class="col s4">
-                        <b>Link Anggaran:</b><br>
-                        {{$data['allpermohonan'][$i]->LinkAnggaran}}
-                    </div>
+                    
                 </div>
-                <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
-                    LIHAT SEMUA USULAN BARANG
-                </a>
+
 
                 <div id="kandidat-barang{{$i}}" class="modal">
                     <div class="modal-content"> 
@@ -142,29 +164,45 @@
 
                         @endif
                         @endforeach
-                        <hr>
+                        <hr class="styled">
                         
                     </div>
                     <div class="modal-footer">
                         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">TUTUP</a>
                     </div>
-                </div>
-                <hr>
-                @foreach($data['allcatatan'] as $catatan)
+                </div>   
 
-                @if($catatan->IdPermohonan == $data['allpermohonan'][$i]->IdPermohonan)
-                <hr>
-                <div class="row">
+                <div class="row no-row">
+                
                     <div class="col s12">
-                        <b>Catatan {{ $catatan->Role }}:</b><br>
-                        <i>Oleh {{ $catatan->Nama }}</i><br>
-                        <p>{{ $catatan->DeskripsiCatatan }}</p>
-                    </div>
-                </div>     
-                @endif
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Catatan
+                                </div>
+                                <ul class="collection">
+                                    @foreach($data['allcatatan'] as $catatan)
 
-                @endforeach
-                <hr>
+                                    @if($catatan->IdPermohonan == $data['allpermohonan'][$i]->IdPermohonan)
+
+                                    <li class="collection-item">
+                                        <b>Catatan {{ $catatan->Role }}:</b><br>
+                                        <i>Oleh {{ $catatan->Nama }}</i><br>
+                                        <p>{{ $catatan->DeskripsiCatatan }}</p>                                        
+                                    </li>
+                                    
+                                    @endif
+
+                                    @endforeach
+                                </ul>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>     
+
                 <div class="row"> 
                     @if ($data['user_sess']->Role === 'Manajer Fasilitas & Infrastruktur' || $data['user_sess']->Role === 'Staf Fasilitas & Infrastruktur' || $data['user_sess']->Role === 'Staf Pengadaan' || $data['user_sess']->Role === 'Wakil Dekan')
                     
