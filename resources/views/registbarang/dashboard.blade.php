@@ -10,8 +10,7 @@
     <div id="tableHead" class="row">
         <div class="col s1">Id</div>
         <div class="col s5">Subjek</div>            
-        <div class="col s3">Status</div>
-        <div class="col s3">Pemohon</div>
+        <div class="col s6">Status</div>
     </div>
 
     <ul class="collapsible" data-collapsible="accordion">
@@ -21,7 +20,7 @@
             <div class="collapsible-header active">                                                        
                 <div class="col s1">{{ $data['allregistrasi'][$i]->IdPermohonan }}</div>
                 <div class="col s5" style="word-wrap: normal">{{ $data['allregistrasi'][$i]->SubjekPermohonan }}</div>                                          			
-                <div class="col s3">
+                <div class="col s6">
                 	@if($data['allregistrasi'][$i]->TahapPermohonan == 1)
 
                 		@if($data['allregistrasi'][$i]->StatusPermohonan == 0 )
@@ -42,88 +41,158 @@
 
             		@endif
                 </div>
-                <div class="col s3">{{ $data['allregistrasi'][$i]->Nama }}</div>                   
             </div>
 
             <div class="collapsible-body">                                        
-                <div class="row">
-                    <div class="col s4">
-                        @if ($data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Staf Fasilitas & Infrastruktur')
+                <div class="row no-row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Detail Permohonan
+                                </div>
 
-                            @if ($data['allregistrasi'][$i]->NomorSurat != null)                            
-                            <b>Nomor Surat:</b><br>
-                            {{ $data['allregistrasi'][$i]->NomorSurat }}
-                            @else
-                            <b>Nomor Surat:</b><br>
-                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
-                            @endif
+                                <div class="row">
+                                    <div class="col s6">
+                                        @if ($data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Staf Fasilitas & Infrastruktur')
 
-                        @else
+                                            @if ($data['allregistrasi'][$i]->NomorSurat != null)                            
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="wrap-text">
+                                                {{ $data['allregistrasi'][$i]->NomorSurat }}                                
+                                            </span>
+                                            @else
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                                            @endif
 
-                            @if ($data['allregistrasi'][$i]->NomorSurat != null)
-                            <b>Nomor Surat:</b><br>
-                            {{ $data['allregistrasi'][$i]->NomorSurat }}
-                            @else
-                            <b>Nomor Surat:</b><br>
-                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
-                            @endif
+                                        @else
 
-                        @endif
+                                            @if ($data['allregistrasi'][$i]->NomorSurat != null)
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="wrap-text">
+                                                {{ $data['allregistrasi'][$i]->NomorSurat }}
+                                            </span>
+                                            @else
+                                            <b>Nomor Surat:</b><br>
+                                            <span class="grey-text"><i>Belum ada nomor surat</i></span>
+                                            @endif
+
+                                        @endif
+                                    </div>
+                                    <div class="col s6">
+                                        <b>Waktu Permohonan :</b><br>
+                                        {{ $data['allregistrasi'][$i]->created_at }}
+                                    </div>                                                        
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s6">
+                                        <b>Subjek Permohnan:</b><br>
+                                        {{ $data['allregistrasi'][$i]->SubjekPermohonan }}
+                                    </div>
+                                    <div class="col s6">
+                                        <b>Pemohon</b><br>
+                                        {{ $data['allregistrasi'][$i]->Nama }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s6">
+                                        <b>Status Permohonan:</b><br>
+                                        @if($data['allregistrasi'][$i]->TahapPermohonan == 1)
+
+                                            @if($data['allregistrasi'][$i]->StatusPermohonan == 0 )
+                                                {{'Ditinjau ke Lapangan'}}
+                                            @elseif($data['allregistrasi'][$i]->StatusPermohonan == 1 )
+                                                {{'Ditolak pada proses verifikasi'}}
+                                            @elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
+                                                {{'Sudah diverifikasi Staf'}}
+                                            @endif
+
+                                        @elseif($data['allregistrasi'][$i]->TahapPermohonan == 2)
+
+                                            @if($data['allregistrasi'][$i]->StatusPermohonan == 1 )
+                                                {{'Ditolak'}}
+                                            @elseif($data['allregistrasi'][$i]->StatusPermohonan == 2 )
+                                                {{'Diterima'}}
+                                            @endif
+
+                                        @endif
+                                    </div>
+                                    <div class="col s6">
+                                        <b>Barang yang diregistrasikan:</b><br>
+                                        <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
+                                            LIHAT SEMUA BARANG
+                                        </a>                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col s4">
-                        <b>Waktu Permohonan :</b><br>
-                        {{ $data['allregistrasi'][$i]->created_at }}
-                    </div>                        
                 </div>                
                 
-                <a href="#kandidat-barang{{$i}}" class="modal-trigger btn waves-light waves-effect">
-                    LIHAT SEMUA BARANG
-                </a>
 
                 <!-- Modal Structure -->
                 <div id="kandidat-barang{{$i}}" class="modal">
                     <div class="modal-content">
-                        @foreach($data['allkandidat'] as $kandidat)
+                        <ul class="collection">
+                            @foreach($data['allkandidat'] as $kandidat)
 
-                        @if($kandidat->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)
-                        <h4>{{$kandidat->NamaBarang}}</h4>
-                        <div class="row">
-                            <div class="col s3">
-                                <b>Tanggal Beli</b><br>
-                                {{date('d F Y', strtotime($kandidat->TanggalBeli))}}
-                            </div>
-                            <div class="col s3">
-                                <b>Jenis Barang</b><br>
-                                {{$kandidat->JenisBarang}}
-                            </div>
-                            <div class="col s3">
-                                <b>Kategori Barang</b><br>
-                                {{$kandidat->KategoriBarang}}
-                            </div>
-                            <div class="col s3">
-                                <b>Kondisi Barang</b><br>
-                                {{$kandidat->KondisiBarang}}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s12">
-                                <b>Penanggung Jawab</b><br>
-                                {{$kandidat->Penanggungjawab}}
-                            </div><br>
-                        </div>
-                        <div class="row">                            
-                            <div class="col s6">
-                                <b>Spesifikasi Barang</b><br>
-                                {{$kandidat->SpesifikasiBarang}}
-                            </div>
-                            <div class="col s6">
-                                <b>Keterangan Barang</b><br>
-                                {{$kandidat->KeteranganBarang}}
-                            </div>
-                        </div><hr>
-                        @endif
+                            @if($kandidat->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)
+                            <li class="collection-item">
+                                <h5>{{$kandidat->NamaBarang}}</h5>
+                                <div class="row">
+                                    <div class="col s4">
+                                        <b>Tanggal Beli</b><br>
+                                        {{date('d F Y', strtotime($kandidat->TanggalBeli))}}
+                                    </div>
+                                    <div class="col s4">
+                                        <b>Penanggung Jawab</b><br>
+                                        <span class="wrap-text">
+                                            {{$kandidat->Penanggungjawab}}
+                                        </span>
+                                    </div>
+                                    <div class="col s4">
+                                        <b>Kategori Barang</b><br>
+                                            {{$kandidat->KategoriBarang}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s4">
+                                        <b>Jenis Barang</b><br>
+                                            {{$kandidat->JenisBarang}}
+                                        </span>
+                                    </div>
+                                    <div class="col s4">
+                                        <b>Kondisi Barang</b><br>
+                                        <span class="wrap-text">
+                                            {{$kandidat->KondisiBarang}}
+                                        </span>
+                                    </div>
 
-                        @endforeach
+                                    <div class="col s4">
+                                        <b>Keterangan Barang</b><br>
+                                        <span class="wrap-text">
+                                            {{$kandidat->KeteranganBarang}}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">                            
+                                    <div class="col s12">
+                                        <b>Spesifikasi Barang</b><br>
+                                        <span class="wrap-text">
+                                            {{$kandidat->SpesifikasiBarang}}
+                                        </span>
+                                    </div>
+                                </div>                                
+                            </li>
+                            @endif
+
+                            @endforeach
+                        </ul>
                     </div>
 
                     <div class="modal-footer">
@@ -131,25 +200,55 @@
                     </div>
                 </div>
 
-                @for($j=0; $j < count($data['allcatatan']); $j++)
-                
-                @if($data['allcatatan'][$j]->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)
-                <hr>
-                <div class="row">
+                <div class="row no-row">
                     <div class="col s12">
-                        <b>Catatan {{ $data['allcatatan'][$j]->Role }}:</b><br>
-                        <i>Oleh {{ $data['allcatatan'][$j]->Nama }}</i><br>
-                        <p>{{ $data['allcatatan'][$j]->DeskripsiCatatan }}</p>
-                        <input type="hidden" name="hashCatatan[{{$j+1}}]" value="{{ $data['allcatatan'][$j]->hashCatatan }}">
-                    </div>
-                </div>   
-                @endif                    
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Catatan
+                                </div>
 
-                @endfor
+                                <ul class="collection">
+
+                                    @for($j=0; $j < count($data['allcatatan']); $j++)
+                                    
+                                    @if($data['allcatatan'][$j]->IdPermohonan == $data['allregistrasi'][$i]->IdPermohonan)                
+
+                                    <li class="collection-item">                                        
+                                        <b>Catatan {{ $data['allcatatan'][$j]->Role }}:</b><br>
+                                        <i>Oleh {{ $data['allcatatan'][$j]->Nama }}</i><br>
+                                        <p class="wrap-text">
+                                            {{ $data['allcatatan'][$j]->DeskripsiCatatan }}
+                                        </p>
+                                        <input type="hidden" name="hashCatatan[{{$j+1}}]" value="{{ $data['allcatatan'][$j]->hashCatatan }}">                                        
+                                    </li>
+
+                                    @endif                    
+
+                                    @endfor
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- end foreach regiscatatan -->
                 
-                <hr>
-                <div class="row"> 
+                
+                <div class="row no-row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="crad-content">
+                                <div class="card-title">
+                                    Informasi
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                
+                            </div>
+                        </div>
+                    </div>
                     @if ($data['user_sess']->Role == 'Manager Fasilitas & Infrastruktur' || $data['user_sess']->Role == 'Staf Fasilitas & Infrastruktur')
                     
                     @if (
@@ -180,18 +279,36 @@
                 
                 @if ($data['user_sess']->Role != 'Manajer Fasilitas & Infrastruktur' && $data['user_sess']->Role != 'Staf Fasilitas & Infrastruktur')
                 <div class="row">                    
-                    <div class="col s12">                        
-                        <form action="{{ url('registrasibarang/batal') }}" method="POST" class="right">
-                            {!! csrf_field() !!}
-                            <a href="{{ url('registrasibarang/ubah/'.$data['allregistrasi'][$i]->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
-                                UBAH
-                                <i class="material-icons right">edit</i>
-                            </a>
-                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
-                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan registrasi barang ini?')">
-                                <i class="material-icons">delete</i>
-                            </button>
-                        </form> 
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-title">
+                                    Informasi
+                                </div>
+                                <span class="wrap-text grey-text">
+                                    Anda dapat mengubah detail permohonan dan detail semua barang yang ingin Anda registrasikan atau menghapus permohonan selama permohonan ini belum ditentukan 
+                                    persetujuannya oleh Staf Fasilitas dan Infrastruktur                                    
+                                </span>
+                            </div>
+
+                            <div class="card-action">
+                                <div class="row no-row">
+                                    <div class="col s12">
+                                        <form action="{{ url('registrasibarang/batal') }}" method="POST" class="right">
+                                            {!! csrf_field() !!}
+                                            <input type="hidden" name="hashPermohonan" value="{{ $data['allregistrasi'][$i]->hashPermohonan }}"/>                            
+                                            <a href="{{ url('registrasibarang/ubah/'.$data['allregistrasi'][$i]->hashPermohonan) }}" class="btn waves-effect waves-light teal white-text">
+                                                UBAH
+                                                <i class="material-icons right">edit</i>
+                                            </a>
+                                            <button class="btn waves-effect waves-light red white-text" onclick="return confirm('Anda yakin ingin menghapus permohonan registrasi barang ini?')">
+                                                <i class="material-icons">delete</i>
+                                            </button>
+                                        </form>                                         
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endif

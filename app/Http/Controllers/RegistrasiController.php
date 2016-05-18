@@ -111,7 +111,7 @@ class RegistrasiController extends MasterController
             'IdPermohonan' => $IdPermohonan,             
             'SubjekPermohonan' => $input['subjek'], 
             'JenisPermohonan' => 2, 
-            'IdPemohon' => $request->session()->get('user_sess')->NomorInduk,
+            'IdPemohon' => $regbarang->session()->get('user_sess')->NomorInduk,
             'hashPermohonan' => md5($IdPermohonan.$input['subjek']),
         ]);           
         
@@ -147,8 +147,8 @@ class RegistrasiController extends MasterController
             $IdPermohonan, // Id Permohonan terkait 
             0, // tahap catatan
             $input['catatanpemohon'], // deskripsi catatan dari pemohon
-            $request->session()->get('user_sess')->NomorInduk, // nomor induk pemohon
-            md5($IdPermohonan.'0'.$request->session()->get('user_sess')->NomorInduk) // hash catatan
+            $regbarang->session()->get('user_sess')->NomorInduk, // nomor induk pemohon
+            md5($IdPermohonan.'0'.$regbarang->session()->get('user_sess')->NomorInduk) // hash catatan
         );
 
         // destroy jmlform session
