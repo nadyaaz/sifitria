@@ -1,6 +1,6 @@
 @extends('sidebar')
 
-@section('sidebar_buatregis', 'active')
+@section('sidebar_buatregis', 'active white-text')
 
 @section('konten')
 <div class="subsection">
@@ -8,24 +8,36 @@
     <div class="divider"></div><br>
 
     @if (!(session()->has('jmlform')))
-    
-    Tentukan jumlah barang yang ingin di registrasi, contoh: 3 (minimal 1 barang, maksimal 5 barang)<br><br>
-    <div class="row valign-wrapper">
-        <div class="col s12">           
+        
+    <div class="row no-row">
+        <div class="col s6 push-s3">           
             <form action="{{ url('registrasibarang/buat') }}" method="POST">         
-                <div class="col s3">
-                    <input type="number" name="jmlform" min="1" max="5" step="1" value="1" required>
-                </div>
-                <div class="col s3">
-                    {!! csrf_field() !!}
-                    <button class="btn waves-light waves-effect valign buat-form">
-                        BUAT FORM
-                        <i class="material-icons right">send</i>
-                    </button>
-                </div>
+                {!! csrf_field() !!}
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-title">
+                            Jumlah Barang
+                        </div>
+                        <span class="wrap-text grey-text">
+                            Tentukan jumlah barang yang ingin di registrasi, contoh: 3. Minimal 1 barang dan maksimal 5 barang.
+                        </span><br><br>
+                        <input type="number" name="jmlform" min="1" max="5" step="1" value="1" required>
+                    </div>
+                    
+                    <div class="card-action">
+                        <div class="row no-row">
+                            <div class="col s12">
+                                <button class="btn waves-light waves-effect right">
+                                    BUAT FORM
+                                    <i class="material-icons right">send</i>
+                                </button>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>                
             </form>
         </div>
-    </div><hr>
+    </div>
 
     @else
 
@@ -40,10 +52,10 @@
                                 Permohonan
                             </div>
 
-                            <b>Subjek</b><br>
+                            <b>Subjek</b>
                             <input required name="subjek" placeholder="Permohonan Registrasi Barang BEM" id="subject" type="text" class="validate" value="{{ old('subjek') }}">
 
-                            <b>Catatan Pemohon</b> <br>
+                            <b>Catatan Pemohon</b>
                             <textarea name="catatanpemohon" class="materialize-textarea validate" length="240" required>{{ old('catatanpemohon') }}</textarea>
                         </div>
                     </div>
@@ -64,14 +76,14 @@
                                     <div id="barang-form[{{$i}}]">                                        
                                         <div class="row no-row">
                                             <div class="col s6 input-field">
-                                                <b>Nama Barang </b><br>
-                                                <span class="error red-text">{{ $errors->first('namabarang.'.$i) }}</span><br>
+                                                <b>Nama Barang </b>
+                                                <!-- <span class="error red-text">{{ $errors->first('namabarang.'.$i) }}</span><br> -->
                                                 <input required type="text" name="namabarang[{{$i}}]" length="100" value="{{ old('namabarang.'.$i) }}" class="validate">                          
                                             </div>
 
                                             <div class="col s6 input-field">
-                                                <b>Tanggal Beli </b><br>
-                                                <span class="error red-text">{{ $errors->first('tanggalbeli.'.$i) }}</span><br>                 
+                                                <b>Tanggal Beli </b>
+                                                <!-- <span class="error red-text">{{ $errors->first('tanggalbeli.'.$i) }}</span><br>                  -->
                                                 <input required type="date" name="tanggalbeli[{{$i}}]" value="{{ old('tanggalbeli.'.$i) }}" class="tanggalbeli validate">
                                             </div>
 
@@ -79,14 +91,14 @@
 
                                         <div class="row no-row">
                                             <div class="col s6 input-field">
-                                                <b>Penanggung Jawab</b> <br> 
-                                                <span class="error red-text">{{ $errors->first('penanggungjawab.'.$i) }}</span><br>                 
+                                                <b>Penanggung Jawab</b>
+                                                <!-- <span class="error red-text">{{ $errors->first('penanggungjawab.'.$i) }}</span><br>                  -->
                                                 <input required type="text" name="penanggungjawab[{{$i}}]" length="100" value="{{ old('penanggungjawab.'.$i) }}" class="validate">           
                                             </div> 
 
                                             <div class="col s6 input-field">
-                                                <b>Kategori Barang </b><br>
-                                                <span class="error red-text">{{ $errors->first('kategoribarang.'.$i) }}</span><br>
+                                                <b>Kategori Barang </b>
+                                                <!-- <span class="error red-text">{{ $errors->first('kategoribarang.'.$i) }}</span><br> -->
                                                 <select required name="kategoribarang[{{$i}}]">
                                                     <option disabled selected>Kategori Barang</option>
                                                     <option value="Elektronik">Elektronik</option>
@@ -102,14 +114,14 @@
 
                                         <div class="row no-row">
                                             <div class="col s6 input-field">
-                                                <b>Jenis Barang </b><br>
-                                                <span class="error red-text">{{ $errors->first('jenisbarang.'.$i) }}</span><br>                 
+                                                <b>Jenis Barang </b>
+                                                <!-- <span class="error red-text">{{ $errors->first('jenisbarang.'.$i) }}</span><br>                  -->
                                                 <input required id="jenisbarang1" type="text" name="jenisbarang[{{$i}}]" value="{{ old('jenisbarang.'.$i) }}" length="100" class="validate">
                                             </div>          
 
                                             <div class="col s6 input-field">
-                                                <b>Kondisi Barang </b><br>
-                                                <span class="error red-text">{{ $errors->first('kondisibarang.'.$i) }}</span><br>                   
+                                                <b>Kondisi Barang </b>
+                                                <!-- <span class="error red-text">{{ $errors->first('kondisibarang.'.$i) }}</span><br>                    -->
                                                 <select required name="kondisibarang[{{$i}}]">
                                                     <option disabled selected>Kondisi Barang</option>
                                                     <option value="Baru">Baru</option>
@@ -121,14 +133,14 @@
 
                                         <div class="row no-row">                      
                                             <div class="col s6 input-field">
-                                                <b>Spesifikasi Barang</b> <br>
-                                                <span class="error red-text">{{ $errors->first('spesifikasibarang.'.$i) }}</span><br>                   
+                                                <b>Spesifikasi Barang</b>
+                                                <!-- <span class="error red-text">{{ $errors->first('spesifikasibarang.'.$i) }}</span><br>                    -->
                                                 <textarea name="spesifikasibarang[{{$i}}]" class="materialize-textarea validate" cols="30" rows="10" required>{{ old('spesifikasibarang.'.$i) }}</textarea>
                                             </div>
 
                                             <div class="col s6 input-field">
-                                                <b>Keterangan Barang </b><br>
-                                                <span class="error red-text">{{ $errors->first('keteranganbarang.'.$i) }}</span><br>                    
+                                                <b>Keterangan Barang </b>
+                                                <!-- <span class="error red-text">{{ $errors->first('keteranganbarang.'.$i) }}</span><br>                     -->
                                                 <textarea name="keteranganbarang[{{$i}}]" class="materialize-textarea" cols="30" rows="10">{{ old('keteranganbarang.'.$i) }}</textarea>
                                             </div>    
                                         </div>
@@ -161,7 +173,7 @@
                                 <div class="col s12">
                                     <form action="{{ url('registrasibarang/buat') }}" method="POST" > 
                                         {!! csrf_field() !!}                    
-                                        <button class="btn waves-light waves-effect teal right">
+                                        <button class="btn waves-light waves-effect right">
                                             REGISTRASI SEMUA BARANG
                                             <i class="material-icons right">send</i>
                                         </button>&nbsp;&nbsp;               
