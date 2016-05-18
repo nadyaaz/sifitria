@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2016 at 02:52 PM
+-- Generation Time: May 18, 2016 at 03:03 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `barang` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `IdBarang` int(11) NOT NULL,
   `NamaBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `JenisBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE `catatan` (
   `NomorIndukPenulis` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `hashCatatan` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -119,8 +119,8 @@ CREATE TABLE `gedung` (
   `NamaGedung` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0',
   `hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -147,13 +147,13 @@ CREATE TABLE `jadwal` (
   `IdGedung` int(11) NOT NULL,
   `IdRuangan` int(11) NOT NULL,
   `IdJadwal` int(11) NOT NULL,
-  `WaktuMulai` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `WaktuSelesai` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `WaktuMulai` timestamp NULL DEFAULT NULL,
+  `WaktuSelesai` timestamp NULL DEFAULT NULL,
   `KeperluanPeminjaman` text COLLATE utf8_unicode_ci NOT NULL,
   `hashJadwal` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -201,13 +201,13 @@ CREATE TABLE `kandidat_barang` (
   `KeteranganBarang` text COLLATE utf8_unicode_ci NOT NULL,
   `KondisiBarang` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Penanggungjawab` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `TanggalBeli` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `TanggalBeli` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `SpesifikasiBarang` text COLLATE utf8_unicode_ci NOT NULL,
   `Quantity` int(11) NOT NULL DEFAULT '0',
   `IdPermohonan` int(11) NOT NULL,
   `hashKandidat` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -283,7 +283,7 @@ CREATE TABLE `permohonan` (
   `TahapPermohonan` int(11) NOT NULL DEFAULT '1',
   `StatusPermohonan` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `deleted` int(11) NOT NULL DEFAULT '0',
   `hashPermohonan` varchar(32) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -337,7 +337,7 @@ CREATE TABLE `ruangan` (
   `deleted` int(11) NOT NULL DEFAULT '0',
   `hashRuang` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -386,7 +386,7 @@ CREATE TABLE `users` (
   `NomorIndukPengelola` char(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
