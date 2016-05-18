@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2016 at 03:03 PM
+-- Generation Time: May 18, 2016 at 03:08 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -194,6 +194,8 @@ INSERT INTO `jadwal` (`IdGedung`, `IdRuangan`, `IdJadwal`, `WaktuMulai`, `WaktuS
 --
 
 CREATE TABLE `kandidat_barang` (
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `IdKandidatBarang` int(11) NOT NULL,
   `NamaBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `JenisBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -201,28 +203,26 @@ CREATE TABLE `kandidat_barang` (
   `KeteranganBarang` text COLLATE utf8_unicode_ci NOT NULL,
   `KondisiBarang` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `Penanggungjawab` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `TanggalBeli` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `TanggalBeli` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `SpesifikasiBarang` text COLLATE utf8_unicode_ci NOT NULL,
   `Quantity` int(11) NOT NULL DEFAULT '0',
   `IdPermohonan` int(11) NOT NULL,
-  `hashKandidat` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `hashKandidat` varchar(32) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `kandidat_barang`
 --
 
-INSERT INTO `kandidat_barang` (`IdKandidatBarang`, `NamaBarang`, `JenisBarang`, `KategoriBarang`, `KeteranganBarang`, `KondisiBarang`, `Penanggungjawab`, `TanggalBeli`, `SpesifikasiBarang`, `Quantity`, `IdPermohonan`, `hashKandidat`, `created_at`, `updated_at`) VALUES
-(1, 'Laptop BEM', 'Elektronik', 'Laptop', 'Laptop ini dipakai untuk kepeluan kesekretariatan BEM FIA. ', 'Baru', 'Ketua BEM (Mahasiswa 1 - 1300000001)', '2016-04-14 09:43:11', 'Laptop ASUS A46CB', 0, 7, '', '2016-04-14 09:39:56', '2016-04-14 09:39:56'),
-(2, 'Papan Tulis Ruang BEM', 'Furnitur', 'Papan Tulis', 'Papan Tulis ini digunakan untuk keperluan rapat BEM.', 'Baru', 'Ketua BEM (Mahasiswa 1 - 1300000001)', '2016-04-11 17:00:00', 'Papan Tulis beli di Gramedia Margonda Depok', 0, 8, '', '2016-04-14 09:39:56', '2016-04-14 09:39:56'),
-(3, 'Meja', 'Furnitur', 'Meja', 'Meja ini digunakan untuk membantu kegiatan kesekretariatan BEM FIA', 'Baru', 'Sekretaris BEM (Mahasiswa 2 - 1300000002)', '2016-04-11 17:00:00', 'Meja beli di Gramedia Margonda Depok', 0, 9, '', '2016-04-14 09:39:56', '2016-04-14 09:39:56'),
-(4, 'Sofa Panjang', 'Kursi Sofa', 'Furnitur', 'dfghj', 'Baru', 'Jundi Ahmad Alwan', '2016-04-11 17:00:00', 'sofa 2 meter', 0, 10, '1b53f59623c8d1efc7951f754f4f8148', '2016-04-17 19:34:59', '2016-04-20 09:14:14'),
-(5, 'Sofa Personal', 'Kursi Sofa', 'Furnitur', 'tidak ada', 'Baru', 'Jundi Ahmad Alwan', '2016-04-05 17:00:00', 'sofa untuk 1 orang', 0, 10, 'efe8f853816c42fa2f7f6e014dcee2b6', '2016-04-17 19:34:59', '2016-04-20 09:14:14'),
-(6, 'TV', 'TV', 'Elektronik', 'Hasil menang lomba', 'Baru', 'Jundi Ahmad Alwan', '2016-05-01 17:00:00', '24 inch', 0, 18, '503c626159f89ce38044a025f7093942', '2016-05-02 11:07:28', '2016-05-02 14:23:56'),
-(7, 'Asus ROG', 'Laptop', 'Elektronik', 'Jangan dibanting. Handle with care.', 'Baru', 'Jundi Ahmad Alwan', '2016-05-07 14:07:24', 'ROG\r\nSpek dewa', 4, 23, '9ddcf76d89f5208a97d438e7a5c37d79', '2016-05-07 14:07:24', '2016-05-08 06:55:07'),
-(8, 'ASUS A46CB', 'Laptop', 'Elektronik', 'Barang nya masih mulus', NULL, 'Jundi', '2016-05-14 08:34:40', 'Dewa deh pokoknya', 0, 29, 'f39ef35aad648c2261da2a5d8755b652', '2016-05-14 08:34:40', '2016-05-14 08:34:40');
+INSERT INTO `kandidat_barang` (`created_at`, `updated_at`, `IdKandidatBarang`, `NamaBarang`, `JenisBarang`, `KategoriBarang`, `KeteranganBarang`, `KondisiBarang`, `Penanggungjawab`, `TanggalBeli`, `SpesifikasiBarang`, `Quantity`, `IdPermohonan`, `hashKandidat`) VALUES
+('2016-04-14 09:39:56', '2016-04-14 09:39:56', 1, 'Laptop BEM', 'Elektronik', 'Laptop', 'Laptop ini dipakai untuk kepeluan kesekretariatan BEM FIA. ', 'Baru', 'Ketua BEM (Mahasiswa 1 - 1300000001)', '2016-04-14 09:43:11', 'Laptop ASUS A46CB', 0, 7, ''),
+('2016-04-14 09:39:56', '2016-04-14 09:39:56', 2, 'Papan Tulis Ruang BEM', 'Furnitur', 'Papan Tulis', 'Papan Tulis ini digunakan untuk keperluan rapat BEM.', 'Baru', 'Ketua BEM (Mahasiswa 1 - 1300000001)', '2016-04-11 17:00:00', 'Papan Tulis beli di Gramedia Margonda Depok', 0, 8, ''),
+('2016-04-14 09:39:56', '2016-04-14 09:39:56', 3, 'Meja', 'Furnitur', 'Meja', 'Meja ini digunakan untuk membantu kegiatan kesekretariatan BEM FIA', 'Baru', 'Sekretaris BEM (Mahasiswa 2 - 1300000002)', '2016-04-11 17:00:00', 'Meja beli di Gramedia Margonda Depok', 0, 9, ''),
+('2016-04-17 19:34:59', '2016-04-20 09:14:14', 4, 'Sofa Panjang', 'Kursi Sofa', 'Furnitur', 'dfghj', 'Baru', 'Jundi Ahmad Alwan', '2016-04-11 17:00:00', 'sofa 2 meter', 0, 10, '1b53f59623c8d1efc7951f754f4f8148'),
+('2016-04-17 19:34:59', '2016-04-20 09:14:14', 5, 'Sofa Personal', 'Kursi Sofa', 'Furnitur', 'tidak ada', 'Baru', 'Jundi Ahmad Alwan', '2016-04-05 17:00:00', 'sofa untuk 1 orang', 0, 10, 'efe8f853816c42fa2f7f6e014dcee2b6'),
+('2016-05-02 11:07:28', '2016-05-02 14:23:56', 6, 'TV', 'TV', 'Elektronik', 'Hasil menang lomba', 'Baru', 'Jundi Ahmad Alwan', '2016-05-01 17:00:00', '24 inch', 0, 18, '503c626159f89ce38044a025f7093942'),
+('2016-05-07 14:07:24', '2016-05-08 06:55:07', 7, 'Asus ROG', 'Laptop', 'Elektronik', 'Jangan dibanting. Handle with care.', 'Baru', 'Jundi Ahmad Alwan', '2016-05-07 14:07:24', 'ROG\r\nSpek dewa', 4, 23, '9ddcf76d89f5208a97d438e7a5c37d79'),
+('2016-05-14 08:34:40', '2016-05-14 08:34:40', 8, 'ASUS A46CB', 'Laptop', 'Elektronik', 'Barang nya masih mulus', NULL, 'Jundi', '2016-05-14 08:34:40', 'Dewa deh pokoknya', 0, 29, 'f39ef35aad648c2261da2a5d8755b652');
 
 -- --------------------------------------------------------
 
