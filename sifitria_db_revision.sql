@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2016 at 03:08 PM
+-- Generation Time: May 18, 2016 at 03:15 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `barang`
 --
 
+DROP TABLE IF EXISTS `barang`;
 CREATE TABLE `barang` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -68,6 +69,7 @@ INSERT INTO `barang` (`created_at`, `updated_at`, `IdBarang`, `NamaBarang`, `Jen
 -- Table structure for table `catatan`
 --
 
+DROP TABLE IF EXISTS `catatan`;
 CREATE TABLE `catatan` (
   `IdPermohonan` int(11) NOT NULL,
   `TahapCatatan` int(11) NOT NULL,
@@ -114,6 +116,7 @@ INSERT INTO `catatan` (`IdPermohonan`, `TahapCatatan`, `DeskripsiCatatan`, `Nomo
 -- Table structure for table `gedung`
 --
 
+DROP TABLE IF EXISTS `gedung`;
 CREATE TABLE `gedung` (
   `IdGedung` int(11) NOT NULL,
   `NamaGedung` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
@@ -143,6 +146,7 @@ INSERT INTO `gedung` (`IdGedung`, `NamaGedung`, `deleted`, `hash`, `created_at`,
 -- Table structure for table `jadwal`
 --
 
+DROP TABLE IF EXISTS `jadwal`;
 CREATE TABLE `jadwal` (
   `IdGedung` int(11) NOT NULL,
   `IdRuangan` int(11) NOT NULL,
@@ -193,6 +197,7 @@ INSERT INTO `jadwal` (`IdGedung`, `IdRuangan`, `IdJadwal`, `WaktuMulai`, `WaktuS
 -- Table structure for table `kandidat_barang`
 --
 
+DROP TABLE IF EXISTS `kandidat_barang`;
 CREATE TABLE `kandidat_barang` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -230,6 +235,7 @@ INSERT INTO `kandidat_barang` (`created_at`, `updated_at`, `IdKandidatBarang`, `
 -- Table structure for table `migrations`
 --
 
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
@@ -256,6 +262,7 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 -- Table structure for table `password_resets`
 --
 
+DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE `password_resets` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -268,6 +275,7 @@ CREATE TABLE `password_resets` (
 -- Table structure for table `permohonan`
 --
 
+DROP TABLE IF EXISTS `permohonan`;
 CREATE TABLE `permohonan` (
   `IdPermohonan` int(11) NOT NULL,
   `NomorSurat` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -328,6 +336,7 @@ INSERT INTO `permohonan` (`IdPermohonan`, `NomorSurat`, `SubjekPermohonan`, `IdP
 -- Table structure for table `ruangan`
 --
 
+DROP TABLE IF EXISTS `ruangan`;
 CREATE TABLE `ruangan` (
   `IdGed` int(11) NOT NULL,
   `IdRuangan` int(11) NOT NULL,
@@ -375,6 +384,7 @@ INSERT INTO `ruangan` (`IdGed`, `IdRuangan`, `NomorRuangan`, `KapasitasRuangan`,
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `NomorInduk` char(10) COLLATE utf8_unicode_ci NOT NULL,
   `Nama` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
