@@ -14,7 +14,7 @@
     	<div class="col s12">    		
 	    	<form action="{{ url('registrasibarang/barang/buat') }}" method="POST">    		
 		    	<div class="col s3">
-			    	<input type="number" name="jmlbarang" min="1" max="5" step="1" value="1">    		
+			    	<input type="number" name="jmlbarang" min="1" max="5" step="1" value="1" required>    		
 		    	</div>
 		    	<div class="col s3">
 		    		{!! csrf_field() !!}

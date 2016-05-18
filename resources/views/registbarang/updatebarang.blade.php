@@ -95,7 +95,7 @@
 
     			{!! csrf_field() !!}
     			<input type="hidden" name="hash" value="{{ $data['barang'][0]['hashBarang'] }}">
-				<button class="btn waves-light waves-effect teal">
+				<button class="btn waves-light waves-effect teal" onclick="return confirm('Anda yakin ingin mengubah detail barang ini?')">
 					UPDATE BARANG
 					<i class="material-icons right">send</i>
 				</button>

@@ -39,7 +39,7 @@
 			<div class="col s6">
 		 		{!! csrf_field() !!}
 		 		<input type="hidden" name="hash" value="{{$data['ruangan'][0]['hashRuang']}}">
-		 		<button class="btn">
+		 		<button class="btn" onclick="return confirm('Anda yakin ingin mengubah detail ruangan ini?')">
 		 			UPDATE RUANGAN
 		 			<i class="material-icons right">send</i>
 		 		</button>

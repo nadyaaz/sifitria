@@ -47,7 +47,9 @@
 
                                             @if ($peminjaman->NomorSurat != null)                            
                                             <b>Nomor Surat:</b><br>
-                                            {{ $peminjaman->NomorSurat }}
+                                            <span class="wrap-text">
+                                                {{ $peminjaman->NomorSurat }}
+                                            </span>
                                             @else
                                             <b>Nomor Surat:</b><br>
                                             <span class="grey-text"><i>Belum ada nomor surat</i></span>
@@ -57,7 +59,9 @@
 
                                             @if ($peminjaman->NomorSurat != null)
                                             <b>Nomor Surat:</b><br>
-                                            {{ $peminjaman->NomorSurat }}
+                                            <span class="wrap-text">
+                                                {{ $peminjaman->NomorSurat }}
+                                            </span> 
                                             @else
                                             <b>Nomor Surat:</b><br>
                                             <span class="grey-text"><i>Belum ada nomor surat</i></span>
@@ -67,20 +71,40 @@
                                     </div>
                                     <div class="col s6">
                                         <b>Waktu Permohonan:</b><br>
-                                        {{ date('j F Y, H:i', strtotime($peminjaman->created_at)) }}
+                                        <span class="wrap-text">
+                                            {{ date('j F Y, H:i', strtotime($peminjaman->created_at)) }}
+                                        </span> 
                                     </div>                                                    
                                 </div>
                                 <div class="row">
                                     <div class="col s6">
                                         <b>Subjek Permohonan:</b><br>
-                                        {{ $peminjaman->SubjekPermohonan }}
+                                        <span class="wrap-text">
+                                            {{ $peminjaman->SubjekPermohonan }}
+                                        </span> 
                                     </div>
 
                                     <div class="col s6">
                                         <b>Keperluan Peminjaman:</b><br>
-                                        {{ $peminjaman->KeperluanPeminjaman }}
+                                        <span class="wrap-text">
+                                            {{ $peminjaman->KeperluanPeminjaman }}
+                                        </span>
                                     </div>
 
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <b>Status Permohonan:</b><br>
+                                        <span class="wrap-text">
+                                            @if($peminjaman->StatusPermohonan === 0)
+                                                {{ 'Sedang Menunggu Persetujuan Staf' }}
+                                            @elseif($peminjaman->StatusPermohonan === 1)
+                                                {{ 'Ditolak Staf' }}                    
+                                            @elseif($peminjaman->StatusPermohonan === 2)
+                                                {{ 'Disetujui Staf' }}                    
+                                            @endif
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +169,9 @@
                                     <li class="collection-item">
                                         <b>Catatan {{ $catatan->Role }}:</b><br>
                                         <i>Oleh {{ $catatan->Nama }}</i><br>
-                                        <p>{{ $catatan->DeskripsiCatatan }}</p>                                        
+                                        <p class="wrap-text">
+                                            {{ $catatan->DeskripsiCatatan }}
+                                        </p>
                                     </li>
 
                                     @endif
@@ -192,7 +218,6 @@
                                 </div>
                                 <div class="row no-row">
                                     <div class="col s12">
-
                                         <span class="grey-text wrap-text">
                                             Anda hanya bisa menghapus permohonan Anda sebelum permohonan ditetapkan statusnya oleh Staf. <br>
                                             Anda tidak bisa mengubah permohonan peminjaman ruangan. <br>

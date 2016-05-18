@@ -50,13 +50,19 @@ class RegistrasiController extends MasterController
     public function getCreateRegistrasi(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatregistrasi'))) return redirect('registrasibarang');    
+        if (!($this->isPermitted('buatregistrasi'))) return redirect('registrasibarang'); 
 
         // reset the session
         session()->forget('jmlform');
 
-        if ($request->isMethod('POST')) 
+        if ($request->isMethod('POST')) {
+            // validate
+            $this->validate($request, [
+                'jmlform' => 'required|numeric|min:1|max:5'
+            ]);
+
             session()->flash('jmlform', $request->input('jmlform'));
+        }
 
     	return $this->render('registbarang.buatregistrasi', [
     		'title' => 'Buat Permohonan Registrasi Barang',

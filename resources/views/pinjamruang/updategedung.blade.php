@@ -20,7 +20,7 @@
 				</div><br>
 
 				<div class="input-field center">
-					<button class="btn teal waves-light waves-effect">
+					<button class="btn teal waves-light waves-effect" onclick="return confirm('Anda yakin ingin mengubah detail gedung ini?')">
 						UPDATE GEDUNG
 						<i class="material-icons right">send</i>
 					</button>

@@ -18,7 +18,7 @@ class BarangController extends MasterController
     public function getBarang()
     {	
         // check if user permitted        
-        // if (!($this->isPermitted('barang'))) return redirect('/');
+        if (!($this->isPermitted('barang'))) return redirect('registrasibarang');
     
         // get all barang
     	$allbarang = Barang::all();
@@ -40,14 +40,20 @@ class BarangController extends MasterController
     public function getCreateBarang(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatbarang'))) return redirect('/');
+        if (!($this->isPermitted('buatbarang'))) return redirect('registrasibarang/barang');
 
         // reset the session
         session()->forget('jmlform');
         
         // check if request method is post, if yes get jmlform input and create session 
-        if ($request->isMethod('POST')) 
-            session()->flash('jmlform', $request->input('jmlbarang'));
+        if ($request->isMethod('POST')) {
+            // validate
+            $this->validate($request, [
+                'jmlbarang' => 'required|numeric|min:1|max:5'
+            ]);
+
+            session()->flash('jmlform', $request->input('jmlbarang'));            
+        }
 
         // render buat barang page with jmlform data
         return $this->render('registbarang.buatbarang',
@@ -65,7 +71,7 @@ class BarangController extends MasterController
     public function createBarang(Request $request)
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatbarang'))) return redirect('/');
+        if (!($this->isPermitted('buatbarang'))) return redirect('registrasibarang/barang');
 
         // get number of form submitted
         $nform = count($request->input('namabarang')); 
@@ -136,7 +142,7 @@ class BarangController extends MasterController
     public function updateBarang(Request $request, $hash = '')
     {
         // check if user permitted        
-        // if (!($this->isPermitted('buatbarang'))) return redirect('/');
+        if (!($this->isPermitted('updatebarang'))) return redirect('registrasibarang/barang');
         
         // if hash null return to barang list
         if ($hash == '') return redirect('registrasibarang/barang');

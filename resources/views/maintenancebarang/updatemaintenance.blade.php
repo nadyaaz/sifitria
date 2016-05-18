@@ -57,7 +57,7 @@
                         {!! csrf_field() !!}
                         <input type="hidden" name="hashBarang" value="{{ $data['barang']->hashBarang }}">
                         <input type="hidden" name="hashCatatan" value="{{ $data['catatan']->hashCatatan }}">
-                        <button class="btn waves-light waves-effect teal">
+                        <button class="btn waves-light waves-effect teal" onclick="return confirm('Anda yakin ingin mengubah detail permohonan ini?')">
                             UPDATE PERMOHONAN
                             <i class="material-icons right">send</i>
                         </button>&nbsp;&nbsp;               

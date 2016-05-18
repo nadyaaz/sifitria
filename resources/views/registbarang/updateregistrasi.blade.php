@@ -104,7 +104,7 @@
                 <div class="col s4 offset-s4 valign-wrapper">
                     <div class="valign">    
                         {!! csrf_field() !!}                    
-                        <button class="btn waves-light waves-effect teal">
+                        <button class="btn waves-light waves-effect teal" onclick="return confirm('Anda yakin ingin mengubah detail permohonan ini?')">
                             UBAH REGISTRASI BARANG
                             <i class="material-icons right">send</i>
                         </button>&nbsp;&nbsp;               

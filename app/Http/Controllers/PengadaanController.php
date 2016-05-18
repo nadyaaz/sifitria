@@ -41,7 +41,7 @@ class PengadaanController extends MasterController
     public function getCreatePengadaan(Request $request)
     {
         // check if user permitted        
-        if (!($this->isPermitted('buatpengadaan'))) return redirect('usulanpengadaan');
+        if (!($this->isPermitted('buatpengadaan'))) return redirect('usulanpengadaan');        
 
         // reset the session
         session()->forget('jmlform');
