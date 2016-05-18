@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2016 at 11:55 AM
+-- Generation Time: May 18, 2016 at 02:52 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -27,11 +27,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `barang` (
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `IdBarang` int(11) NOT NULL,
   `NamaBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `JenisBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `SpesifikasiBarang` text COLLATE utf8_unicode_ci NOT NULL,
-  `TanggalBeli` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `TanggalBeli` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `Penanggungjawab` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `KategoriBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `KondisiBarang` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -39,28 +41,26 @@ CREATE TABLE `barang` (
   `NomorBarcode` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `WaktuRegistrasi` timestamp NULL DEFAULT NULL,
   `KerusakanBarang` text COLLATE utf8_unicode_ci,
-  `hashBarang` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `hashBarang` varchar(32) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `barang`
 --
 
-INSERT INTO `barang` (`IdBarang`, `NamaBarang`, `JenisBarang`, `SpesifikasiBarang`, `TanggalBeli`, `Penanggungjawab`, `KategoriBarang`, `KondisiBarang`, `KeteranganBarang`, `NomorBarcode`, `WaktuRegistrasi`, `KerusakanBarang`, `hashBarang`, `created_at`, `updated_at`) VALUES
-(1, 'Projector 1101', 'Projector', 'Projector untuk ruang kelas 1101', '2016-04-17 09:02:35', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Elektronik', 'Baru', NULL, NULL, NULL, NULL, '61342a80a85e4fc5cd03b43da2e65912', '2016-04-14 23:45:59', '2016-04-14 23:45:59'),
-(2, 'Projector 1102', 'Projector', 'Projector untuk ruang kelas 1102', '2016-04-17 09:02:39', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Elektronik', 'Baru', NULL, NULL, NULL, NULL, '39f98d27c67cd73eabe2aaf2af99af64', '2016-04-14 23:45:59', '2016-04-14 23:45:59'),
-(3, 'Meja 1101', 'Meja', 'Meja Pengajar untuk ruang kelas 1101', '2016-04-17 09:02:41', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Furnitur', 'Baru', NULL, NULL, NULL, NULL, '27a14c38b040c79511cf6ab47fdd8c83', '2016-04-14 23:48:25', '2016-04-14 23:48:25'),
-(4, 'Meja 1102', 'Meja', 'Meja Pengajar untuk ruang kelas 1102', '2016-04-17 09:02:44', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Furnitur', 'Baru', NULL, NULL, NULL, NULL, 'e2c8e486582dbcd99cd619b23f9a6792', '2016-04-14 23:48:25', '2016-04-14 23:48:25'),
-(5, 'Asus A46CB', 'Laptop', 'Intel Core i7 6th Gen', '2016-04-17 09:02:12', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang di beli di mangga dua. Sesuai dengan permintaan saudara Bima.', '5', '2016-04-17 01:37:05', 'Tidak ada', '06f794a412cf277effbc3d55ed5e816e', '2016-04-17 08:37:05', '2016-04-17 08:37:05'),
-(6, 'Asus ROG', 'Laptop', 'Intel Core i7 6th Gen', '2016-04-17 09:02:21', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang dibeli dari online shop LAZADA', '6', '2016-04-17 01:37:05', 'Barang agak sedikit lecet karena terjatuh saat dibawa.', 'a7887bf42b278196d3dcb59e634edb8f', '2016-04-17 08:37:05', '2016-04-17 08:37:05'),
-(7, 'LG LED TV', 'TV', '24" LED', '2016-04-22 17:00:00', 'Bima Satria', 'Elektronik', 'Baru', 'Barang dibeli dari Tokopedia namun masih baru', '7', '2016-04-17 02:05:32', 'Tidak ada', '04830e61fef96e2473d8ebfc7d5dcac4', '2016-04-17 09:05:32', '2016-04-17 09:05:32'),
-(8, 'Nokia Lumia 950', 'Smartphone', '5,2" Display\r\nWindows 10 Mobile', '2016-04-22 17:00:00', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang dititipkan ke mas Bima', '8', '2016-04-17 03:58:21', 'Tidak ada', 'ed629d30b31c0d73a486f5c7e210cd74', '2016-04-17 10:58:21', '2016-04-17 10:58:21'),
-(9, 'Nokia Lumia 950XL', 'Smartphone', '5,7" Display\r\nWindows 10 Mobile', '2016-05-01 17:00:00', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang dititipkan ke mba Zahra', '9', '2016-04-17 03:58:21', 'Tidak ada', 'de2d5ba0a1bf56121875081b757ba8bc', '2016-04-17 10:58:21', '2016-04-17 10:58:21'),
-(10, 'Sofa Panjang', 'asdfasdfasdf', 'dsfasfasf', '2016-05-14 04:51:37', 'Jundi Ahmad Alwan', 'Furnitur', 'Baru', 'sadfasdfa', '10', '2016-04-20 02:11:53', 'Bolong-bolong digigitin kucing', '16e1119625a50949e89299e17d8cc93d', '2016-04-20 09:11:53', '2016-04-20 09:11:53'),
-(11, 'asdfasdfa', 'asdfasda', 'asdfasdf', '2016-03-31 17:00:00', 'asdfsadfa', 'Furnitur', 'Baru', 'fffffffff', '11', '2016-04-20 02:11:53', 'asdfafd', 'ebf7b09a7d049ae3b56182784a2e7125', '2016-04-20 09:11:53', '2016-04-20 09:11:53'),
-(12, 'Meja', 'Furnitur', 'Meja beli di Gramedia Margonda Depok', '2016-04-11 17:00:00', 'Sekretaris BEM (Mahasiswa 2 - 1300000002)', 'Meja', 'Baru', 'Meja ini digunakan untuk membantu kegiatan kesekretariatan BEM FIA', '12', '2016-04-20 02:22:13', NULL, '733b26e57be78df29914546dae6a6572', '2016-04-20 09:22:13', '2016-04-20 09:22:13');
+INSERT INTO `barang` (`created_at`, `updated_at`, `IdBarang`, `NamaBarang`, `JenisBarang`, `SpesifikasiBarang`, `TanggalBeli`, `Penanggungjawab`, `KategoriBarang`, `KondisiBarang`, `KeteranganBarang`, `NomorBarcode`, `WaktuRegistrasi`, `KerusakanBarang`, `hashBarang`) VALUES
+('2016-04-14 23:45:59', '2016-04-14 23:45:59', 1, 'Projector 1101', 'Projector', 'Projector untuk ruang kelas 1101', '2016-04-17 09:02:35', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Elektronik', 'Baru', NULL, NULL, NULL, NULL, '61342a80a85e4fc5cd03b43da2e65912'),
+('2016-04-14 23:45:59', '2016-04-14 23:45:59', 2, 'Projector 1102', 'Projector', 'Projector untuk ruang kelas 1102', '2016-04-17 09:02:39', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Elektronik', 'Baru', NULL, NULL, NULL, NULL, '39f98d27c67cd73eabe2aaf2af99af64'),
+('2016-04-14 23:48:25', '2016-04-14 23:48:25', 3, 'Meja 1101', 'Meja', 'Meja Pengajar untuk ruang kelas 1101', '2016-04-17 09:02:41', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Furnitur', 'Baru', NULL, NULL, NULL, NULL, '27a14c38b040c79511cf6ab47fdd8c83'),
+('2016-04-14 23:48:25', '2016-04-14 23:48:25', 4, 'Meja 1102', 'Meja', 'Meja Pengajar untuk ruang kelas 1102', '2016-04-17 09:02:44', 'Sitti Nadindra (Manajer Fasilitas & Infrastruktur)', 'Furnitur', 'Baru', NULL, NULL, NULL, NULL, 'e2c8e486582dbcd99cd619b23f9a6792'),
+('2016-04-17 08:37:05', '2016-04-17 08:37:05', 5, 'Asus A46CB', 'Laptop', 'Intel Core i7 6th Gen', '2016-04-17 09:02:12', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang di beli di mangga dua. Sesuai dengan permintaan saudara Bima.', '5', '2016-04-17 01:37:05', 'Tidak ada', '06f794a412cf277effbc3d55ed5e816e'),
+('2016-04-17 08:37:05', '2016-04-17 08:37:05', 6, 'Asus ROG', 'Laptop', 'Intel Core i7 6th Gen', '2016-04-17 09:02:21', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang dibeli dari online shop LAZADA', '6', '2016-04-17 01:37:05', 'Barang agak sedikit lecet karena terjatuh saat dibawa.', 'a7887bf42b278196d3dcb59e634edb8f'),
+('2016-04-17 09:05:32', '2016-04-17 09:05:32', 7, 'LG LED TV', 'TV', '24" LED', '2016-04-22 17:00:00', 'Bima Satria', 'Elektronik', 'Baru', 'Barang dibeli dari Tokopedia namun masih baru', '7', '2016-04-17 02:05:32', 'Tidak ada', '04830e61fef96e2473d8ebfc7d5dcac4'),
+('2016-04-17 10:58:21', '2016-04-17 10:58:21', 8, 'Nokia Lumia 950', 'Smartphone', '5,2" Display\r\nWindows 10 Mobile', '2016-04-22 17:00:00', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang dititipkan ke mas Bima', '8', '2016-04-17 03:58:21', 'Tidak ada', 'ed629d30b31c0d73a486f5c7e210cd74'),
+('2016-04-17 10:58:21', '2016-04-17 10:58:21', 9, 'Nokia Lumia 950XL', 'Smartphone', '5,7" Display\r\nWindows 10 Mobile', '2016-05-01 17:00:00', 'Jundi Ahmad Alwan', 'Elektronik', 'Baru', 'Barang dititipkan ke mba Zahra', '9', '2016-04-17 03:58:21', 'Tidak ada', 'de2d5ba0a1bf56121875081b757ba8bc'),
+('2016-04-20 09:11:53', '2016-04-20 09:11:53', 10, 'Sofa Panjang', 'asdfasdfasdf', 'dsfasfasf', '2016-05-14 04:51:37', 'Jundi Ahmad Alwan', 'Furnitur', 'Baru', 'sadfasdfa', '10', '2016-04-20 02:11:53', 'Bolong-bolong digigitin kucing', '16e1119625a50949e89299e17d8cc93d'),
+('2016-04-20 09:11:53', '2016-04-20 09:11:53', 11, 'asdfasdfa', 'asdfasda', 'asdfasdf', '2016-03-31 17:00:00', 'asdfsadfa', 'Furnitur', 'Baru', 'fffffffff', '11', '2016-04-20 02:11:53', 'asdfafd', 'ebf7b09a7d049ae3b56182784a2e7125'),
+('2016-04-20 09:22:13', '2016-04-20 09:22:13', 12, 'Meja', 'Furnitur', 'Meja beli di Gramedia Margonda Depok', '2016-04-11 17:00:00', 'Sekretaris BEM (Mahasiswa 2 - 1300000002)', 'Meja', 'Baru', 'Meja ini digunakan untuk membantu kegiatan kesekretariatan BEM FIA', '12', '2016-04-20 02:22:13', NULL, '733b26e57be78df29914546dae6a6572');
 
 -- --------------------------------------------------------
 
