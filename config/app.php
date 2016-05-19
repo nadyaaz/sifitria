@@ -39,7 +39,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    // 'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://152.118.26.54/c09'),
 
     /*
     |--------------------------------------------------------------------------
